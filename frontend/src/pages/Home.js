@@ -30,37 +30,77 @@ export default function Home({ user }) {
       </header>
 
       {/* Hero Section */}
-      <section className="container mx-auto px-4 py-24 text-center">
-        <h2 
-          className="text-5xl sm:text-6xl lg:text-7xl font-bold text-amber-950 mb-6" 
-          style={{ fontFamily: 'Cormorant Garamond, serif' }}
-          data-testid="hero-title"
-        >
-          Redonnez vie à vos chaussures
-        </h2>
-        <p className="text-lg sm:text-xl text-amber-800 mb-8 max-w-2xl mx-auto">
-          Connectez-vous avec les meilleurs cordonniers. Envoyez vos chaussures, recevez-les réparées directement chez vous.
-        </p>
-        <div className="flex gap-4 justify-center flex-wrap">
-          <Link to="/services">
-            <Button 
-              size="lg" 
-              className="bg-amber-700 hover:bg-amber-800 text-lg px-8"
-              data-testid="get-started-btn"
-            >
-              Commencer <ArrowRight className="ml-2 w-5 h-5" />
-            </Button>
-          </Link>
-          <Link to="/auth">
-            <Button 
-              size="lg" 
-              variant="outline" 
-              className="border-amber-700 text-amber-700 hover:bg-amber-50 text-lg px-8"
-              data-testid="join-cobbler-btn"
-            >
-              Devenir Cordonnier
-            </Button>
-          </Link>
+      <section className="relative overflow-hidden">
+        {/* Background Image */}
+        <div className="absolute inset-0 z-0">
+          <img 
+            src="https://images.unsplash.com/photo-1535043934128-cf0b28d52f95?w=1920&q=80" 
+            alt="Elegant shoes"
+            className="w-full h-full object-cover opacity-20"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-amber-50/90 via-orange-50/95 to-yellow-50"></div>
+        </div>
+        
+        {/* Content */}
+        <div className="container mx-auto px-4 py-32 text-center relative z-10">
+          <h2 
+            className="text-5xl sm:text-6xl lg:text-7xl font-bold text-amber-950 mb-6" 
+            style={{ fontFamily: 'Cormorant Garamond, serif' }}
+            data-testid="hero-title"
+          >
+            Redonnez vie à vos chaussures
+          </h2>
+          <p className="text-lg sm:text-xl text-amber-800 mb-8 max-w-2xl mx-auto">
+            Connectez-vous avec les meilleurs cordonniers. Envoyez vos chaussures, recevez-les réparées directement chez vous.
+          </p>
+          <div className="flex gap-4 justify-center flex-wrap">
+            <Link to="/services">
+              <Button 
+                size="lg" 
+                className="bg-amber-700 hover:bg-amber-800 text-lg px-8"
+                data-testid="get-started-btn"
+              >
+                Commencer <ArrowRight className="ml-2 w-5 h-5" />
+              </Button>
+            </Link>
+            <Link to="/auth">
+              <Button 
+                size="lg" 
+                variant="outline" 
+                className="border-amber-700 text-amber-700 hover:bg-amber-50 text-lg px-8"
+                data-testid="join-cobbler-btn"
+              >
+                Devenir Cordonnier
+              </Button>
+            </Link>
+          </div>
+        </div>
+
+        {/* Decorative Image Cards */}
+        <div className="container mx-auto px-4 pb-12 relative z-10">
+          <div className="grid grid-cols-3 gap-6 max-w-4xl mx-auto -mt-8">
+            <div className="rounded-2xl overflow-hidden shadow-xl border-4 border-white transform hover:scale-105 transition-transform">
+              <img 
+                src="https://images.unsplash.com/photo-1553808373-b2c5b7ddb117?w=600&q=80" 
+                alt="Chaussures en cuir" 
+                className="w-full h-48 object-cover"
+              />
+            </div>
+            <div className="rounded-2xl overflow-hidden shadow-xl border-4 border-white transform hover:scale-105 transition-transform">
+              <img 
+                src="https://images.unsplash.com/photo-1515347619252-60a4bf4fff4f?w=600&q=80" 
+                alt="Réparation artisanale" 
+                className="w-full h-48 object-cover"
+              />
+            </div>
+            <div className="rounded-2xl overflow-hidden shadow-xl border-4 border-white transform hover:scale-105 transition-transform">
+              <img 
+                src="https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=600&q=80" 
+                alt="Chaussures élégantes" 
+                className="w-full h-48 object-cover"
+              />
+            </div>
+          </div>
         </div>
       </section>
 
