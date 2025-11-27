@@ -9,6 +9,7 @@ import axios from "axios";
 import Home from "@/pages/Home";
 import Auth from "@/pages/Auth";
 import Dashboard from "@/pages/Dashboard";
+import AdminDashboard from "@/pages/AdminDashboard";
 import Services from "@/pages/Services";
 import CreateOrder from "@/pages/CreateOrder";
 import OrderDetails from "@/pages/OrderDetails";
