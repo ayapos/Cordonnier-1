@@ -100,42 +100,51 @@ function PaymentForm({ order }) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6" data-testid="payment-form">
-      <Card className="border-amber-200">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <CreditCard className="w-5 h-5 text-amber-700" />
-            Informations de paiement
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="p-4 border border-amber-200 rounded-lg bg-white" data-testid="card-element">
-            <CardElement
-              options={{
-                style: {
-                  base: {
-                    fontSize: '16px',
-                    color: '#78350f',
-                    '::placeholder': {
-                      color: '#d97706',
+      {demoMode && (
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4" data-testid="demo-mode-notice">
+          <p className="text-blue-800 text-sm font-medium">🎭 Mode Démo Activé</p>
+          <p className="text-blue-600 text-xs mt-1">Le paiement sera simulé sans Stripe réel. Cliquez simplement sur "Confirmer le paiement".</p>
+        </div>
+      )}
+
+      {!demoMode && (
+        <Card className="border-amber-200">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <CreditCard className="w-5 h-5 text-amber-700" />
+              Informations de paiement
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="p-4 border border-amber-200 rounded-lg bg-white" data-testid="card-element">
+              <CardElement
+                options={{
+                  style: {
+                    base: {
+                      fontSize: '16px',
+                      color: '#78350f',
+                      '::placeholder': {
+                        color: '#d97706',
+                      },
                     },
                   },
-                },
-              }}
-            />
-          </div>
-          <p className="text-xs text-amber-600 mt-3">
-            Test: Utilisez 4242 4242 4242 4242, n'importe quelle date future et CVC
-          </p>
-        </CardContent>
-      </Card>
+                }}
+              />
+            </div>
+            <p className="text-xs text-amber-600 mt-3">
+              Test: Utilisez 4242 4242 4242 4242, n'importe quelle date future et CVC
+            </p>
+          </CardContent>
+        </Card>
+      )}
 
       <Button 
         type="submit" 
         className="w-full bg-amber-700 hover:bg-amber-800 text-lg py-6" 
-        disabled={!stripe || loading}
+        disabled={loading}
         data-testid="pay-button"
       >
-        {loading ? 'Traitement...' : `Payer ${order.total_amount.toFixed(2)}€`}
+        {loading ? 'Traitement...' : demoMode ? 'Confirmer le paiement (Démo)' : `Payer ${order.total_amount.toFixed(2)}€`}
       </Button>
     </form>
   );
