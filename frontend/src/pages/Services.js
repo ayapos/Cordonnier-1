@@ -3,7 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Wrench, Clock, ArrowLeft } from 'lucide-react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Sparkles, Clock, ArrowLeft, Heart } from 'lucide-react';
 import { toast } from 'sonner';
 import axios from 'axios';
 
@@ -14,6 +15,8 @@ export default function Services({ user }) {
   const navigate = useNavigate();
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedGender, setSelectedGender] = useState('femme');
+  const [selectedCategory, setSelectedCategory] = useState('all');
 
   useEffect(() => {
     fetchServices();
@@ -39,30 +42,43 @@ export default function Services({ user }) {
     navigate('/order/new', { state: { serviceId } });
   };
 
+  const categories = [...new Set(services.map(s => s.category))];
+  
+  const filteredServices = services.filter(service => {
+    const matchesGender = service.gender === selectedGender || service.gender === 'mixte';
+    const matchesCategory = selectedCategory === 'all' || service.category === selectedCategory;
+    return matchesGender && matchesCategory;
+  });
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50">
+    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-rose-50 to-purple-50">
       {/* Header */}
-      <header className="sticky top-0 z-50 backdrop-blur-lg bg-white/70 border-b border-amber-100">
+      <header className="sticky top-0 z-50 backdrop-blur-lg bg-white/80 border-b border-pink-200 shadow-sm">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
           <div className="flex items-center gap-4">
             <Link to="/">
-              <Button variant="ghost" size="icon" data-testid="back-home-btn">
-                <ArrowLeft className="w-5 h-5" />
+              <Button variant="ghost" size="icon" data-testid="back-home-btn" className="hover:bg-pink-100">
+                <ArrowLeft className="w-5 h-5 text-pink-700" />
               </Button>
             </Link>
-            <div className="flex items-center gap-2">
-              <Wrench className="w-8 h-8 text-amber-700" />
-              <h1 className="text-2xl font-bold text-amber-900" style={{ fontFamily: 'Cormorant Garamond, serif' }}>ShoeRepair</h1>
+            <div className="flex items-center gap-3">
+              <div className="bg-gradient-to-br from-pink-400 to-purple-500 p-2 rounded-2xl shadow-lg">
+                <Sparkles className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <h1 className="text-2xl font-bold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent" style={{ fontFamily: 'Playfair Display, serif' }}>ShoeRepair</h1>
+                <p className="text-xs text-pink-600">L'élégance à portée de main</p>
+              </div>
             </div>
           </div>
           <nav className="flex items-center gap-4">
             {user ? (
               <Link to="/dashboard">
-                <Button data-testid="dashboard-nav-btn" className="bg-amber-700 hover:bg-amber-800">Tableau de bord</Button>
+                <Button data-testid="dashboard-nav-btn" className="bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white">Tableau de bord</Button>
               </Link>
             ) : (
               <Link to="/auth">
-                <Button data-testid="auth-nav-btn" className="bg-amber-700 hover:bg-amber-800">Connexion</Button>
+                <Button data-testid="auth-nav-btn" className="bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white">Connexion</Button>
               </Link>
             )}
           </nav>
@@ -72,48 +88,92 @@ export default function Services({ user }) {
       {/* Services Section */}
       <div className="container mx-auto px-4 py-12">
         <div className="text-center mb-12">
-          <h2 className="text-5xl font-bold text-amber-950 mb-4" style={{ fontFamily: 'Cormorant Garamond, serif' }} data-testid="services-title">Nos Services</h2>
-          <p className="text-lg text-amber-800">Choisissez le service de réparation adapté à vos besoins</p>
+          <h2 className="text-5xl font-bold mb-4" style={{ fontFamily: 'Playfair Display, serif' }} data-testid="services-title">
+            <span className="bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">Nos Services</span>
+          </h2>
+          <p className="text-lg text-gray-700">Des prestations sur mesure pour sublimer vos chaussures</p>
+        </div>
+
+        {/* Gender Tabs */}
+        <Tabs value={selectedGender} onValueChange={setSelectedGender} className="mb-8">
+          <TabsList className="grid w-full max-w-md mx-auto grid-cols-2 bg-white/60 backdrop-blur border border-pink-200 p-1 rounded-2xl">
+            <TabsTrigger value="femme" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-pink-500 data-[state=active]:to-purple-500 data-[state=active]:text-white rounded-xl" data-testid="femme-tab">
+              <Heart className="w-4 h-4 mr-2" /> Femme
+            </TabsTrigger>
+            <TabsTrigger value="homme" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-pink-500 data-[state=active]:to-purple-500 data-[state=active]:text-white rounded-xl" data-testid="homme-tab">
+              Homme
+            </TabsTrigger>
+          </TabsList>
+        </Tabs>
+
+        {/* Category Filter */}
+        <div className="flex flex-wrap justify-center gap-3 mb-8">
+          <Button
+            variant={selectedCategory === 'all' ? 'default' : 'outline'}
+            onClick={() => setSelectedCategory('all')}
+            className={selectedCategory === 'all' ? 'bg-gradient-to-r from-pink-500 to-purple-500 text-white' : 'border-pink-300 text-pink-700 hover:bg-pink-50'}
+            data-testid="category-all"
+          >
+            Tous
+          </Button>
+          {categories.map((category) => (
+            <Button
+              key={category}
+              variant={selectedCategory === category ? 'default' : 'outline'}
+              onClick={() => setSelectedCategory(category)}
+              className={selectedCategory === category ? 'bg-gradient-to-r from-pink-500 to-purple-500 text-white' : 'border-pink-300 text-pink-700 hover:bg-pink-50'}
+              data-testid={`category-${category}`}
+            >
+              {category}
+            </Button>
+          ))}
         </div>
 
         {loading ? (
           <div className="text-center py-20">
-            <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-amber-700 border-t-transparent"></div>
+            <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-pink-500 border-t-transparent"></div>
           </div>
-        ) : services.length === 0 ? (
+        ) : filteredServices.length === 0 ? (
           <div className="text-center py-20" data-testid="no-services">
-            <p className="text-amber-800 text-lg">Aucun service disponible pour le moment.</p>
+            <p className="text-gray-700 text-lg">Aucun service disponible dans cette catégorie.</p>
           </div>
         ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {services.map((service) => (
+            {filteredServices.map((service) => (
               <Card 
                 key={service.id} 
-                className="border-amber-200 hover:shadow-xl transition-all cursor-pointer group"
+                className="border-pink-200 hover:shadow-2xl transition-all cursor-pointer group bg-white/70 backdrop-blur rounded-3xl overflow-hidden"
                 data-testid={`service-card-${service.id}`}
               >
-                <CardHeader>
+                <CardHeader className="bg-gradient-to-br from-pink-50 to-purple-50">
                   <div className="flex items-start justify-between">
-                    <div>
-                      <CardTitle className="text-xl text-amber-950" data-testid={`service-name-${service.id}`}>{service.name}</CardTitle>
-                      <Badge className="mt-2 bg-amber-100 text-amber-800" data-testid={`service-category-${service.id}`}>{service.category}</Badge>
+                    <div className="flex-1">
+                      <CardTitle className="text-xl text-gray-800 mb-2" data-testid={`service-name-${service.id}`}>{service.name}</CardTitle>
+                      <div className="flex gap-2">
+                        <Badge className="bg-gradient-to-r from-pink-400 to-purple-400 text-white border-0" data-testid={`service-category-${service.id}`}>{service.category}</Badge>
+                        {service.gender !== 'mixte' && (
+                          <Badge className="bg-white text-pink-700 border border-pink-300" data-testid={`service-gender-${service.id}`}>
+                            {service.gender === 'femme' ? '♀ Femme' : '♂ Homme'}
+                          </Badge>
+                        )}
+                      </div>
                     </div>
                     <div className="text-right">
-                      <div className="text-2xl font-bold text-amber-700" data-testid={`service-price-${service.id}`}>{service.price}€</div>
+                      <div className="text-3xl font-bold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent" data-testid={`service-price-${service.id}`}>{service.price}€</div>
                     </div>
                   </div>
                 </CardHeader>
-                <CardContent>
-                  <CardDescription className="text-base" data-testid={`service-description-${service.id}`}>{service.description}</CardDescription>
-                  <div className="flex items-center gap-2 mt-4 text-amber-700">
+                <CardContent className="pt-6">
+                  <CardDescription className="text-base text-gray-700 mb-4" data-testid={`service-description-${service.id}`}>{service.description}</CardDescription>
+                  <div className="flex items-center gap-2 text-pink-700">
                     <Clock className="w-4 h-4" />
-                    <span className="text-sm" data-testid={`service-days-${service.id}`}>{service.estimated_days} jours</span>
+                    <span className="text-sm font-medium" data-testid={`service-days-${service.id}`}>{service.estimated_days} jours</span>
                   </div>
                 </CardContent>
                 <CardFooter>
                   <Button 
                     onClick={() => handleSelectService(service.id)}
-                    className="w-full bg-amber-700 hover:bg-amber-800 group-hover:bg-amber-800"
+                    className="w-full bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white group-hover:shadow-lg transition-all"
                     data-testid={`select-service-btn-${service.id}`}
                   >
                     Choisir ce service
