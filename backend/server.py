@@ -85,6 +85,7 @@ class ServiceCreate(BaseModel):
     price: float
     estimated_days: int
     category: str
+    gender: str
 
 class Order(BaseModel):
     model_config = ConfigDict(extra="ignore")
