@@ -21,6 +21,7 @@ function PaymentForm({ order }) {
   const [loading, setLoading] = useState(false);
   const [clientSecret, setClientSecret] = useState(null);
   const [success, setSuccess] = useState(false);
+  const [demoMode, setDemoMode] = useState(false);
 
   useEffect(() => {
     createPaymentIntent();
@@ -30,6 +31,7 @@ function PaymentForm({ order }) {
     try {
       const response = await axios.post(`${API}/orders/${order.id}/payment`);
       setClientSecret(response.data.client_secret);
+      setDemoMode(response.data.demo_mode || false);
     } catch (error) {
       toast.error('Erreur de création du paiement');
     }
@@ -38,25 +40,34 @@ function PaymentForm({ order }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    if (!stripe || !elements || !clientSecret) {
-      return;
-    }
-
     setLoading(true);
 
     try {
-      const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
-        payment_method: {
-          card: elements.getElement(CardElement),
-        },
-      });
-
-      if (error) {
-        toast.error(error.message);
-      } else if (paymentIntent.status === 'succeeded') {
+      // DEMO MODE: Simulate payment without real Stripe
+      if (demoMode) {
+        await new Promise(resolve => setTimeout(resolve, 1500)); // Simulate processing
         await axios.post(`${API}/orders/${order.id}/confirm`);
         setSuccess(true);
-        toast.success('Paiement réussi !');
+        toast.success('Paiement réussi ! (Mode démo)');
+      } else {
+        // Real Stripe payment
+        if (!stripe || !elements || !clientSecret) {
+          return;
+        }
+
+        const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
+          payment_method: {
+            card: elements.getElement(CardElement),
+          },
+        });
+
+        if (error) {
+          toast.error(error.message);
+        } else if (paymentIntent.status === 'succeeded') {
+          await axios.post(`${API}/orders/${order.id}/confirm`);
+          setSuccess(true);
+          toast.success('Paiement réussi !');
+        }
       }
     } catch (error) {
       toast.error('Erreur de paiement');
