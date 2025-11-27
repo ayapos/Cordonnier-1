@@ -76,6 +76,7 @@ class Service(BaseModel):
     price: float
     estimated_days: int
     category: str
+    gender: str  # 'homme', 'femme', 'mixte'
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 class ServiceCreate(BaseModel):
