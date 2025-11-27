@@ -319,23 +319,18 @@ async def create_payment_intent(
     if order['client_id'] != current_user['user_id']:
         raise HTTPException(status_code=403, detail="Not authorized")
     
-    try:
-        # Create Stripe payment intent
-        intent = stripe.PaymentIntent.create(
-            amount=int(order['total_amount'] * 100),  # Convert to cents
-            currency='eur',
-            metadata={'order_id': order_id}
-        )
-        
-        # Update order with payment intent
-        await db.orders.update_one(
-            {"id": order_id},
-            {"$set": {"payment_intent_id": intent.id}}
-        )
-        
-        return {"client_secret": intent.client_secret}
-    except Exception as e:
-        raise HTTPException(status_code=400, detail=str(e))
+    # DEMO MODE: Simulate Stripe payment intent
+    # Generate a fake client secret for demo purposes
+    fake_client_secret = f"pi_demo_{order_id}_secret_{uuid.uuid4().hex[:16]}"
+    fake_payment_intent_id = f"pi_demo_{uuid.uuid4().hex[:24]}"
+    
+    # Update order with fake payment intent
+    await db.orders.update_one(
+        {"id": order_id},
+        {"$set": {"payment_intent_id": fake_payment_intent_id}}
+    )
+    
+    return {"client_secret": fake_client_secret, "demo_mode": True}
 
 @api_router.post("/orders/{order_id}/confirm")
 async def confirm_payment(
