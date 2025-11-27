@@ -64,7 +64,15 @@ function App() {
             path="/dashboard" 
             element={
               <ProtectedRoute>
-                <Dashboard user={user} />
+                {user?.role === 'admin' ? <AdminDashboard user={user} /> : <Dashboard user={user} />}
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/admin" 
+            element={
+              <ProtectedRoute>
+                <AdminDashboard user={user} />
               </ProtectedRoute>
             } 
           />
