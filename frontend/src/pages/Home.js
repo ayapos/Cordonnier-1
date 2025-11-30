@@ -526,25 +526,65 @@ export default function Home({ user }) {
       {/* Avis Clients - Carousel */}
       <ReviewsCarousel t={t} />
 
-      {/* Stats Section */}
-      <section className="px-4 py-12 bg-orange-700">
-        <div className="max-w-md mx-auto">
-          <div className="grid grid-cols-2 gap-6">
-            <div className="text-center">
-              <div className="text-4xl font-bold text-white mb-2">8</div>
-              <p className="text-orange-100 text-sm">{t('countries')}</p>
+      {/* Stats Section - Premium Design */}
+      <section className="relative px-4 py-16 bg-gradient-to-br from-orange-600 via-orange-700 to-amber-800 overflow-hidden">
+        {/* Background decorative elements */}
+        <div className="absolute top-0 left-0 w-full h-full opacity-10">
+          <div className="absolute top-10 left-10 w-32 h-32 bg-white rounded-full blur-3xl"></div>
+          <div className="absolute bottom-10 right-10 w-40 h-40 bg-white rounded-full blur-3xl"></div>
+        </div>
+        
+        <div className="max-w-md mx-auto relative z-10">
+          {/* Title */}
+          <div className="text-center mb-12">
+            <h3 className="text-2xl font-bold text-white mb-2">Notre impact</h3>
+            <div className="w-16 h-1 bg-white/30 mx-auto rounded-full"></div>
+          </div>
+
+          {/* Stats Grid */}
+          <div className="grid grid-cols-2 gap-4">
+            {/* Stat 1 - Countries */}
+            <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 hover:bg-white/15 transition-all duration-300 hover:scale-105">
+              <div className="text-center">
+                <div className="inline-flex items-center justify-center w-12 h-12 bg-white/20 rounded-full mb-3">
+                  <MapPin className="w-6 h-6 text-white" />
+                </div>
+                <div className="text-4xl font-bold text-white mb-1">8</div>
+                <p className="text-white/80 text-xs font-medium">{t('countries')}</p>
+              </div>
             </div>
-            <div className="text-center">
-              <div className="text-4xl font-bold text-white mb-2">17k+</div>
-              <p className="text-orange-100 text-sm">{t('happyClients')}</p>
+
+            {/* Stat 2 - Clients */}
+            <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 hover:bg-white/15 transition-all duration-300 hover:scale-105">
+              <div className="text-center">
+                <div className="inline-flex items-center justify-center w-12 h-12 bg-white/20 rounded-full mb-3">
+                  <Star className="w-6 h-6 text-white" />
+                </div>
+                <div className="text-4xl font-bold text-white mb-1">17k+</div>
+                <p className="text-white/80 text-xs font-medium">{t('happyClients')}</p>
+              </div>
             </div>
-            <div className="text-center">
-              <div className="text-4xl font-bold text-white mb-2">250+</div>
-              <p className="text-orange-100 text-sm">{t('craftsmen')}</p>
+
+            {/* Stat 3 - Craftsmen */}
+            <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 hover:bg-white/15 transition-all duration-300 hover:scale-105">
+              <div className="text-center">
+                <div className="inline-flex items-center justify-center w-12 h-12 bg-white/20 rounded-full mb-3">
+                  <Shield className="w-6 h-6 text-white" />
+                </div>
+                <div className="text-4xl font-bold text-white mb-1">250+</div>
+                <p className="text-white/80 text-xs font-medium">{t('craftsmen')}</p>
+              </div>
             </div>
-            <div className="text-center">
-              <div className="text-4xl font-bold text-white mb-2">45k+</div>
-              <p className="text-orange-100 text-sm">{t('repairedShoes')}</p>
+
+            {/* Stat 4 - Shoes */}
+            <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 hover:bg-white/15 transition-all duration-300 hover:scale-105">
+              <div className="text-center">
+                <div className="inline-flex items-center justify-center w-12 h-12 bg-white/20 rounded-full mb-3">
+                  <ArrowRight className="w-6 h-6 text-white" />
+                </div>
+                <div className="text-4xl font-bold text-white mb-1">45k+</div>
+                <p className="text-white/80 text-xs font-medium">{t('repairedShoes')}</p>
+              </div>
             </div>
           </div>
         </div>
