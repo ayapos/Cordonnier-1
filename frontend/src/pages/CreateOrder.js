@@ -77,11 +77,17 @@ export default function CreateOrder({ user }) {
       return;
     }
 
+    if (!deliveryAddress.trim()) {
+      toast.error('Veuillez fournir une adresse de livraison');
+      return;
+    }
+
     setLoading(true);
     try {
       const formData = new FormData();
       formData.append('service_id', selectedService);
       formData.append('delivery_option', deliveryOption);
+      formData.append('delivery_address', deliveryAddress);
       if (notes) formData.append('notes', notes);
       images.forEach((image) => {
         formData.append('images', image);
