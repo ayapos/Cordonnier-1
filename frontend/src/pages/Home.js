@@ -239,7 +239,7 @@ export default function Home({ user }) {
             {
               before: 'https://images.unsplash.com/photo-1608667508764-33cf0726b13a?w=500&q=80',
               after: 'https://images.unsplash.com/photo-1529953717281-81a40b131119?w=500&q=80',
-              title: 'Ressemelage bottes'
+              title: t('bootResole')
             },
             {
               before: 'https://images.unsplash.com/photo-1552346154-21d32810aba3?w=500&q=80',
