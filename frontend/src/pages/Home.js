@@ -219,19 +219,19 @@ export default function Home({ user }) {
         <div className="space-y-6">
           {[
             {
-              before: 'https://images.unsplash.com/photo-1715516071088-4e1b260b863e?w=500&q=80',
+              before: 'https://images.unsplash.com/photo-1608667508764-33cf0726b13a?w=500&q=80',
               after: 'https://images.unsplash.com/photo-1529953717281-81a40b131119?w=500&q=80',
-              title: 'Bottes de travail'
+              title: 'Ressemelage bottes'
             },
             {
-              before: 'https://images.unsplash.com/photo-1528111610157-f0553810b46f?w=500&q=80',
-              after: 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=500&q=80',
-              title: 'Sneakers blanches'
+              before: 'https://images.unsplash.com/photo-1552346154-21d32810aba3?w=500&q=80',
+              after: 'https://images.unsplash.com/photo-1614252235316-8c857d38b5f4?w=500&q=80',
+              title: 'Nettoyage sneakers'
             },
             {
-              before: 'https://images.pexels.com/photos/8933828/pexels-photo-8933828.jpeg?w=500&q=80',
-              after: 'https://images.unsplash.com/photo-1653868249587-284b275a1c67?w=500&q=80',
-              title: 'Chaussures cuir'
+              before: 'https://images.unsplash.com/photo-1519226719127-9e805abb99b1?w=500&q=80',
+              after: 'https://images.unsplash.com/photo-1638609348722-aa2a3a67db26?w=500&q=80',
+              title: 'R\u00e9novation cuir'
             }
           ].map((item, idx) => (
             <div key={idx} className="bg-white rounded-2xl p-4 shadow-lg">
