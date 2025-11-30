@@ -19,6 +19,7 @@ const API = `${BACKEND_URL}/api`;
 
 export default function Checkout({ user }) {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const { cartItems, getCartTotal, clearCart, getCartCount } = useCart();
   const [checkoutMode, setCheckoutMode] = useState(user ? 'user' : 'guest');
   const [loading, setLoading] = useState(false);
