@@ -29,6 +29,7 @@ export default function Services({ user }) {
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
   const { addToCart, getCartCount } = useCart();
+  const { formatPrice } = useCurrency();
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedGender, setSelectedGender] = useState('femme');
