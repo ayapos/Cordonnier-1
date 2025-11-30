@@ -665,6 +665,42 @@ export default function AdminDashboard({ user }) {
                       )}
                     </DialogContent>
                   </Dialog>
+
+                  {/* Delete Confirmation Dialog */}
+                  <Dialog open={deleteConfirmOpen} onOpenChange={setDeleteConfirmOpen}>
+                    <DialogContent data-testid="delete-confirm-dialog">
+                      <DialogHeader>
+                        <DialogTitle>Confirmer la suppression</DialogTitle>
+                      </DialogHeader>
+                      <div className="space-y-4">
+                        <p className="text-amber-800">
+                          Êtes-vous sûr de vouloir supprimer le service <strong>"{serviceToDelete?.name}"</strong> ?
+                        </p>
+                        <p className="text-sm text-amber-600">
+                          Cette action est irréversible.
+                        </p>
+                        <div className="flex gap-3 justify-end">
+                          <Button 
+                            variant="outline" 
+                            onClick={() => {
+                              setDeleteConfirmOpen(false);
+                              setServiceToDelete(null);
+                            }}
+                            data-testid="cancel-delete-btn"
+                          >
+                            Annuler
+                          </Button>
+                          <Button 
+                            className="bg-red-600 hover:bg-red-700"
+                            onClick={confirmDelete}
+                            data-testid="confirm-delete-btn"
+                          >
+                            Supprimer définitivement
+                          </Button>
+                        </div>
+                      </div>
+                    </DialogContent>
+                  </Dialog>
                 </div>
               </CardHeader>
               <CardContent>
