@@ -369,6 +369,21 @@ const resources = {
       "customerReviews": "Kundenbewertungen",
       "whatTheySay": "Was sie über uns sagen",
       
+      // Features
+      "autoAssignmentTitle": "Automatische Zuweisung",
+      "autoAssignmentDesc": "Ihre Bestellung wird automatisch dem nächsten Schuster zugewiesen",
+      "fastAndConvenientTitle": "Schnell und bequem",
+      "fastAndConvenientDesc": "Versand und Rücksendung inbegriffen. Standard 10T oder Express 72h",
+      "securePaymentTitle": "Sichere Zahlung",
+      "securePaymentDesc": "Stripe Connect. Automatische Zahlung an Schuster",
+      
+      // Before After section
+      "beforeAfterGallery": "Vorher / Nachher",
+      "repairResults": "Unsere Reparaturergebnisse",
+      "bootResole": "Stiefel Neubesohlung",
+      "sneakersCleaning": "Sneakers Reinigung",
+      "heelsRepair": "Absätze Reparatur",
+      
       // Services page
       "availableServices": "verfügbar",
       "addToCart": "In den Warenkorb",
