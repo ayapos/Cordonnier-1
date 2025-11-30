@@ -26,6 +26,7 @@ const carouselImages = [
 
 export default function Home({ user }) {
   const { getCartCount } = useCart();
+  const { t } = useTranslation();
   const [currentSlide, setCurrentSlide] = useState(0);
 
   useEffect(() => {
