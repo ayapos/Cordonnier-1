@@ -523,62 +523,8 @@ export default function Home({ user }) {
         </Link>
       </section>
 
-      {/* Avis Clients */}
-      <section className="px-4 py-12 bg-gray-50">
-        <div className="max-w-md mx-auto">
-          <h3 className="text-3xl font-bold mb-3 text-gray-900 text-center">{t('customerReviews')}</h3>
-          <p className="text-center text-gray-600 mb-8">{t('whatTheySay')}</p>
-          <div className="space-y-4">
-            {[
-              {
-                name: 'Sophie Martin',
-                rating: 5,
-                comment: 'Service impeccable ! Mes escarpins préférés ont retrouvé une seconde vie. Le cordonnier a fait un travail remarquable.',
-                date: 'Il y a 2 jours'
-              },
-              {
-                name: 'Thomas Dupont',
-                rating: 5,
-                comment: 'Très professionnel. Attribution automatique au cordonnier le plus proche, super pratique. Livraison rapide en 3 jours.',
-                date: 'Il y a 1 semaine'
-              },
-              {
-                name: 'Marie Leclerc',
-                rating: 5,
-                comment: 'Mes bottes en cuir sont comme neuves ! Le rapport qualité-prix est excellent. Je recommande vivement cette application.',
-                date: 'Il y a 2 semaines'
-              },
-              {
-                name: 'Alexandre Bernard',
-                rating: 5,
-                comment: 'Application facile à utiliser. Upload des photos, paiement sécurisé et suivi en temps réel. Top !',
-                date: 'Il y a 3 semaines'
-              },
-              {
-                name: 'Isabelle Rousseau',
-                rating: 5,
-                comment: 'J\'adore le concept ! Mes chaussures sont revenues magnifiquement réparées. Le cordonnier a même ajouté une touche personnelle.',
-                date: 'Il y a 1 mois'
-              }
-            ].map((review, idx) => (
-              <div key={idx} className="bg-white rounded-2xl p-4 shadow-sm">
-                <div className="flex items-start justify-between mb-2">
-                  <div>
-                    <h4 className="font-bold text-gray-900">{review.name}</h4>
-                    <p className="text-xs text-gray-500">{review.date}</p>
-                  </div>
-                  <div className="flex gap-1">
-                    {[...Array(review.rating)].map((_, i) => (
-                      <Star key={i} className="w-4 h-4 fill-orange-500 text-orange-500" />
-                    ))}
-                  </div>
-                </div>
-                <p className="text-sm text-gray-700 leading-relaxed">{review.comment}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* Avis Clients - Carousel */}
+      <ReviewsCarousel t={t} />
 
       {/* Stats Section */}
       <section className="px-4 py-12 bg-orange-700">
