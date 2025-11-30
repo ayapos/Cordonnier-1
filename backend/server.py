@@ -394,16 +394,18 @@ async def create_guest_order(
     guest_name: str = Form(...),
     guest_email: str = Form(...),
     guest_phone: str = Form(...),
+    service_items: str = Form(...),  # JSON string of cart items
     notes: Optional[str] = Form(None),
     images: List[UploadFile] = File(...),
     create_account: bool = Form(False),
     password: Optional[str] = Form(None)
 ):
-    """Create order as guest (multiple services support)"""
-    # Get form data for services
-    form_data = {}
-    # Note: We'll need to parse services from form fields like services[0][id], services[0][quantity]
-    # For now, let's create a simpler version that accepts JSON
+    """Create order as guest with multiple services"""
+    import json
+    
+    # Validate images
+    if not images or len(images) == 0:
+        raise HTTPException(status_code=400, detail="Au moins une photo est requise")
     
     # Process images
     image_data_list = []
@@ -412,8 +414,38 @@ async def create_guest_order(
         image_base64 = base64.b64encode(contents).decode('utf-8')
         image_data_list.append(f"data:image/jpeg;base64,{image_base64}")
     
-    # Get services from form (simplified - expecting service_ids as comma-separated)
-    # This will be improved based on frontend implementation
+    # Parse service items
+    try:
+        cart_items = json.loads(service_items)
+    except:
+        raise HTTPException(status_code=400, detail="Format de panier invalide")
+    
+    if not cart_items or len(cart_items) == 0:
+        raise HTTPException(status_code=400, detail="Le panier est vide")
+    
+    # Fetch service details and build order items
+    order_items = []
+    services_total = 0
+    commission_total = 0
+    
+    for cart_item in cart_items:
+        service = await db.services.find_one({"id": cart_item['id']})
+        if not service:
+            raise HTTPException(status_code=404, detail=f"Service {cart_item['id']} introuvable")
+        
+        quantity = cart_item.get('quantity', 1)
+        item_total = service['price'] * quantity
+        item_commission = item_total * 0.15
+        
+        order_items.append({
+            "service_id": service['id'],
+            "service_name": service['name'],
+            "service_price": service['price'],
+            "quantity": quantity
+        })
+        
+        services_total += item_total
+        commission_total += item_commission
     
     # Geocode address and find nearest cobbler
     cobbler_id = None
@@ -423,8 +455,9 @@ async def create_guest_order(
         cobbler_id = await find_nearest_cobbler(client_lat, client_lon)
         logger.info(f"Auto-assigned guest order to cobbler {cobbler_id}")
     
-    # Calculate prices (simplified for single service for now)
+    # Calculate prices
     delivery_price = 15.0 if delivery_option == 'express' else 5.0
+    total_amount = services_total + delivery_price
     
     # Create order
     order_status = 'accepted' if cobbler_id else 'pending'
@@ -438,13 +471,13 @@ async def create_guest_order(
         delivery_option=delivery_option,
         delivery_address=delivery_address,
         delivery_price=delivery_price,
-        commission=0,  # Will be calculated based on services
-        total_amount=delivery_price,  # Will be updated
+        commission=commission_total,
+        total_amount=total_amount,
         status=order_status,
         shoe_images=image_data_list,
         notes=notes,
         is_guest=True,
-        items=[]
+        items=order_items
     )
     
     order_dict = order.model_dump()
@@ -481,7 +514,7 @@ async def create_guest_order(
     return {
         "order_id": order.id,
         "reference_number": order.reference_number,
-        "total_amount": order.total_amount,
+        "total_amount": total_amount,
         "cobbler_assigned": cobbler_id is not None,
         "account_created": create_account and password is not None
     }
