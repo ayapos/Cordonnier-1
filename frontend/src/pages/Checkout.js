@@ -143,11 +143,12 @@ export default function Checkout({ user }) {
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50">
       <header className="sticky top-0 z-50 backdrop-blur-lg bg-white/70 border-b border-amber-100">
-        <div className="container mx-auto px-4 py-4">
+        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
           <Link to="/" className="flex items-center gap-2">
             <Wrench className="w-8 h-8 text-amber-700" />
-            <h1 className="text-2xl font-bold text-amber-900" style={{ fontFamily: 'Cormorant Garamond, serif' }}>ShoeRepair</h1>
+            <h1 className="text-2xl font-bold text-amber-900" style={{ fontFamily: 'Cormorant Garamond, serif' }}>{t('appTitle')}</h1>
           </Link>
+          <LanguageSwitcher />
         </div>
       </header>
 
