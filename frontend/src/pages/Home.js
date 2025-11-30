@@ -215,24 +215,50 @@ export default function Home({ user }) {
         </div>
       </section>
 
-      {/* Galerie visuelle */}
-      <section className="px-4 py-8 bg-gray-50">
-        <div className="max-w-md mx-auto">
-          <h3 className="text-2xl font-bold mb-6 text-gray-900">Galerie</h3>
-          <div className="grid grid-cols-3 gap-3">
-            {[
-              'https://images.unsplash.com/photo-1581101767113-1677fc2beaa8?w=300&q=80',
-              'https://images.unsplash.com/photo-1614252235316-8c857d38b5f4?w=300&q=80',
-              'https://images.unsplash.com/photo-1552346154-21d32810aba3?w=300&q=80',
-              'https://images.unsplash.com/photo-1519226719127-9e805abb99b1?w=300&q=80',
-              'https://images.unsplash.com/photo-1616406432452-07bc5938759d?w=300&q=80',
-              'https://images.unsplash.com/photo-1608667508764-33cf0726b13a?w=300&q=80'
-            ].map((img, idx) => (
-              <div key={idx} className="aspect-square rounded-xl overflow-hidden shadow-md">
-                <img src={img} alt={`Galerie ${idx + 1}`} className="w-full h-full object-cover" />
+      {/* Avant-Après Galerie */}
+      <section className="px-4 py-12 max-w-md mx-auto">
+        <h3 className="text-3xl font-bold mb-3 text-gray-900 text-center">Avant / Après</h3>
+        <p className="text-center text-gray-600 mb-8">Résultats de nos réparations</p>
+        <div className="space-y-6">
+          {[
+            {
+              before: 'https://images.unsplash.com/photo-1715516071088-4e1b260b863e?w=500&q=80',
+              after: 'https://images.unsplash.com/photo-1529953717281-81a40b131119?w=500&q=80',
+              title: 'Bottes de travail'
+            },
+            {
+              before: 'https://images.unsplash.com/photo-1528111610157-f0553810b46f?w=500&q=80',
+              after: 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=500&q=80',
+              title: 'Sneakers blanches'
+            },
+            {
+              before: 'https://images.pexels.com/photos/8933828/pexels-photo-8933828.jpeg?w=500&q=80',
+              after: 'https://images.unsplash.com/photo-1653868249587-284b275a1c67?w=500&q=80',
+              title: 'Chaussures cuir'
+            }
+          ].map((item, idx) => (
+            <div key={idx} className="bg-white rounded-2xl p-4 shadow-lg">
+              <h4 className="font-bold text-gray-900 mb-3 text-center">{item.title}</h4>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <div className="relative rounded-xl overflow-hidden mb-2">
+                    <img src={item.before} alt="Avant" className="w-full h-48 object-cover" />
+                    <div className="absolute top-2 left-2 bg-red-500 text-white px-3 py-1 rounded-full text-xs font-bold">
+                      AVANT
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <div className="relative rounded-xl overflow-hidden mb-2">
+                    <img src={item.after} alt="Après" className="w-full h-48 object-cover" />
+                    <div className="absolute top-2 left-2 bg-green-500 text-white px-3 py-1 rounded-full text-xs font-bold">
+                      APRÈS
+                    </div>
+                  </div>
+                </div>
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
       </section>
 
