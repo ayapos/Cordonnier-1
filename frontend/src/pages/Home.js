@@ -51,6 +51,16 @@ export default function Home({ user }) {
             <p className="text-xs text-gray-500">Réparation à domicile</p>
           </div>
           <nav className="flex items-center gap-2">
+            <Link to="/cart">
+              <Button variant="ghost" size="icon" className="relative">
+                <ShoppingCart className="w-5 h-5 text-amber-700" />
+                {getCartCount() > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-amber-700 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                    {getCartCount()}
+                  </span>
+                )}
+              </Button>
+            </Link>
             {user ? (
               <Link to="/dashboard">
                 <Button size="sm" className="bg-orange-700 hover:bg-orange-800 text-white" data-testid="dashboard-nav-btn">Dashboard</Button>
