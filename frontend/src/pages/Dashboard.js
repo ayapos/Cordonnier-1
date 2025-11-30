@@ -161,6 +161,18 @@ export default function Dashboard({ user: initialUser }) {
           </Card>
         </div>
 
+        {/* Profile Editor for Clients */}
+        {user?.role === 'client' && (
+          <div className="mb-6">
+            <ProfileEditor 
+              user={user} 
+              onProfileUpdated={(updatedUser) => {
+                setUser(updatedUser);
+              }} 
+            />
+          </div>
+        )}
+
         {/* Actions */}
         {user?.role === 'client' && (
           <div className="mb-6">
