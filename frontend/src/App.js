@@ -69,6 +69,8 @@ function App() {
             <Route path="/" element={<Home user={user} />} />
             <Route path="/auth" element={<Auth setUser={setUser} />} />
             <Route path="/services" element={<Services user={user} />} />
+            <Route path="/cart" element={<Cart user={user} />} />
+            <Route path="/checkout" element={<Checkout user={user} />} />
             <Route 
               path="/dashboard" 
               element={
