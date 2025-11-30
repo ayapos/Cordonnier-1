@@ -347,11 +347,12 @@ export default function AdminDashboard({ user }) {
 
         {/* Tabs */}
         <Tabs defaultValue="orders" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-5 max-w-3xl">
+          <TabsList className="grid w-full grid-cols-6 max-w-4xl">
             <TabsTrigger value="orders" data-testid="orders-tab">Commandes</TabsTrigger>
             <TabsTrigger value="partners" data-testid="partners-tab">Partenaires</TabsTrigger>
             <TabsTrigger value="cobblers" data-testid="cobblers-tab">Cordonniers</TabsTrigger>
             <TabsTrigger value="services" data-testid="services-tab">Services</TabsTrigger>
+            <TabsTrigger value="media" data-testid="media-tab">Médias</TabsTrigger>
             <TabsTrigger value="settings" data-testid="settings-tab">Paramètres</TabsTrigger>
           </TabsList>
 
