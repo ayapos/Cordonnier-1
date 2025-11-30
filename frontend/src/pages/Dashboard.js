@@ -97,11 +97,16 @@ export default function Dashboard({ user }) {
       {/* Header */}
       <header className="sticky top-0 z-50 backdrop-blur-lg bg-white/70 border-b border-amber-100">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <div className="flex items-center gap-2">
+          <Link to="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
             <Wrench className="w-8 h-8 text-amber-700" />
             <h1 className="text-2xl font-bold text-amber-900" style={{ fontFamily: 'Cormorant Garamond, serif' }}>ShoeRepair</h1>
-          </div>
-          <div className="flex items-center gap-4">
+          </Link>
+          <div className="flex items-center gap-3">
+            <Link to="/services">
+              <Button variant="outline" className="bg-amber-700 text-white hover:bg-amber-800">
+                <Plus className="w-4 h-4 mr-2" /> Nouvelle commande
+              </Button>
+            </Link>
             <span className="text-amber-800" data-testid="user-name">Bonjour, {user?.name}</span>
             <Button variant="outline" onClick={handleLogout} data-testid="logout-btn">
               <LogOut className="w-4 h-4 mr-2" /> Déconnexion
