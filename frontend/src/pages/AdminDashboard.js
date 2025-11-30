@@ -186,7 +186,13 @@ export default function AdminDashboard({ user }) {
     try {
       await axios.put(`${API}/services/${editService.id}`, {
         name: editService.name,
+        name_en: editService.name_en || null,
+        name_de: editService.name_de || null,
+        name_it: editService.name_it || null,
         description: editService.description,
+        description_en: editService.description_en || null,
+        description_de: editService.description_de || null,
+        description_it: editService.description_it || null,
         price: parseFloat(editService.price),
         estimated_days: parseInt(editService.estimated_days),
         category: editService.category,
@@ -198,6 +204,7 @@ export default function AdminDashboard({ user }) {
       setEditService(null);
       fetchAllData();
     } catch (error) {
+      console.error('Update error:', error);
       toast.error('Erreur de modification du service');
     }
   };
