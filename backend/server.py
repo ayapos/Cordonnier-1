@@ -519,6 +519,106 @@ async def create_guest_order(
         "account_created": create_account and password is not None
     }
 
+@api_router.post("/orders/bulk")
+async def create_bulk_order(
+    service_items: str = Form(...),  # JSON string of cart items
+    delivery_option: str = Form(...),
+    delivery_address: str = Form(...),
+    notes: Optional[str] = Form(None),
+    images: List[UploadFile] = File(...),
+    current_user: dict = Depends(get_current_user)
+):
+    """Create order with multiple services for authenticated users"""
+    import json
+    
+    # Validate images
+    if not images or len(images) == 0:
+        raise HTTPException(status_code=400, detail="Au moins une photo est requise")
+    
+    # Process images
+    image_data_list = []
+    for image in images:
+        contents = await image.read()
+        image_base64 = base64.b64encode(contents).decode('utf-8')
+        image_data_list.append(f"data:image/jpeg;base64,{image_base64}")
+    
+    # Parse service items
+    try:
+        cart_items = json.loads(service_items)
+    except:
+        raise HTTPException(status_code=400, detail="Format de panier invalide")
+    
+    if not cart_items or len(cart_items) == 0:
+        raise HTTPException(status_code=400, detail="Le panier est vide")
+    
+    # Fetch service details and build order items
+    order_items = []
+    services_total = 0
+    commission_total = 0
+    
+    for cart_item in cart_items:
+        service = await db.services.find_one({"id": cart_item['id']})
+        if not service:
+            raise HTTPException(status_code=404, detail=f"Service {cart_item['id']} introuvable")
+        
+        quantity = cart_item.get('quantity', 1)
+        item_total = service['price'] * quantity
+        item_commission = item_total * 0.15
+        
+        order_items.append({
+            "service_id": service['id'],
+            "service_name": service['name'],
+            "service_price": service['price'],
+            "quantity": quantity
+        })
+        
+        services_total += item_total
+        commission_total += item_commission
+    
+    # Geocode address and find nearest cobbler
+    cobbler_id = None
+    client_coords = get_coordinates_from_address(delivery_address)
+    if client_coords:
+        client_lat, client_lon = client_coords
+        cobbler_id = await find_nearest_cobbler(client_lat, client_lon)
+        logger.info(f"Auto-assigned order to cobbler {cobbler_id}")
+    
+    # Calculate prices
+    delivery_price = 15.0 if delivery_option == 'express' else 5.0
+    total_amount = services_total + delivery_price
+    
+    # Create order
+    order_status = 'accepted' if cobbler_id else 'pending'
+    
+    order = Order(
+        reference_number=generate_reference_number(),
+        client_id=current_user['user_id'],
+        cobbler_id=cobbler_id,
+        delivery_option=delivery_option,
+        delivery_address=delivery_address,
+        delivery_price=delivery_price,
+        commission=commission_total,
+        total_amount=total_amount,
+        status=order_status,
+        shoe_images=image_data_list,
+        notes=notes,
+        is_guest=False,
+        items=order_items
+    )
+    
+    order_dict = order.model_dump()
+    order_dict['created_at'] = order_dict['created_at'].isoformat()
+    order_dict['updated_at'] = order_dict['updated_at'].isoformat()
+    
+    await db.orders.insert_one(order_dict)
+    
+    return {
+        "order_id": order.id,
+        "reference_number": order.reference_number,
+        "total_amount": total_amount,
+        "cobbler_assigned": cobbler_id is not None
+    }
+
 @api_router.post("/orders")
 async def create_order(
     service_id: str = Form(...),
