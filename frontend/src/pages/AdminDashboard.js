@@ -49,7 +49,9 @@ export default function AdminDashboard({ user }) {
     description: '',
     price: '',
     estimated_days: '',
-    category: 'Réparation'
+    category: 'Réparation',
+    gender: 'mixte',
+    image_url: ''
   });
   const [createServiceOpen, setCreateServiceOpen] = useState(false);
 
