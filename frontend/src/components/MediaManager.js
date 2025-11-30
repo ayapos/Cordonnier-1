@@ -102,17 +102,23 @@ export default function MediaManager() {
     }
   };
 
-  const handleDelete = async (mediaId, filename) => {
-    if (!window.confirm('Êtes-vous sûr de vouloir supprimer cette image ?')) {
-      return;
-    }
+  const handleDelete = async (mediaId) => {
+    setDeletingId(mediaId);
+  };
 
+  const confirmDelete = async () => {
+    if (!deletingId) return;
+    
     try {
-      await axios.delete(`${API}/admin/media/${mediaId}`);
-      toast.success('Image supprimée');
+      console.log('Deleting media:', deletingId);
+      await axios.delete(`${API}/admin/media/${deletingId}`);
+      toast.success('Image supprimée avec succès !');
+      setDeletingId(null);
       fetchMedia();
     } catch (error) {
-      toast.error('Erreur lors de la suppression');
+      console.error('Delete error:', error);
+      toast.error(error.response?.data?.detail || 'Erreur lors de la suppression');
+      setDeletingId(null);
     }
   };
 
