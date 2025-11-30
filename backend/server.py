@@ -64,6 +64,8 @@ class User(BaseModel):
     stripe_account_id: Optional[str] = None  # Stripe Connect account ID
     latitude: Optional[float] = None
     longitude: Optional[float] = None
+    terms_signed_at: Optional[datetime] = None  # Partner CGU signature timestamp
+    terms_ip_address: Optional[str] = None  # IP address at signature
 
 class UserCreate(BaseModel):
     email: EmailStr
