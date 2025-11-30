@@ -391,18 +391,12 @@ export default function Checkout({ user }) {
                 type="submit"
                 disabled={
                   loading || 
-                  images.length === 0 || 
                   (checkoutMode === 'guest' && (!guestInfo.name || !guestInfo.email || !guestInfo.phone))
                 }
-                className="w-full bg-amber-700 hover:bg-amber-800 text-lg py-6 mt-4 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full bg-amber-700 hover:bg-amber-800 text-lg py-6 mt-4"
               >
-                {loading ? 'Traitement...' : images.length === 0 ? '⚠️ Ajoutez des photos pour continuer' : 'Confirmer et payer'}
+                {loading ? 'Traitement...' : 'Confirmer et payer'}
               </Button>
-              {images.length === 0 && (
-                <p className="text-red-600 text-sm text-center mt-2">
-                  Vous devez ajouter au moins une photo de vos chaussures
-                </p>
-              )}
             </CardContent>
           </Card>
         </form>
