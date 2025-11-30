@@ -311,7 +311,7 @@ export default function OrderDetails({ user }) {
                       className="w-full bg-amber-700 hover:bg-amber-800"
                       data-testid="submit-review-btn"
                     >
-                      Envoyer l'avis
+                      Envoyer l&apos;avis
                     </Button>
                   </div>
                 </DialogContent>
