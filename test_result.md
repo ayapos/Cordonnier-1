@@ -56,6 +56,9 @@
 ##         - working: true
 ##         - agent: "testing"
 ##         - comment: "✅ TESTED: Admin can list pending partners, approve/reject partners. Document previews available. Geocoding adds coordinates on approval. Authorization working correctly."
+##         - working: true
+##         - agent: "testing"
+##         - comment: "✅ RE-TESTED P1: Admin login successful with admin@shoerepair.com / Arden2018@. GET /api/admin/partners/pending returns pending partners with document previews (id_recto_preview, id_verso_preview, che_kbis_preview). POST /api/admin/partners/{id}/approve successfully approves partners and adds geocoded coordinates (lat=46.5217532, lon=6.6287292 for Lausanne). POST /api/admin/partners/{id}/reject?reason=Documents non conformes successfully rejects partners. Authorization properly blocks non-admin access (403)."
 ##   - task: "Cobbler address update"
 ##     implemented: true
 ##     working: true
