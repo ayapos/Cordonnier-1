@@ -214,7 +214,7 @@ export default function Services({ user }) {
                         </div>
                         {service.gender !== 'mixte' && (
                           <Badge className="bg-gray-100 text-gray-700 border-0">
-                            {service.gender === 'femme' ? '♀' : '♂'} {service.gender}
+                            {service.gender === 'femme' ? '♀' : '♂'} {service.gender === 'femme' ? t('woman') : t('man')}
                           </Badge>
                         )}
                       </div>
