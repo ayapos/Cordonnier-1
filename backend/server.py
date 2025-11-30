@@ -199,6 +199,17 @@ async def register(user_data: UserCreate):
     user_dict['password'] = hash_password(user_data.password)
     user_dict['created_at'] = user_dict['created_at'].isoformat()
     
+    # If cobbler, add documents and signature timestamp
+    if user_data.role == 'cobbler':
+        user_dict['status'] = 'pending'
+        user_dict['id_recto'] = user_data.id_recto
+        user_dict['id_verso'] = user_data.id_verso
+        user_dict['che_kbis'] = user_data.che_kbis
+        user_dict['bank_account'] = user_data.bank_account
+        user_dict['terms_signed_at'] = datetime.now(timezone.utc).isoformat()
+        # Note: In production, get real IP from request.client.host
+        user_dict['terms_ip_address'] = '0.0.0.0'  # Placeholder
+    
     await db.users.insert_one(user_dict)
     
     # Create token
