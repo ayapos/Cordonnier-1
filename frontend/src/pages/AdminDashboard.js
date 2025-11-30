@@ -554,6 +554,108 @@ export default function AdminDashboard({ user }) {
                       </form>
                     </DialogContent>
                   </Dialog>
+                  
+                  {/* Edit Service Dialog */}
+                  <Dialog open={editServiceOpen} onOpenChange={setEditServiceOpen}>
+                    <DialogContent data-testid="edit-service-dialog">
+                      <DialogHeader>
+                        <DialogTitle>Modifier le Service</DialogTitle>
+                      </DialogHeader>
+                      {editService && (
+                        <form onSubmit={handleUpdateService} className="space-y-4">
+                          <div>
+                            <Label htmlFor="edit-service-name">Nom du service</Label>
+                            <Input
+                              id="edit-service-name"
+                              required
+                              value={editService.name}
+                              onChange={(e) => setEditService({...editService, name: e.target.value})}
+                              data-testid="edit-service-name-input"
+                            />
+                          </div>
+                          <div>
+                            <Label htmlFor="edit-service-description">Description</Label>
+                            <Input
+                              id="edit-service-description"
+                              required
+                              value={editService.description}
+                              onChange={(e) => setEditService({...editService, description: e.target.value})}
+                              data-testid="edit-service-description-input"
+                            />
+                          </div>
+                          <div>
+                            <Label htmlFor="edit-service-price">Prix (CHF)</Label>
+                            <Input
+                              id="edit-service-price"
+                              type="number"
+                              step="0.01"
+                              required
+                              value={editService.price}
+                              onChange={(e) => setEditService({...editService, price: e.target.value})}
+                              data-testid="edit-service-price-input"
+                            />
+                          </div>
+                          <div>
+                            <Label htmlFor="edit-service-days">Délai (jours)</Label>
+                            <Input
+                              id="edit-service-days"
+                              type="number"
+                              required
+                              value={editService.estimated_days}
+                              onChange={(e) => setEditService({...editService, estimated_days: e.target.value})}
+                              data-testid="edit-service-days-input"
+                            />
+                          </div>
+                          <div>
+                            <Label htmlFor="edit-service-category">Catégorie</Label>
+                            <Select 
+                              value={editService.category} 
+                              onValueChange={(value) => setEditService({...editService, category: value})}
+                            >
+                              <SelectTrigger data-testid="edit-service-category-select">
+                                <SelectValue />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="Réparation">Réparation</SelectItem>
+                                <SelectItem value="Entretien">Entretien</SelectItem>
+                                <SelectItem value="Modification">Modification</SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </div>
+                          <div>
+                            <Label htmlFor="edit-service-gender">Genre</Label>
+                            <Select 
+                              value={editService.gender} 
+                              onValueChange={(value) => setEditService({...editService, gender: value})}
+                            >
+                              <SelectTrigger data-testid="edit-service-gender-select">
+                                <SelectValue />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="femme">Femme</SelectItem>
+                                <SelectItem value="homme">Homme</SelectItem>
+                                <SelectItem value="mixte">Mixte</SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </div>
+                          <div>
+                            <Label htmlFor="edit-service-image">URL de l'image</Label>
+                            <Input
+                              id="edit-service-image"
+                              placeholder="https://exemple.com/image.jpg"
+                              value={editService.image_url}
+                              onChange={(e) => setEditService({...editService, image_url: e.target.value})}
+                              data-testid="edit-service-image-input"
+                            />
+                            <p className="text-xs text-gray-500 mt-1">URL d'une image Unsplash ou autre</p>
+                          </div>
+                          <Button type="submit" className="w-full bg-amber-700 hover:bg-amber-800" data-testid="submit-edit-service-btn">
+                            Enregistrer les modifications
+                          </Button>
+                        </form>
+                      )}
+                    </DialogContent>
+                  </Dialog>
                 </div>
               </CardHeader>
               <CardContent>
