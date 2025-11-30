@@ -80,59 +80,85 @@
 ## frontend:
 ##   - task: "Cart Context - localStorage management"
 ##     implemented: true
-##     working: "unknown"
+##     working: true
 ##     file: "/app/frontend/src/context/CartContext.js"
 ##     stuck_count: 0
 ##     priority: "high"
-##     needs_retesting: true
+##     needs_retesting: false
 ##     status_history:
 ##         - working: "unknown"
 ##         - agent: "main"
 ##         - comment: "CartContext créé avec addToCart, removeFromCart, updateQuantity, getCartTotal, getCartCount"
+##         - working: true
+##         - agent: "testing"
+##         - comment: "✅ TESTED: Cart functionality working correctly. Items can be added to cart, quantities modified, and cart persists across navigation. Cart count badge displays properly."
 ##   - task: "Cart Page - View and modify cart"
 ##     implemented: true
-##     working: "unknown"
+##     working: true
 ##     file: "/app/frontend/src/pages/Cart.js"
 ##     stuck_count: 0
 ##     priority: "high"
-##     needs_retesting: true
+##     needs_retesting: false
 ##     status_history:
 ##         - working: "unknown"
 ##         - agent: "main"
 ##         - comment: "Page panier avec liste services, modification quantités, suppression items, bouton checkout"
+##         - working: true
+##         - agent: "testing"
+##         - comment: "✅ TESTED: Cart page working correctly. Shows cart items, allows quantity modification, displays totals, and checkout button navigates properly."
 ##   - task: "Checkout Page - Guest and user checkout with mandatory photos"
 ##     implemented: true
-##     working: "unknown"
+##     working: false
 ##     file: "/app/frontend/src/pages/Checkout.js"
-##     stuck_count: 0
+##     stuck_count: 1
 ##     priority: "high"
-##     needs_retesting: true
+##     needs_retesting: false
 ##     status_history:
 ##         - working: "unknown"
 ##         - agent: "main"
 ##         - comment: "Page checkout avec validation OBLIGATOIRE des photos (désactive bouton si pas de photos), mode invité/connecté, création compte optionnelle"
+##         - working: false
+##         - agent: "testing"
+##         - comment: "❌ CRITICAL ISSUE: Checkout page missing required address options. Expected radio buttons for 'Mon adresse de profil' and 'Autre adresse' not found. Only shows simple input field instead of proper address selection interface when user has profile address."
 ##   - task: "Add to cart buttons on Services page"
 ##     implemented: true
-##     working: "unknown"
+##     working: true
 ##     file: "/app/frontend/src/pages/Services.js"
 ##     stuck_count: 0
 ##     priority: "high"
-##     needs_retesting: true
+##     needs_retesting: false
 ##     status_history:
 ##         - working: "unknown"
 ##         - agent: "main"
 ##         - comment: "Boutons Ajouter au panier ajoutés sur chaque carte service, icône panier avec badge dans header"
+##         - working: true
+##         - agent: "testing"
+##         - comment: "✅ TESTED: Add to cart buttons working correctly on Services page. Items are added to cart successfully and cart badge updates properly."
 ##   - task: "Cart icon in Home page header"
 ##     implemented: true
-##     working: "unknown"
+##     working: true
 ##     file: "/app/frontend/src/pages/Home.js"
 ##     stuck_count: 0
 ##     priority: "medium"
-##     needs_retesting: true
+##     needs_retesting: false
 ##     status_history:
 ##         - working: "unknown"
 ##         - agent: "main"
 ##         - comment: "Icône panier avec badge compteur ajoutée dans header de la page d'accueil"
+##         - working: true
+##         - agent: "testing"
+##         - comment: "✅ TESTED: Cart icon with badge working correctly in header. Badge shows correct item count."
+##   - task: "Profile address persistence"
+##     implemented: true
+##     working: false
+##     file: "/app/frontend/src/components/ProfileEditor.js"
+##     stuck_count: 1
+##     priority: "high"
+##     needs_retesting: false
+##     status_history:
+##         - working: false
+##         - agent: "testing"
+##         - comment: "❌ CRITICAL ISSUE: Address persistence broken. Address can be saved in profile editor and shows immediately, but does NOT persist after logout/login. Address reverts to 'Non renseignée' after re-login. Backend PUT /api/auth/me may not be saving address properly to database."
 
 ## metadata:
 ##   created_by: "main_agent"
