@@ -154,7 +154,13 @@ export default function AdminDashboard({ user }) {
     setEditService({
       id: service.id,
       name: service.name,
+      name_en: service.name_en || '',
+      name_de: service.name_de || '',
+      name_it: service.name_it || '',
       description: service.description,
+      description_en: service.description_en || '',
+      description_de: service.description_de || '',
+      description_it: service.description_it || '',
       price: service.price.toString(),
       estimated_days: service.estimated_days.toString(),
       category: service.category,
