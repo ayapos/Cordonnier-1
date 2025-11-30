@@ -103,6 +103,7 @@ class ServiceCreate(BaseModel):
     estimated_days: int
     category: str
     gender: str
+    image_url: Optional[str] = None
 
 class Order(BaseModel):
     model_config = ConfigDict(extra="ignore")
