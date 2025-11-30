@@ -137,7 +137,13 @@ export default function AdminDashboard({ user }) {
       setCreateServiceOpen(false);
       setNewService({
         name: '',
+        name_en: '',
+        name_de: '',
+        name_it: '',
         description: '',
+        description_en: '',
+        description_de: '',
+        description_it: '',
         price: '',
         estimated_days: '',
         category: 'Réparation',
