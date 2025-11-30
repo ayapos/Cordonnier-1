@@ -48,10 +48,22 @@ export default function OrderDetails({ user }) {
     fetchOrder();
   }, [user, orderId]);
 
+  const [cobbler, setCobbler] = useState(null);
+
   const fetchOrder = async () => {
     try {
       const response = await axios.get(`${API}/orders/${orderId}`);
       setOrder(response.data);
+      
+      // Fetch cobbler info if assigned
+      if (response.data.cobbler_id) {
+        try {
+          const cobblerResponse = await axios.get(`${API}/users/${response.data.cobbler_id}`);
+          setCobbler(cobblerResponse.data);
+        } catch (err) {
+          console.error('Could not fetch cobbler info');
+        }
+      }
     } catch (error) {
       toast.error('Commande introuvable');
       navigate('/dashboard');
