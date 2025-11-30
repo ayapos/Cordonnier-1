@@ -35,6 +35,30 @@ export default function Home({ user }) {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [carouselImages, setCarouselImages] = useState(getFallbackCarouselImages(t));
 
+  // Load carousel images from API
+  useEffect(() => {
+    const loadCarouselImages = async () => {
+      try {
+        const response = await axios.get(`${API}/media/carousel`);
+        if (response.data && response.data.length > 0) {
+          // Sort by position
+          const sortedImages = response.data.sort((a, b) => (a.position || 999) - (b.position || 999));
+          // Map to carousel format
+          const mappedImages = sortedImages.map(img => ({
+            url: `${BACKEND_URL}${img.url}`,
+            title: img.title || t('carousel'),
+            subtitle: '' // Admin can set this in future
+          }));
+          setCarouselImages(mappedImages);
+        }
+      } catch (error) {
+        console.log('Using fallback carousel images');
+        // Keep fallback images if API fails
+      }
+    };
+    loadCarouselImages();
+  }, [t]);
+
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % carouselImages.length);
