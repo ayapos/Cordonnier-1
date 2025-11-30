@@ -531,7 +531,7 @@ export default function AdminDashboard({ user }) {
           </TabsContent>
 
           {/* Settings Tab */}
-          <TabsContent value=\"settings\">
+          <TabsContent value="settings">
             <AdminSettings />
           </TabsContent>
         </Tabs>
