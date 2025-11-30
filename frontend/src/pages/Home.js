@@ -345,64 +345,8 @@ export default function Home({ user }) {
         </div>
       </section>
 
-      {/* Nos Pays - Countries Section */}
-      <section className="px-4 py-16 bg-gradient-to-b from-white to-amber-50">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h3 className="text-4xl font-bold mb-3 text-gray-900" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
-              {t('ourCountries')}
-            </h3>
-            <p className="text-lg text-gray-600 mb-2">{t('presentInCountries')}</p>
-            <p className="text-amber-700 font-semibold">8 {t('countriesCovered')}</p>
-          </div>
-          
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
-            {[
-              { flag: '🇨🇭', name: t('switzerland'), code: 'CH' },
-              { flag: '🇫🇷', name: t('france'), code: 'FR' },
-              { flag: '🇩🇪', name: t('germany'), code: 'DE' },
-              { flag: '🇮🇹', name: t('italy'), code: 'IT' },
-              { flag: '🇧🇪', name: t('belgium'), code: 'BE' },
-              { flag: '🇱🇺', name: t('luxembourg'), code: 'LU' },
-              { flag: '🇦🇹', name: t('austria'), code: 'AT' },
-              { flag: '🇳🇱', name: t('netherlands'), code: 'NL' }
-            ].map((country, index) => (
-              <div 
-                key={country.code}
-                className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 border border-amber-100"
-                style={{
-                  animationDelay: `${index * 100}ms`
-                }}
-              >
-                <div className="text-center">
-                  <div className="text-6xl mb-3">{country.flag}</div>
-                  <h4 className="font-bold text-gray-900 text-lg">{country.name}</h4>
-                  <p className="text-xs text-amber-600 mt-1">{country.code}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-          
-          {/* Statistics bar */}
-          <div className="mt-12 flex justify-center gap-8 flex-wrap">
-            <div className="text-center">
-              <div className="text-4xl font-bold text-amber-700">8</div>
-              <div className="text-sm text-gray-600 mt-1">{t('ourCountries')}</div>
-            </div>
-            <div className="text-center">
-              <div className="text-4xl font-bold text-amber-700">500+</div>
-              <div className="text-sm text-gray-600 mt-1">Cordonniers</div>
-            </div>
-            <div className="text-center">
-              <div className="text-4xl font-bold text-amber-700">15k+</div>
-              <div className="text-sm text-gray-600 mt-1">Clients satisfaits</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-8 mt-0">
+      <footer className="bg-gray-900 text-white py-8 mt-12">
         <div className="max-w-md mx-auto px-4">
           <div className="text-center mb-6">
             <h4 className="font-bold text-lg mb-2">ShoeRepair</h4>
