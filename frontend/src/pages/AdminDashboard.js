@@ -54,6 +54,8 @@ export default function AdminDashboard({ user }) {
     image_url: ''
   });
   const [createServiceOpen, setCreateServiceOpen] = useState(false);
+  const [editService, setEditService] = useState(null);
+  const [editServiceOpen, setEditServiceOpen] = useState(false);
 
   useEffect(() => {
     if (!user || user.role !== 'admin') {
