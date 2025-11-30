@@ -72,6 +72,11 @@ class UserCreate(BaseModel):
     role: str
     phone: Optional[str] = None
     address: Optional[str] = None
+    # Documents for cobbler registration
+    id_recto: Optional[str] = None
+    id_verso: Optional[str] = None
+    che_kbis: Optional[str] = None
+    bank_account: Optional[str] = None
 
 class UserLogin(BaseModel):
     email: EmailStr
