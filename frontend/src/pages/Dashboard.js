@@ -46,7 +46,7 @@ export default function Dashboard({ user }) {
       setOrders(ordersRes.data);
       setStats(statsRes.data);
     } catch (error) {
-      toast.error('Erreur de chargement des données');
+      toast.error(t('loadingDataError'));
     } finally {
       setLoading(false);
     }
@@ -54,27 +54,27 @@ export default function Dashboard({ user }) {
 
   const handleLogout = () => {
     localStorage.removeItem('token');
-    toast.success('Déconnexion réussie');
+    toast.success(t('logoutSuccess'));
     navigate('/');
   };
 
   const handleAcceptOrder = async (orderId) => {
     try {
       await axios.post(`${API}/orders/${orderId}/accept`);
-      toast.success('Commande acceptée !');
+      toast.success(t('orderAccepted'));
       fetchData();
     } catch (error) {
-      toast.error(error.response?.data?.detail || 'Erreur');
+      toast.error(error.response?.data?.detail || t('errorOccurred'));
     }
   };
 
   const handleUpdateStatus = async (orderId, status) => {
     try {
       await axios.patch(`${API}/orders/${orderId}/status?status=${status}`);
-      toast.success('Statut mis à jour');
+      toast.success(t('statusUpdated'));
       fetchData();
     } catch (error) {
-      toast.error('Erreur de mise à jour');
+      toast.error(t('updateError'));
     }
   };
 
