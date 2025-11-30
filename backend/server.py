@@ -1108,6 +1108,42 @@ async def list_media(
         logger.error(f"Error listing media: {e}")
         raise HTTPException(status_code=500, detail="Error listing media")
 
+@api_router.put("/admin/media/{media_id}")
+async def update_media(
+    media_id: str,
+    title: Optional[str] = None,
+    position: Optional[int] = None,
+    current_user: dict = Depends(get_current_user)
+):
+    if current_user['role'] != 'admin':
+        raise HTTPException(status_code=403, detail="Admin access required")
+    
+    try:
+        # Find media
+        media = await db.media.find_one({"id": media_id})
+        if not media:
+            raise HTTPException(status_code=404, detail="Media not found")
+        
+        # Update fields
+        update_data = {}
+        if title is not None:
+            update_data['title'] = title
+        if position is not None:
+            update_data['position'] = position
+        
+        if update_data:
+            await db.media.update_one(
+                {"id": media_id},
+                {"$set": update_data}
+            )
+        
+        return {"message": "Media updated successfully"}
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error updating media: {e}")
+        raise HTTPException(status_code=500, detail="Error updating media")
+
 @api_router.delete("/admin/media/{media_id}")
 async def delete_media(
     media_id: str,
