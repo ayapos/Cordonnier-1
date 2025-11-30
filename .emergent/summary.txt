@@ -3,139 +3,174 @@ The user wants to create a marketplace application to connect shoemakers (cordon
 
 **PRODUCT REQUIREMENTS:**
 - **User Roles:** Customer, Shoemaker (Partner), Admin.
-- **Authentication:** Email/password for all roles.
+- **Authentication:** Email/password for all roles. Guest checkout is supported. The main registration page should only create Client accounts.
 - **Dashboards:**
-    - **Customer:** View order history, order status, and assigned shoemaker's contact details.
-    - **Shoemaker:** View assigned orders.
-    - **Admin:** A comprehensive dashboard to manage the entire platform.
-- **Services:** Admins must be able to create, view, **update**, and delete services, including their name, description, price, and image.
-- **Ordering:**
-    - Customers select a service and a delivery option (e.g., standard 10 days, express 72h).
-    - Payment generates a reference number for the package.
-    - **Order Assignment:** Orders should be automatically assigned to the nearest available shoemaker (Geo-location).
-- **Shoemaker Onboarding (Become a Partner):**
-    - Prospective partners must fill out a form.
-    - They must submit documents for verification (ID card, business registration/KBIS).
-    - They must electronically sign a Partner Terms and Conditions agreement.
-    - The admin must be able to view submitted documents and the signature status, and then validate the partner.
-- **Admin Controls:**
-    - Full CRUD for services.
-    - Manage platform-wide settings like delivery options (price/time), commission rates, currency, etc.
-    - View and validate shoemakers.
-    - Configure shoemaker bank details for payouts.
-- **Payments:**
-    - Initially requested Stripe, but due to an invalid test key, it was switched to a **demo mode**.
-    - Future requirement: Implement Stripe Connect for automatic payouts to validated shoemakers.
+    - **Customer:** View order history, order status, and assigned shoemaker's contact details. Must be able to edit their own profile information.
+    - **Shoemaker:** View assigned orders and manage their business address for geo-location.
+    - **Admin:** A comprehensive dashboard to manage users, orders, services, partner approvals, and site-wide media (images).
+- **Services:** Admins must have full CRUD functionality for services, with support for names/descriptions in four languages (FR, EN, DE, IT) and dynamic category creation.
+- **Ordering:** Customers can add multiple services to a cart and checkout as a guest or logged-in user. Photo uploads for orders are optional.
+- **Shoemaker Onboarding (Become a Partner):** A separate form for prospective partners to apply and submit verification documents (ID/KBIS). Admins must be able to review these submissions and approve/reject partners.
+- **Payments:** Currently in a demo mode. A multi-currency system (CHF/EUR) is requested.
 - **Design & UI:**
-    - The app should be mobile-first.
-    - The final agreed-upon theme is Terracotta/brick - warm, trendy, and clean.
-    - The homepage must feature a carousel of images, a How it works section, a Before/After gallery, and a customer reviews section.
-    - Legal pages (Terms, Privacy, Legal Notice) are required in the footer.
+    - Mobile-first, Terracotta/brick theme.
+    - The homepage must feature dynamic carousels for Before/After examples and Customer Reviews.
+    - A redesigned, horizontal statistics section (Our Impact) should be present.
+    - The How it Works section should be removed.
+    - A discreet Our Countries line with flags should be in the footer.
+    - The application must support multiple languages (FR, EN, DE, IT) with a language switcher.
+    - A currency switcher (CHF/EUR) should be present in the header.
 
 **User's preferred language**: French
 
 **what currently exists?**
-A full-stack application with a React frontend and FastAPI backend is in place. It features user registration/login for different roles (Customer, Shoemaker, Admin). A customer can browse services, place a simulated order, and view their order details, including the assigned shoemaker's contact info. An extensive, multi-tab admin dashboard exists for managing orders, shoemakers, and platform settings. A Become a Partner page with an electronic signature feature has also been implemented. The application is styled with a mobile-first, terracotta-themed design. The payment system is currently a **demo/mock implementation**.
+The application is a full-stack React/FastAPI project. It includes user authentication for three roles, a shopping cart, and guest checkout. The Admin Dashboard is feature-rich, providing CRUD for services (with multi-language support), a partner validation system (reviewing applications and documents), and a new comprehensive media manager to control site images like the homepage carousel. The homepage has been significantly redesigned with dynamic carousels for reviews and before/after shots, plus a modern, horizontal statistics section. A multi-currency system has been partially implemented on the frontend with a currency context and a switcher in the header, displaying prices in CHF or EUR on the services page. The backend has been enhanced with endpoints for partner validation, shoemaker address updates, and serving media files via the API to ensure they display correctly. Numerous bugs related to the admin dashboard, checkout process, and UI have been resolved.
 
 **Last working item**:
-- **Last item agent was working:** The user reported that they are unable to add photos to or edit existing services from the admin dashboard. The agent's implementation only allowed adding an image when *creating* a new service, but completely missed the functionality to **edit** existing services (price, text, image). The user also suspects that not all services are being displayed in the admin panel.
-- **Status**: IN PROGRESS
+- **Last item agent was working:** The user requested to add a profile management section to the customer dashboard, allowing clients to modify their own data. The agent acknowledged the request and was about to begin implementation by creating the necessary backend endpoint.
+- **Status**: NOT STARTED
 - **Agent Testing Done**: N
-- **Which testing method agent to use?** Frontend testing agent
-- **User Testing Done**: Y
+- **Which testing method agent to use?** both
+- **User Testing Done**: N
 
 **All Pending/In progress Issue list**:
-- **Issue 1: Admin cannot edit existing services (P0)**
-  - **Description:** The admin dashboard's Services tab lacks the functionality to edit or delete existing services. The user can only create new services. This prevents the admin from managing the platform's core offerings.
-  - **Attempted fixes:** None. The agent has only acknowledged the problem so far.
+- **Issue 1: Media Replacement Logic is Faulty (P1)**
+  - **Description:** When an admin uploads a new image with a category and position that already exists (e.g., carousel, position 1), the new image should replace the old one. The agent attempted to implement this, but debugging showed it wasn't working. The agent then focused on other bugs and this was never fully resolved. There might be multiple images assigned to the same position.
+  - **Attempted fixes:** The agent tried adding logic in the  endpoint to find and replace existing media. Debugging with logs failed, possibly due to hot-reload issues. The agent suspected a string vs. integer comparison issue with  from FormData, but the final state is unresolved.
   - **Next debug checklist:**
-    1.  **Backend:** In , create a  or  API endpoint (e.g., ) to update a service's details (name, description, price, image_url).
-    2.  **Frontend:** In :
-        - Fetch and display a list of all existing services from the  endpoint.
-        - For each service in the list, add Edit and Delete buttons.
-        - Create an Edit Service modal or form that is pre-populated with the selected service's data.
-        - Implement the logic to send the updated data to the new backend endpoint when the admin saves changes.
-  - **Why fix this issue and what will be achieved with the fix?** This is a critical feature for the admin to manage the marketplace's services dynamically without needing code changes.
+    1.  In , inside the  endpoint, add print statements to verify the  and  values received.
+    2.  Check the logic for  or . Ensure the query correctly finds the existing document.
+    3.  Manually test the endpoint with  to confirm the replacement behavior.
+    4.  Clean the  collection of any duplicate positions before testing.
+  - **Why fix this issue and what will be achieved with the fix?** To ensure the media manager is intuitive and prevents duplicate content, allowing admins to easily update specific carousel slides without having to delete the old one first.
   - **Status:** NOT STARTED
-  - **Is recurring issue?** N
-  - **Should Test frontend/backend/both after fix?** Both
+  - **Is recurring issue?** Y
+  - **Should Test frontend/backend/both after fix?** Backend
+  - **Blocked on other issue:** None
 
 **In progress Task List**:
-- **Task 1: Complete the Admin Dashboard Services Management (P0)**
-  - **Description:** This task is to resolve the issue listed above by implementing full CRUD (Create, Read, Update, Delete) functionality for services within the admin dashboard.
-  - **Where to resume:** Start by implementing the backend  endpoint in . Then, modify  to display the list of services and add the editing interface.
-  - **What will be achieved with this?** The admin will have full control over the services offered on the platform.
+- **Task 1: Complete Multi-Currency Implementation (P1)**
+  - **Description:** A currency context and switcher (CHF/EUR) have been added to the frontend, and it works on the Services page. This needs to be extended across the entire application.
+  - **Where to resume:**
+    1.  **Frontend:** Integrate the  hook and  function into , , and the customer/admin dashboards to ensure all prices respect the selected currency.
+    2.  **Backend:** Modify the shoemaker registration/profile endpoints to save their preferred currency. Update order creation endpoints to record the currency used for the transaction.
+  - **What will be achieved with this?** The application will support both CHF and EUR, allowing for expansion into other European countries as requested.
   - **Status:** IN PROGRESS
   - **Should Test frontend/backend/both after fix?** Both
   - **Blocked on something:** No
 
 **Upcoming and Future Tasks**
 - **Upcoming Tasks:**
-  - **P1 - Implement Shoemaker Geo-location and Auto-assignment:**
-    - A critical, unimplemented feature. When a customer places an order, the system must find the nearest shoemaker and assign the order automatically.
-    - **Files:** . Requires using  library (already installed) to calculate distances.
-  - **P2 - Implement Shoemaker Document Upload & Admin Validation:**
-    - The frontend needs a form for partners to upload their ID and KBIS documents.
-    - The admin dashboard needs an interface for the admin to view these documents and a button to approve/validate the shoemaker.
-    - **Files:** , , .
+  - **P0 - Implement Customer Profile Editing:** Create the UI in  and the backend endpoint () to allow logged-in clients to update their name, phone, and address.
+  - **P1 - Full Application Translation:** The user paused this, but it was an initial requirement. Pages like , , and legal pages (, ) still contain hardcoded text.
+- **User Verification Pending:**
+  - **P2 - Shoemaker Document Upload & Admin Validation:** The backend and frontend UI for this are complete. The user needs to test the end-to-end flow: a partner registers, the admin sees the pending application, views documents, and approves/rejects them.
+  - **P2 - Shoemaker Geo-location Flow:** The backend endpoint and frontend UI for shoemakers to update their address are complete. The user needs to test this from the shoemaker's dashboard.
 - **Future Tasks:**
-  - **P3 - Implement Real Payments with Stripe Connect:**
-    - Replace the current demo payment system. The goal is to manage payments from customers and automate payouts to validated shoemakers, while retaining the platform's commission.
-    - This will require using the  agent for a secure and correct implementation of Stripe Connect.
-    - Admin will need a secure way to input shoemaker bank details.
+  - **P3 - Implement Real Payments with Stripe Connect:** Replace the current demo payment system. This will require using the  agent.
+  - **P4 - Backend Code Refactoring:** The  file is now extremely large and contains all models, routes, and business logic. It should be split into a structured , ,  architecture.
+  - **P5 - Frontend Code Refactoring:** The  page now contains the full implementation for two separate carousel components. This logic should be extracted into their own files inside .
 
 **Completed work in this session**
-- **Full-Stack Application Scaffolding:** Created the initial React/FastAPI project structure.
-- **UI/UX Iterations:**
-  - Designed and implemented three distinct themes (initial, feminine/pink, navy blue, and finally terracotta/brick).
-  - Redesigned the homepage to include a carousel, How it works, Before/After, and Reviews sections.
-- **Admin Dashboard:** Created a multi-tab dashboard for managing orders, shoemakers, and platform-wide settings (delivery fees, commission, etc.).
-- **Partner Onboarding:** Developed a Become a Partner page with a form and an electronic signature component for partner terms.
-- **Currency Change:** Switched all currency displays from € to CHF across the application.
-- **Bug Fix:** Resolved a critical frontend compilation error in  that was blocking the UI from rendering.
-- **Credential Management:** Created a custom admin account as per the user's request.
+- **Homepage Redesign:**
+  - Avant/Après section converted to a dynamic carousel.
+  - Avis Clients (Customer Reviews) section converted to a dynamic carousel.
+  - Notre Impact (stats) section redesigned into a sleek, horizontal row of 4 colored cards.
+  - Comment ça marche section was completely removed as per user request.
+  - Nos Pays section added discreetly to the footer.
+- **Admin Media Management:**
+  - Created a full CRUD interface in the Admin Dashboard for managing site-wide images.
+  - Homepage carousel is now powered by images uploaded via this new admin interface.
+  - Implemented image serving via a dedicated API endpoint () to resolve preview URL issues.
+- **Partner Management Flow (P1 & P2):**
+  - Implemented backend logic to save partner documents to the filesystem instead of the database.
+  - Added Admin endpoints and UI to view, approve, and reject partner applications.
+  - Added Backend endpoint and UI for shoemakers to manage their address from their dashboard.
+- **Performance & Bug Fixes:**
+  - **Resolved Admin Crash:** Fixed a  error that crashed the Admin Dashboard.
+  - **Resolved Checkout Errors:** Fixed an  error and a Field required bug for optional image uploads during checkout.
+  - **Optimized Admin Dashboard:** Significantly improved page load speed by fetching partner documents on-demand instead of all at once.
+  - **Resolved Carousel Flash:** Fixed a bug where default images would flash briefly before uploaded images appeared.
+  - **Simplified Registration:** Removed the Account Type selector from the main registration form to default all sign-ups to Client.
+  - **Fixed Media Deletion:** Re-implemented the delete functionality in the media manager with a confirmation dialog.
+
+**Earlier issues found/mentioned but not fixed**
+- The replace image by position logic in the Media Manager was never fully debugged and fixed. (Listed in All Pending/In progress Issue list).
+
+**Known issue recurrence from previous fork**
+- None.
 
 **Code Architecture**
 
 
 **Key Technical Concepts**
-- **Backend:** FastAPI, Pydantic, MongoDB (motor), Geopy.
-- **Frontend:** React, Tailwind CSS, shadcn/ui components, axios, react-router-dom.
-- **Database:** MongoDB with collections for , , , and .
-- **Payments:** Currently using a **mock/demo mode** that simulates successful payments.
+- **Backend:** FastAPI, Pydantic, MongoDB (motor), Geopy, **FileResponse** (for serving images via API).
+- **Frontend:** React, Tailwind CSS, shadcn/ui, axios, **React Context API** (for Cart and Currency).
+- **Architecture:** The agent shifted from serving static files directly to serving them via a dedicated API endpoint to ensure compatibility with the preview environment.
 
 **key DB schema**
-- **users:** 
-- **services:** 
-- **orders:** 
-- **settings:**  (e.g., , )
+- **media:**  (NEW)
+- **users:**  (Modified)
+- **services:**  (Unchanged)
+- **orders:**  (Unchanged)
 
 **All files**
-- **Backend Updated:** , , 
-- **Frontend Created/Updated:**
-  - Main Pages: , , , , , , .
-  - Legal/Partner Pages: , , , , .
+- **Created:**
+  - : Directory for all user-uploaded files.
+  - : Manages currency state (CHF/EUR).
+  - : UI for changing currency.
+  - : Admin UI for image management.
+  - : Admin UI for partner validation.
+  - : Shoemaker UI for address updates.
+  - : Utility to format backend error messages for toasts.
+- **Updated:**
+  - : Heavily modified. Added endpoints for media management, partner validation, on-demand document fetching, geo-location updates, and public carousel images. Changed file handling for registrations. Made image uploads on orders optional.
+  - : Heavily modified. Replaced static Avant/Après and Reviews with dynamic carousels. Replaced stats section. Removed How it works. Integrated dynamic carousel images from backend.
+  - : Heavily modified. Added tabs for Partner Management and Media. Implemented performance optimizations (on-demand document loading). Fixed a critical rendering bug.
+  - : Simplified registration form to remove account type selection.
+  - : Implemented robust error handling for API calls.
+  - : Wrapped application in new .
+  - : Integrated  to display prices dynamically.
+  - : Conditionally renders the new  for shoemakers.
+
+**Areas that need refactoring**:
+- ****: Critically needs to be split. It has grown to over 1300 lines and contains models, all API routes, and helper functions, making it difficult to maintain.
+- ****: Contains the full component implementation for  and . This code should be extracted into separate component files in .
+
+**key api endpoints**
+- **Admin:**
+  - 
+  - 
+  - 
+  - 
+  - 
+- **Shoemaker:**
+  - 
+- **Public:**
+  - 
+  - 
 
 **Critical Info for New Agent**
-- **Payments are MOCKED:** The Stripe integration failed due to an invalid test key. The application currently has a demo mode that bypasses real payment processing. A full Stripe Connect implementation is a future task.
-- **Admin Functionality is Incomplete:** The most pressing issue is that the admin cannot **EDIT** or **DELETE** existing services. This is the user's current focus.
-- **Geo-assignment is NOT Implemented:** The backend logic to assign orders to the nearest shoemaker has been requested but not yet built. The  library is installed in preparation for this task.
+- **Error Handling:** A utility  now exists in . Use it for all  blocks in API calls to prevent the Objects are not valid as a React child error.
+- **Static Files:** Do not rely on mounting  in  for files that need to be accessed by the frontend in the preview environment. The correct pattern, established in this fork, is to create a dedicated API endpoint (e.g., ) that returns a .
+- **Backend Refactoring:** Be aware that  is monolithic. When adding new endpoints, consider future refactoring and keep logic as clean as possible.
+- **State of Features:** The Multi-Currency feature is only half-done. The partner validation and geo-location features are functionally complete but await user testing.
 
 **Last 5 User Messages and any pending user messages**
-1.  **User (Msg 251):** Requested comprehensive admin controls: add images to services, change currency to CHF, and a full settings panel to manage delivery options, prices, etc.
-2.  **User (Msg 278):** Reported that the app was not loading and was showing red errors.
-3.  **Agent (Msg 283-293):** Diagnosed and fixed a syntax error in , confirming the app now loads.
-4.  **User (Msg 295):** Provided the current blocking issue via message and a screenshot. They still cannot add photos to existing products, cannot modify the text/price of existing services, and suspect not all services are visible in the admin panel. **This is the current task.**
-5.  **Agent (Msg 296):** Acknowledged the user's problem and confirmed understanding that the service **editing** functionality is missing.
+1.  **User:** when i order to validate my cart and at the time of payment i get this error: ... - **Status: RESOLVED.**
+2.  **User:** ...when i want to place an order it tells me  - **Status: RESOLVED.**
+3.  **User:** for customers in their dashboard also add their profile they can modify their data. - **Status: In Queue (Last Working Item).**
+4.  **User:** *Provides screenshot of registration form* here there should only be Client account type... - **Status: RESOLVED.**
+5.  **User:** when a customer from France or other than Switzerland wants to order I want him to see the app with the prices in euros and that the shoemaker outside Switzerland also receives them in euros - **Status: IN PROGRESS.**
 
 **Project Health Check:**
-- **Broken:** The core admin function of editing services is missing.
-- **Mocked:** The entire payment flow is mocked and does not process real transactions.
+- **Broken:** None. The critical bugs reported by the user have been fixed.
+- **Mocked:** The payment system is still mocked.
 
 **Testing status**
-- **Testing agent used after significant changes:** YES (but not recently)
+- **Testing agent used after significant changes:** YES, used to validate the partner management backend endpoints.
 - **Troubleshoot agent used after agent stuck in loop:** NO
-- **Test files created:** None
+- **Test files created:**  was updated by the testing agent.
 - **Known regressions:** None.
 
 **Credentials to test flow:**
@@ -144,5 +179,5 @@ A full-stack application with a React frontend and FastAPI backend is in place. 
   - **Password:** 
 
 **What agent forgot to execute**
-- The agent implemented a Create Service form with an image field but completely overlooked the user's core requirement to **edit and delete existing services**. This was a significant miss in the implementation of the admin dashboard.
-- The agent planned for but has not yet started the implementation of the geo-location based order assignment.</analysis>
+- The agent never successfully fixed the logic to **replace** an existing image in the media manager when a new one is uploaded to the same category/position. It got stuck in a debug loop and moved on, leaving potential for duplicate entries. This is the main pending issue.
+- The agent only partially implemented the multi-currency feature, leaving the cart, checkout, and backend pieces unfinished.</analysis>
