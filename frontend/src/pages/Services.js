@@ -144,7 +144,7 @@ export default function Services({ user }) {
 
         {loading ? (
           <div className="text-center py-20">
-            <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-indigo-600 border-t-transparent"></div>
+            <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-orange-700 border-t-transparent"></div>
           </div>
         ) : filteredServices.length === 0 ? (
           <div className="text-center py-20 px-4" data-testid="no-services">
