@@ -70,6 +70,9 @@
 ##         - working: true
 ##         - agent: "testing"
 ##         - comment: "✅ TESTED: Cobbler address update working. Geocoding successful for valid addresses (lat=46.5160743, lon=6.6366408 for Lausanne). Proper error handling for invalid addresses."
+##         - working: true
+##         - agent: "testing"
+##         - comment: "✅ RE-TESTED P2: Cobbler address update with exact test data from French requirements. PUT /api/cobbler/address with approved cobbler token successfully updates address to 'Place de la Gare 10, 1003 Lausanne, Suisse'. Geocoding returns valid coordinates (lat=46.5177361, lon=6.6284576). Invalid address 'XXXXX' properly rejected with error response. Authorization working correctly (cobbler-only access)."
 
 ## frontend:
 ##   - task: "Cart Context - localStorage management"
