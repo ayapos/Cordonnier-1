@@ -91,16 +91,14 @@ export default function Checkout({ user }) {
     try {
       const formData = new FormData();
       
-      // Add services
-      cartItems.forEach((item, index) => {
-        formData.append(`services[${index}][id]`, item.id);
-        formData.append(`services[${index}][quantity]`, item.quantity);
-      });
+      // Add service items as JSON string
+      formData.append('service_items', JSON.stringify(cartItems));
       
       formData.append('delivery_option', deliveryOption);
       formData.append('delivery_address', deliveryAddress);
       if (notes) formData.append('notes', notes);
       
+      // IMPORTANT: Add images (required)
       images.forEach((image) => {
         formData.append('images', image);
       });
@@ -111,7 +109,7 @@ export default function Checkout({ user }) {
         formData.append('guest_email', guestInfo.email);
         formData.append('guest_phone', guestInfo.phone);
         formData.append('create_account', createAccount);
-        if (createAccount) {
+        if (createAccount && password) {
           formData.append('password', password);
         }
       }
