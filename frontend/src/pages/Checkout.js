@@ -173,7 +173,7 @@ export default function Checkout({ user }) {
                   
                   <TabsContent value="guest" className="space-y-4">
                     <div>
-                      <Label htmlFor="guest-name">Nom complet *</Label>
+                      <Label htmlFor="guest-name">{t('fullName')} {t('required')}</Label>
                       <Input
                         id="guest-name"
                         required
@@ -182,7 +182,7 @@ export default function Checkout({ user }) {
                       />
                     </div>
                     <div>
-                      <Label htmlFor="guest-email">Email *</Label>
+                      <Label htmlFor="guest-email">{t('email')} {t('required')}</Label>
                       <Input
                         id="guest-email"
                         type="email"
@@ -192,7 +192,7 @@ export default function Checkout({ user }) {
                       />
                     </div>
                     <div>
-                      <Label htmlFor="guest-phone">Téléphone *</Label>
+                      <Label htmlFor="guest-phone">{t('phone')} {t('required')}</Label>
                       <Input
                         id="guest-phone"
                         type="tel"
@@ -210,12 +210,12 @@ export default function Checkout({ user }) {
                         className="w-4 h-4"
                       />
                       <Label htmlFor="create-account" className="cursor-pointer">
-                        Créer un compte pour suivre mes commandes
+                        {t('createAccount')}
                       </Label>
                     </div>
                     {createAccount && (
                       <div>
-                        <Label htmlFor="password">Mot de passe *</Label>
+                        <Label htmlFor="password">{t('password')} {t('required')}</Label>
                         <Input
                           id="password"
                           type="password"
@@ -229,10 +229,10 @@ export default function Checkout({ user }) {
                   
                   <TabsContent value="login">
                     <div className="text-center py-8">
-                      <p className="text-amber-700 mb-4">Connectez-vous pour accéder à votre historique</p>
+                      <p className="text-amber-700 mb-4">{t('connectToAccount')}</p>
                       <Link to="/auth">
                         <Button type="button" className="bg-amber-700 hover:bg-amber-800">
-                          Se connecter
+                          {t('signIn')}
                         </Button>
                       </Link>
                     </div>
