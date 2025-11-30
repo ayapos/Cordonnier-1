@@ -1,8 +1,44 @@
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { MapPin, Clock, Shield, Star, ArrowRight, Sparkles } from 'lucide-react';
+import { MapPin, Clock, Shield, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
+
+const carouselImages = [
+  {
+    url: 'https://images.unsplash.com/photo-1605733513549-de9b150bd70d?w=800&q=80',
+    title: 'Escarpins & Talons',
+    subtitle: 'Réparation experte'
+  },
+  {
+    url: 'https://images.unsplash.com/photo-1546856467-780c7d6a1573?w=800&q=80',
+    title: 'Artisans Qualifiés',
+    subtitle: 'Savoir-faire traditionnel'
+  },
+  {
+    url: 'https://images.unsplash.com/photo-1576792741377-eb0f4f6d1a47?w=800&q=80',
+    title: 'Chaussures Homme',
+    subtitle: 'Rénovation premium'
+  }
+];
 
 export default function Home({ user }) {
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % carouselImages.length);
+    }, 4000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % carouselImages.length);
+  };
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + carouselImages.length) % carouselImages.length);
+  };
+
   return (
     <div className="min-h-screen bg-white">
       {/* Fixed Mobile Header */}
@@ -15,35 +51,77 @@ export default function Home({ user }) {
           <nav className="flex items-center gap-2">
             {user ? (
               <Link to="/dashboard">
-                <Button size="sm" className="bg-indigo-600 hover:bg-indigo-700 text-white" data-testid="dashboard-nav-btn">Dashboard</Button>
+                <Button size="sm" className="bg-orange-700 hover:bg-orange-800 text-white" data-testid="dashboard-nav-btn">Dashboard</Button>
               </Link>
             ) : (
               <Link to="/auth">
-                <Button size="sm" className="bg-indigo-600 hover:bg-indigo-700 text-white" data-testid="auth-nav-btn">Connexion</Button>
+                <Button size="sm" className="bg-orange-700 hover:bg-orange-800 text-white" data-testid="auth-nav-btn">Connexion</Button>
               </Link>
             )}
           </nav>
         </div>
       </header>
 
-      {/* Hero avec grande image */}
+      {/* Hero Carousel */}
       <section className="pt-16 pb-8">
-        <div className="relative h-[60vh] overflow-hidden">
-          <img 
-            src="https://images.unsplash.com/photo-1605812860427-4024433a70fd?w=800&q=80" 
-            alt="Chaussures premium"
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
-          <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-            <h2 className="text-4xl font-bold mb-3" style={{ fontFamily: 'Inter, sans-serif' }} data-testid="hero-title">
-              Réparez vos<br />chaussures préférées
-            </h2>
-            <p className="text-lg mb-4 text-gray-200">Cordonnier le plus proche • Livraison incluse</p>
+        <div className="relative h-[65vh] overflow-hidden">
+          {/* Images */}
+          {carouselImages.map((image, index) => (
+            <div
+              key={index}
+              className={`absolute inset-0 transition-opacity duration-700 ${
+                index === currentSlide ? 'opacity-100' : 'opacity-0'
+              }`}
+            >
+              <img 
+                src={image.url}
+                alt={image.title}
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+              <div className="absolute bottom-20 left-0 right-0 px-6 text-white text-center">
+                <h3 className="text-3xl font-bold mb-2">{image.title}</h3>
+                <p className="text-lg text-gray-200">{image.subtitle}</p>
+              </div>
+            </div>
+          ))}
+
+          {/* Navigation Arrows */}
+          <button 
+            onClick={prevSlide}
+            className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/20 backdrop-blur rounded-full flex items-center justify-center hover:bg-white/30 transition-colors z-10"
+            aria-label="Précédent"
+          >
+            <ChevronLeft className="w-6 h-6 text-white" />
+          </button>
+          <button 
+            onClick={nextSlide}
+            className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/20 backdrop-blur rounded-full flex items-center justify-center hover:bg-white/30 transition-colors z-10"
+            aria-label="Suivant"
+          >
+            <ChevronRight className="w-6 h-6 text-white" />
+          </button>
+
+          {/* Dots Indicator */}
+          <div className="absolute bottom-28 left-0 right-0 flex justify-center gap-2 z-10">
+            {carouselImages.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => setCurrentSlide(index)}
+                className={`w-2 h-2 rounded-full transition-all ${
+                  index === currentSlide ? 'bg-white w-8' : 'bg-white/50'
+                }`}
+                aria-label={`Slide ${index + 1}`}
+              />
+            ))}
+          </div>
+
+          {/* CTA */}
+          <div className="absolute bottom-6 left-6 right-6 z-10">
             <Link to="/services">
               <Button 
                 size="lg" 
-                className="bg-indigo-600 hover:bg-indigo-700 text-white w-full"
+                className="bg-orange-600 hover:bg-orange-700 text-white w-full shadow-xl"
                 data-testid="get-started-btn"
               >
                 Voir les services <ArrowRight className="ml-2 w-5 h-5" />
@@ -81,8 +159,8 @@ export default function Home({ user }) {
       <section className="px-4 py-8 bg-gray-50">
         <div className="max-w-md mx-auto space-y-4">
           <div className="flex items-start gap-4 p-4 bg-white rounded-2xl shadow-sm" data-testid="feature-auto">
-            <div className="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center flex-shrink-0">
-              <MapPin className="w-6 h-6 text-indigo-600" />
+            <div className="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center flex-shrink-0">
+              <MapPin className="w-6 h-6 text-orange-700" />
             </div>
             <div>
               <h4 className="font-bold text-gray-900 mb-1">Attribution automatique</h4>
@@ -91,8 +169,8 @@ export default function Home({ user }) {
           </div>
 
           <div className="flex items-start gap-4 p-4 bg-white rounded-2xl shadow-sm" data-testid="feature-fast">
-            <div className="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center flex-shrink-0">
-              <Clock className="w-6 h-6 text-indigo-600" />
+            <div className="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center flex-shrink-0">
+              <Clock className="w-6 h-6 text-orange-700" />
             </div>
             <div>
               <h4 className="font-bold text-gray-900 mb-1">Rapide et pratique</h4>
@@ -101,8 +179,8 @@ export default function Home({ user }) {
           </div>
 
           <div className="flex items-start gap-4 p-4 bg-white rounded-2xl shadow-sm" data-testid="feature-secure">
-            <div className="w-12 h-12 bg-indigo-100 rounded-xl flex items-center justify-center flex-shrink-0">
-              <Shield className="w-6 h-6 text-indigo-600" />
+            <div className="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center flex-shrink-0">
+              <Shield className="w-6 h-6 text-orange-700" />
             </div>
             <div>
               <h4 className="font-bold text-gray-900 mb-1">Paiement sécurisé</h4>
@@ -124,7 +202,7 @@ export default function Home({ user }) {
             { num: '5', title: 'Recevez-les réparées', desc: 'Livraison à domicile incluse' }
           ].map((step) => (
             <div key={step.num} className="flex gap-4" data-testid={`step-${step.num}`}>
-              <div className="w-10 h-10 bg-indigo-600 text-white rounded-full flex items-center justify-center font-bold flex-shrink-0">
+              <div className="w-10 h-10 bg-orange-700 text-white rounded-full flex items-center justify-center font-bold flex-shrink-0">
                 {step.num}
               </div>
               <div>
@@ -162,7 +240,7 @@ export default function Home({ user }) {
         <h3 className="text-3xl font-bold mb-4 text-gray-900">Prêt à commencer ?</h3>
         <p className="text-gray-600 mb-6">Sublimez vos chaussures avec nos artisans qualifiés</p>
         <Link to="/services">
-          <Button size="lg" className="bg-indigo-600 hover:bg-indigo-700 text-white w-full">
+          <Button size="lg" className="bg-orange-700 hover:bg-orange-800 text-white w-full">
             Découvrir nos services
           </Button>
         </Link>
