@@ -225,12 +225,19 @@ export default function AdminDashboard({ user }) {
   };
 
   const handleAddCategoryEdit = () => {
-    if (editCategoryName.trim() && !categories.includes(editCategoryName.trim())) {
-      setCategories([...categories, editCategoryName.trim()]);
-      setEditService({...editService, category: editCategoryName.trim()});
-      setEditCategoryName('');
-      setShowEditCategoryInput(false);
-      toast.success('Nouvelle catégorie ajoutée !');
+    const trimmedName = editCategoryName.trim();
+    if (trimmedName && !categories.includes(trimmedName)) {
+      const updatedCategories = [...categories, trimmedName];
+      setCategories(updatedCategories);
+      // Force update in next render cycle
+      setTimeout(() => {
+        setEditService({...editService, category: trimmedName});
+        setEditCategoryName('');
+        setShowEditCategoryInput(false);
+        toast.success(`Catégorie "${trimmedName}" ajoutée !`);
+      }, 0);
+    } else if (categories.includes(trimmedName)) {
+      toast.error('Cette catégorie existe déjà');
     }
   };
 
