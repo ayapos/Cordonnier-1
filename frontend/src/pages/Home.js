@@ -6,21 +6,22 @@ import { useCart } from '@/context/CartContext';
 import { useTranslation } from 'react-i18next';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 
-const carouselImages = [
+// Carousel images with translation keys
+const getCarouselImages = (t) => [
   {
     url: 'https://images.unsplash.com/photo-1621996659490-3275b4d0d951?w=800&q=80',
-    title: 'Escarpins & Talons',
-    subtitle: 'Réparation experte'
+    title: t('pumpsHeels'),
+    subtitle: t('expertRepair')
   },
   {
     url: 'https://images.unsplash.com/photo-1643968704781-df3b260df6a7?w=800&q=80',
-    title: 'Artisans Qualifiés',
-    subtitle: 'Savoir-faire traditionnel'
+    title: t('qualifiedCraftsmen'),
+    subtitle: t('traditionalKnowHow')
   },
   {
     url: 'https://images.unsplash.com/photo-1658837407083-308b902ee99d?w=800&q=80',
-    title: 'Chaussures Homme',
-    subtitle: 'Rénovation premium'
+    title: t('mensShoes'),
+    subtitle: t('premiumRenovation')
   }
 ];
 
