@@ -49,11 +49,11 @@
 ##         - comment: "✅ EDIT FUNCTIONALITY WORKING: Tested successfully - edit dialog opens with pre-populated data, form submission works, service updates correctly in UI, success toast appears, PUT API calls reach backend."
 ##   - task: "Admin Dashboard - Delete Service functionality"
 ##     implemented: true
-##     working: "unknown"
+##     working: false
 ##     file: "/app/frontend/src/pages/AdminDashboard.js"
-##     stuck_count: 0
+##     stuck_count: 1
 ##     priority: "high"
-##     needs_retesting: true
+##     needs_retesting: false
 ##     status_history:
 ##         - working: false
 ##         - agent: "testing"
@@ -61,6 +61,9 @@
 ##         - working: "unknown"
 ##         - agent: "main"
 ##         - comment: "FIXED: Replaced window.confirm with shadcn Dialog component for consistency and better testability. Now uses a proper confirmation dialog with explicit buttons (Annuler / Supprimer définitivement). The handleDeleteService function now sets state to open dialog, and confirmDelete function performs the actual deletion. This should work better in test environments."
+##         - working: false
+##         - agent: "testing"
+##         - comment: "❌ CRITICAL AUTHENTICATION ISSUE: Admin dashboard cannot be accessed due to race condition in authentication flow. The AdminDashboard useEffect (lines 62-69) redirects users when user state is null, which happens during initial load before user data is fetched. This prevents testing the delete functionality. BACKEND DELETE API CONFIRMED WORKING: Successfully tested DELETE /api/services/{id} - service count decreased from 19 to 18. The issue is purely frontend authentication flow, not the delete functionality itself."
 ##   - task: "Admin Dashboard - Display service images"
 ##     implemented: true
 ##     working: true
