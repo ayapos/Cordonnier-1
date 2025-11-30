@@ -131,26 +131,23 @@ export default function Home({ user }) {
         </div>
       </section>
 
-      {/* Comment ça marche - EN HAUT */}
-      <section className="px-4 py-12 max-w-md mx-auto bg-orange-50">
-        <h3 className="text-3xl font-bold mb-3 text-gray-900 text-center">Comment ça marche ?</h3>
-        <p className="text-center text-gray-600 mb-8">Simple et rapide en 5 étapes</p>
-        <div className="space-y-6">
+      {/* Comment ça marche - Horizontal */}
+      <section className="px-4 py-8 max-w-md mx-auto bg-orange-50">
+        <h3 className="text-2xl font-bold mb-2 text-gray-900 text-center">Comment ça marche ?</h3>
+        <p className="text-center text-gray-600 text-sm mb-6">Simple et rapide en 4 étapes</p>
+        <div className="grid grid-cols-2 gap-3">
           {[
-            { num: '1', title: 'Choisissez votre service', desc: 'Parcourez nos services et sélectionnez ce dont vous avez besoin' },
-            { num: '2', title: 'Uploadez des photos', desc: 'Prenez des photos de vos chaussures à réparer' },
-            { num: '3', title: 'Payez en ligne', desc: 'Paiement sécurisé - Cordonnier assigné automatiquement' },
-            { num: '4', title: 'Envoyez vos chaussures', desc: 'Utilisez votre numéro de référence pour l\'envoi' },
-            { num: '5', title: 'Recevez-les réparées', desc: 'Livraison à domicile incluse' }
+            { num: '1', title: 'Choisissez', desc: 'Sélectionnez votre service' },
+            { num: '2', title: 'Payez', desc: 'Paiement sécurisé' },
+            { num: '3', title: 'Envoyez', desc: 'Avec votre référence' },
+            { num: '4', title: 'Recevez', desc: 'Livraison à domicile' }
           ].map((step) => (
-            <div key={step.num} className="flex gap-4 bg-white p-4 rounded-2xl shadow-sm" data-testid={`step-${step.num}`}>
-              <div className="w-12 h-12 bg-orange-700 text-white rounded-full flex items-center justify-center font-bold text-xl flex-shrink-0">
+            <div key={step.num} className="bg-white p-3 rounded-xl shadow-sm text-center" data-testid={`step-${step.num}`}>
+              <div className="w-10 h-10 bg-orange-700 text-white rounded-full flex items-center justify-center font-bold text-lg mx-auto mb-2">
                 {step.num}
               </div>
-              <div>
-                <h4 className="font-bold text-gray-900 mb-1">{step.title}</h4>
-                <p className="text-sm text-gray-600">{step.desc}</p>
-              </div>
+              <h4 className="font-bold text-gray-900 text-sm mb-1">{step.title}</h4>
+              <p className="text-xs text-gray-600">{step.desc}</p>
             </div>
           ))}
         </div>
