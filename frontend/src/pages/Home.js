@@ -34,6 +34,7 @@ const getFallbackCarouselImages = (t) => [
 export default function Home({ user }) {
   const { getCartCount } = useCart();
   const { t } = useTranslation();
+  const { formatPrice } = useCurrency();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [carouselImages, setCarouselImages] = useState([]);
   const [isLoadingImages, setIsLoadingImages] = useState(true);
