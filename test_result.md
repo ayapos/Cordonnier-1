@@ -1,96 +1,104 @@
-# THIS SECTION CONTAINS CRITICAL TESTING INSTRUCTIONS FOR BOTH AGENTS
-# BOTH MAIN_AGENT AND TESTING_AGENT MUST PRESERVE THIS ENTIRE BLOCK
+# Testing Protocol
 
-# Communication Protocol:
-# If the `testing_agent` is available, main agent should delegate all testing tasks to it.
-#
-# You have access to a file called `test_result.md`. This file contains the complete testing state
-# and history, and is the primary means of communication between main and the testing agent.
-#
-# Main and testing agents must follow this exact format to maintain testing data. 
-# The testing data must be entered in yaml format Below is the data structure:
-# 
-## user_problem_statement: Build a marketplace connecting shoemakers with customers. Admin must be able to fully manage services (create, edit, delete).
+## user_problem_statement: Système de panier et commande invité avec photos obligatoires et multi-services
+
 ## backend:
-##   - task: "PUT /api/services/{service_id} - Update service endpoint"
+##   - task: "POST /api/orders/guest - Guest order with multi-services"
 ##     implemented: true
-##     working: true
+##     working: "unknown"
 ##     file: "/app/backend/server.py"
 ##     stuck_count: 0
 ##     priority: "high"
-##     needs_retesting: false
+##     needs_retesting: true
 ##     status_history:
-##         - working: true
-##         - agent: "main"
-##         - comment: "Backend endpoint tested with curl - successfully updated service"
-##   - task: "DELETE /api/services/{service_id} - Delete service endpoint"
-##     implemented: true
-##     working: true
-##     file: "/app/backend/server.py"
-##     stuck_count: 0
-##     priority: "high"
-##     needs_retesting: false
-##     status_history:
-##         - working: true
-##         - agent: "main"
-##         - comment: "Backend endpoint tested with curl multiple times - works perfectly. Service count correctly decreases."
-##
-## frontend:
-##   - task: "Admin Dashboard - Edit Service functionality"
-##     implemented: true
-##     working: true
-##     file: "/app/frontend/src/pages/AdminDashboard.js"
-##     stuck_count: 0
-##     priority: "high"
-##     needs_retesting: false
-##     status_history:
-##         - working: true
-##         - agent: "testing"
-##         - comment: "✅ EDIT FUNCTIONALITY WORKING: Tested successfully - edit dialog opens with pre-populated data, form submission works, service updates correctly in UI."
-##   - task: "Admin Dashboard - Delete Service functionality"
-##     implemented: true
-##     working: true
-##     file: "/app/frontend/src/pages/AdminDashboard.js"
-##     stuck_count: 0
-##     priority: "high"
-##     needs_retesting: false
-##     status_history:
-##         - working: false
-##         - agent: "testing"
-##         - comment: "❌ Authentication race condition prevented testing"
 ##         - working: "unknown"
 ##         - agent: "main"
-##         - comment: "FIXED AUTHENTICATION RACE CONDITION: Modified useEffect to properly handle loading states. Now checks: 1) If no token -> redirect to /auth, 2) If token but user not loaded yet -> wait (return early), 3) If user loaded but not admin -> redirect to /dashboard, 4) If user is admin -> fetch data. This prevents premature redirects during initial load."
-        - working: true
-        - agent: "testing"
-        - comment: "DELETE FUNCTIONALITY WORKING PERFECTLY: Comprehensive test completed successfully. Authentication fix resolved access issues. Tested complete delete flow: 1) Login as admin works, 2) Access Services tab works, 3) Initial service count: 18, 4) Click delete on service works, 5) Confirmation dialog appears with correct service name, 6) Click confirm delete button works, 7) Success toast appears, 8) Service count decreases to 17, 9) Service removed from UI. All shadcn Dialog components working correctly. Backend DELETE API integration working perfectly."
-##   - task: "Admin Dashboard - Display service images"
+##         - comment: "Endpoint créé pour commandes invités avec validation obligatoire des photos et support multi-services via JSON"
+##   - task: "POST /api/orders/bulk - Authenticated user multi-service order"
 ##     implemented: true
-##     working: true
-##     file: "/app/frontend/src/pages/AdminDashboard.js"
+##     working: "unknown"
+##     file: "/app/backend/server.py"
+##     stuck_count: 0
+##     priority: "high"
+##     needs_retesting: true
+##     status_history:
+##         - working: "unknown"
+##         - agent: "main"
+##         - comment: "Endpoint créé pour utilisateurs connectés avec support multi-services"
+
+## frontend:
+##   - task: "Cart Context - localStorage management"
+##     implemented: true
+##     working: "unknown"
+##     file: "/app/frontend/src/context/CartContext.js"
+##     stuck_count: 0
+##     priority: "high"
+##     needs_retesting: true
+##     status_history:
+##         - working: "unknown"
+##         - agent: "main"
+##         - comment: "CartContext créé avec addToCart, removeFromCart, updateQuantity, getCartTotal, getCartCount"
+##   - task: "Cart Page - View and modify cart"
+##     implemented: true
+##     working: "unknown"
+##     file: "/app/frontend/src/pages/Cart.js"
+##     stuck_count: 0
+##     priority: "high"
+##     needs_retesting: true
+##     status_history:
+##         - working: "unknown"
+##         - agent: "main"
+##         - comment: "Page panier avec liste services, modification quantités, suppression items, bouton checkout"
+##   - task: "Checkout Page - Guest and user checkout with mandatory photos"
+##     implemented: true
+##     working: "unknown"
+##     file: "/app/frontend/src/pages/Checkout.js"
+##     stuck_count: 0
+##     priority: "high"
+##     needs_retesting: true
+##     status_history:
+##         - working: "unknown"
+##         - agent: "main"
+##         - comment: "Page checkout avec validation OBLIGATOIRE des photos (désactive bouton si pas de photos), mode invité/connecté, création compte optionnelle"
+##   - task: "Add to cart buttons on Services page"
+##     implemented: true
+##     working: "unknown"
+##     file: "/app/frontend/src/pages/Services.js"
+##     stuck_count: 0
+##     priority: "high"
+##     needs_retesting: true
+##     status_history:
+##         - working: "unknown"
+##         - agent: "main"
+##         - comment: "Boutons Ajouter au panier ajoutés sur chaque carte service, icône panier avec badge dans header"
+##   - task: "Cart icon in Home page header"
+##     implemented: true
+##     working: "unknown"
+##     file: "/app/frontend/src/pages/Home.js"
 ##     stuck_count: 0
 ##     priority: "medium"
-##     needs_retesting: false
+##     needs_retesting: true
 ##     status_history:
-##         - working: true
-##         - agent: "testing"
-##         - comment: "✅ IMAGE DISPLAY WORKING"
-##
+##         - working: "unknown"
+##         - agent: "main"
+##         - comment: "Icône panier avec badge compteur ajoutée dans header de la page d'accueil"
+
 ## metadata:
 ##   created_by: "main_agent"
 ##   version: "1.0"
-##   test_sequence: 3
+##   test_sequence: 1
 ##   run_ui: true
-##
+
 ## test_plan:
-##   current_focus: []
+##   current_focus:
+##     - "Complete cart and checkout flow with photo validation"
+##     - "Guest order creation with mandatory photos"
+##     - "Multi-service order handling"
 ##   stuck_tasks: []
 ##   test_all: false
 ##   test_priority: "high_first"
-##
-    - agent: "testing"
-    - message: "DELETE FUNCTIONALITY TEST COMPLETED SUCCESSFULLY: Authentication fix worked perfectly. Admin dashboard is now accessible without redirect issues. Delete service functionality is working flawlessly - tested complete flow from login to service deletion with proper UI updates and backend integration. Service count correctly decreased from 18 to 17. All shadcn Dialog components and toast notifications working as expected. No issues found."
+
 ## agent_communication:
 ##     - agent: "main"
-##     - message: "FIXED AUTHENTICATION RACE CONDITION in AdminDashboard.js. The useEffect now properly handles three cases: 1) No token = redirect to auth, 2) Has token but user not loaded = wait (early return), 3) User loaded but not admin = redirect to dashboard with error. This fixes the race condition that was preventing admin dashboard access. Please retest delete functionality now. Current service count should be 18."
+##     - message: "Système de panier et commande invité implémenté avec VALIDATION OBLIGATOIRE des photos. Tests à effectuer: 1) Ajouter plusieurs services au panier depuis /services, 2) Voir panier avec compteur, 3) Aller au checkout en mode invité, 4) Vérifier que le bouton est désactivé sans photos, 5) Ajouter photos et soumettre commande, 6) Vérifier que la commande est créée avec géo-attribution, 7) Option création de compte après commande. Points clés: Photos OBLIGATOIRES (bouton désactivé, bordure rouge, messages d'alerte), multi-services supportés, guest et authenticated users."
 
