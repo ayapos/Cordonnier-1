@@ -1089,7 +1089,7 @@ async def upload_media(
         media = Media(
             filename=unique_filename,
             original_name=file.filename,
-            url=f"/uploads/media/{unique_filename}",
+            url=f"/api/media/{unique_filename}",  # Use API endpoint instead of static
             category=category,
             title=title,
             position=position,
