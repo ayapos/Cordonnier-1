@@ -207,8 +207,12 @@ export default function Services({ user }) {
                     >
                       <div className="flex justify-between items-start mb-2">
                         <div className="flex-1">
-                          <h4 className="font-bold text-gray-900 mb-1" data-testid={`service-name-${service.id}`}>{service.name}</h4>
-                          <p className="text-sm text-gray-600 mb-2" data-testid={`service-description-${service.id}`}>{service.description}</p>
+                          <h4 className="font-bold text-gray-900 mb-1" data-testid={`service-name-${service.id}`}>
+                            {getServiceField(service, 'name')}
+                          </h4>
+                          <p className="text-sm text-gray-600 mb-2" data-testid={`service-description-${service.id}`}>
+                            {getServiceField(service, 'description')}
+                          </p>
                         </div>
                         <div className="text-2xl font-bold text-orange-700 ml-4" data-testid={`service-price-${service.id}`}>
                           {service.price}CHF
