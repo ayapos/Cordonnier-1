@@ -374,6 +374,33 @@ const resources = {
       "cartIsEmpty": "Your cart is empty",
       "provideDeliveryAddress": "Please provide a delivery address",
       "loginRequired": "Please login to order",
+      "loadingDataError": "Error loading data",
+      "logoutSuccess": "Logout successful",
+      "orderAccepted": "Order accepted!",
+      "errorOccurred": "Error",
+      "statusUpdated": "Status updated",
+      "updateError": "Update error",
+      
+      // Dashboard
+      "hello": "Hello",
+      "newOrder": "New order",
+      "totalOrders": "Total Orders",
+      "inProgress": "In Progress",
+      "completed": "Completed",
+      "commission": "Commission",
+      "revenue": "Revenue",
+      "myOrders": "My Orders",
+      "noOrdersYet": "No orders yet",
+      "acceptOrder": "Accept order",
+      "markAsShipped": "Mark as shipped",
+      
+      // Order status
+      "pending": "Pending",
+      "accepted": "Accepted",
+      "in_progress": "In progress",
+      "shipped": "Shipped",
+      "delivered": "Delivered",
+      "cancelled": "Cancelled",
     }
   },
   de: {
