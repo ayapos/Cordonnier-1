@@ -20,6 +20,8 @@ import Terms from "@/pages/Terms";
 import Privacy from "@/pages/Privacy";
 import Legal from "@/pages/Legal";
 import PartnerTerms from "@/pages/PartnerTerms";
+import Cart from "@/pages/Cart";
+import Checkout from "@/pages/Checkout";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
