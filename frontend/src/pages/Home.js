@@ -203,8 +203,8 @@ export default function Home({ user }) {
               <MapPin className="w-6 h-6 text-orange-700" />
             </div>
             <div>
-              <h4 className="font-bold text-gray-900 mb-1">Attribution automatique</h4>
-              <p className="text-sm text-gray-600">Votre commande est assignée au cordonnier le plus proche automatiquement</p>
+              <h4 className="font-bold text-gray-900 mb-1">{t('autoAssignmentTitle')}</h4>
+              <p className="text-sm text-gray-600">{t('autoAssignmentDesc')}</p>
             </div>
           </div>
 
@@ -213,8 +213,8 @@ export default function Home({ user }) {
               <Clock className="w-6 h-6 text-orange-700" />
             </div>
             <div>
-              <h4 className="font-bold text-gray-900 mb-1">Rapide et pratique</h4>
-              <p className="text-sm text-gray-600">Envoi et retour inclus. Standard 10j ou Express 72h</p>
+              <h4 className="font-bold text-gray-900 mb-1">{t('fastAndConvenientTitle')}</h4>
+              <p className="text-sm text-gray-600">{t('fastAndConvenientDesc')}</p>
             </div>
           </div>
 
@@ -223,8 +223,8 @@ export default function Home({ user }) {
               <Shield className="w-6 h-6 text-orange-700" />
             </div>
             <div>
-              <h4 className="font-bold text-gray-900 mb-1">Paiement sécurisé</h4>
-              <p className="text-sm text-gray-600">Stripe Connect. Versement automatique aux cordonniers</p>
+              <h4 className="font-bold text-gray-900 mb-1">{t('securePaymentTitle')}</h4>
+              <p className="text-sm text-gray-600">{t('securePaymentDesc')}</p>
             </div>
           </div>
         </div>
