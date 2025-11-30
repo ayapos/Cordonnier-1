@@ -104,6 +104,10 @@ function App() {
               </ProtectedRoute>
             } 
           />
+          <Route path="/become-partner" element={<BecomePartner />} />
+          <Route path="/terms" element={<Terms />} />
+          <Route path="/privacy" element={<Privacy />} />
+          <Route path="/legal" element={<Legal />} />
         </Routes>
       </BrowserRouter>
       <Toaster position="top-center" richColors />
