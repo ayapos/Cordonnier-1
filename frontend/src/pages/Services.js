@@ -104,6 +104,7 @@ export default function Services({ user }) {
           </div>
           <div className="flex items-center gap-2">
             <LanguageSwitcher />
+            <CurrencySwitcher />
             <Link to="/cart">
               <Button variant="ghost" size="icon" className="relative">
                 <ShoppingCart className="w-5 h-5 text-amber-700" />
