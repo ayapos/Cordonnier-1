@@ -349,11 +349,11 @@ export default function Checkout({ user }) {
           {/* Notes */}
           <Card className="border-amber-200">
             <CardHeader>
-              <CardTitle>Notes (optionnel)</CardTitle>
+              <CardTitle>{t('notes')} {t('notesOptional')}</CardTitle>
             </CardHeader>
             <CardContent>
               <Textarea
-                placeholder="Instructions spéciales..."
+                placeholder={t('specialInstructions')}
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
                 rows={3}
