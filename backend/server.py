@@ -99,8 +99,14 @@ class Service(BaseModel):
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 class ServiceCreate(BaseModel):
-    name: str
-    description: str
+    name: str  # French by default
+    name_en: Optional[str] = None
+    name_de: Optional[str] = None
+    name_it: Optional[str] = None
+    description: str  # French by default
+    description_en: Optional[str] = None
+    description_de: Optional[str] = None
+    description_it: Optional[str] = None
     price: float
     estimated_days: int
     category: str
