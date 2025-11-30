@@ -1201,6 +1201,20 @@ async def update_media(
         logger.error(f"Error updating media: {e}")
         raise HTTPException(status_code=500, detail="Error updating media")
 
+@api_router.get("/media/carousel")
+async def get_carousel_images():
+    """Public endpoint to get carousel images"""
+    try:
+        # Get carousel images sorted by position
+        images = await db.media.find(
+            {"category": "carousel"},
+            {"_id": 0}
+        ).sort("position", 1).to_list(10)
+        return images
+    except Exception as e:
+        logger.error(f"Error getting carousel images: {e}")
+        return []
+
 @api_router.get("/media/{filename}")
 async def serve_media(filename: str):
     """Serve media files via API endpoint"""
