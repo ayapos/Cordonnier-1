@@ -304,13 +304,46 @@ export default function Checkout({ user }) {
               <CardTitle>{t('deliveryAddress')} {t('required')}</CardTitle>
               <CardDescription>{t('deliveryAddressHelper')}</CardDescription>
             </CardHeader>
-            <CardContent>
-              <Input
-                placeholder={t('deliveryAddressPlaceholder')}
-                value={deliveryAddress}
-                onChange={(e) => setDeliveryAddress(e.target.value)}
-                required
-              />
+            <CardContent className="space-y-4">
+              {user?.address && (
+                <RadioGroup 
+                  value={useProfileAddress ? 'profile' : 'other'} 
+                  onValueChange={(value) => {
+                    const useProfile = value === 'profile';
+                    setUseProfileAddress(useProfile);
+                    if (useProfile) {
+                      setDeliveryAddress(user.address);
+                    } else {
+                      setDeliveryAddress('');
+                    }
+                  }}
+                >
+                  <div className="flex items-start space-x-2 p-4 border border-amber-200 rounded-lg hover:bg-amber-50 transition-colors">
+                    <RadioGroupItem value="profile" id="profile-address" className="mt-1" />
+                    <Label htmlFor="profile-address" className="flex-1 cursor-pointer">
+                      <div>
+                        <p className="font-medium text-amber-950">Mon adresse de profil</p>
+                        <p className="text-sm text-amber-600 mt-1">{user.address}</p>
+                      </div>
+                    </Label>
+                  </div>
+                  <div className="flex items-start space-x-2 p-4 border border-amber-200 rounded-lg hover:bg-amber-50 transition-colors">
+                    <RadioGroupItem value="other" id="other-address" className="mt-1" />
+                    <Label htmlFor="other-address" className="flex-1 cursor-pointer">
+                      <p className="font-medium text-amber-950">Autre adresse</p>
+                    </Label>
+                  </div>
+                </RadioGroup>
+              )}
+              
+              {(!user?.address || !useProfileAddress) && (
+                <Input
+                  placeholder={t('deliveryAddressPlaceholder')}
+                  value={deliveryAddress}
+                  onChange={(e) => setDeliveryAddress(e.target.value)}
+                  required
+                />
+              )}
             </CardContent>
           </Card>
 
