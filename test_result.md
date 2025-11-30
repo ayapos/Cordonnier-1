@@ -93,4 +93,6 @@
 ## agent_communication:
 ##     - agent: "main"
 ##     - message: "FIXED DELETE FUNCTIONALITY: Replaced window.confirm with shadcn Dialog component. The delete button now opens a proper confirmation dialog with 'Annuler' and 'Supprimer définitivement' buttons. This should work correctly in Playwright tests. Please retest the delete functionality: 1) Login as admin, 2) Go to Services tab, 3) Click 'Supprimer' on a service, 4) Verify delete confirmation dialog appears with service name, 5) Click 'Supprimer définitivement', 6) Verify service is deleted, success toast appears, and service list updates. Current service count should be 19."
+##     - agent: "testing"
+##     - message: "❌ CRITICAL FRONTEND AUTHENTICATION ISSUE FOUND: Cannot access admin dashboard due to race condition in AdminDashboard.js useEffect (lines 62-69). When user state is null (during initial load), it redirects to /dashboard before user data is fetched. This prevents testing delete functionality. ✅ BACKEND DELETE API CONFIRMED WORKING: Tested DELETE /api/services/{id} directly - works perfectly (service count: 19→18). The delete dialog implementation is correct, but cannot be tested due to authentication issue. REQUIRES FIX: Modify AdminDashboard useEffect to handle loading state properly or add loading check before redirect."
 
