@@ -60,13 +60,29 @@ export default function AdminDashboard({ user }) {
   const [serviceToDelete, setServiceToDelete] = useState(null);
 
   useEffect(() => {
-    if (!user || user.role !== 'admin') {
+    const token = localStorage.getItem('token');
+    
+    // Si pas de token, rediriger vers auth
+    if (!token) {
+      navigate('/auth');
+      return;
+    }
+    
+    // Si on a un token mais pas encore de user, attendre
+    if (!user) {
+      return;
+    }
+    
+    // Si user est chargé mais n'est pas admin
+    if (user.role !== 'admin') {
       toast.error('Accès réservé aux administrateurs');
       navigate('/dashboard');
       return;
     }
+    
+    // Si tout est ok, charger les données
     fetchAllData();
-  }, [user]);
+  }, [user, navigate]);
 
   const fetchAllData = async () => {
     try {
