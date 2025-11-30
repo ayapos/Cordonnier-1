@@ -249,6 +249,26 @@ export default function CreateOrder({ user }) {
             </CardContent>
           </Card>
 
+          {/* Delivery Address */}
+          <Card className="border-amber-200" data-testid="delivery-address-card">
+            <CardHeader>
+              <CardTitle>Adresse de livraison</CardTitle>
+              <CardDescription>Nous assignerons automatiquement le cordonnier le plus proche</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Input
+                placeholder="Ex: Rue du Commerce 5, 1003 Lausanne"
+                value={deliveryAddress}
+                onChange={(e) => setDeliveryAddress(e.target.value)}
+                required
+                data-testid="delivery-address-input"
+              />
+              <p className="text-xs text-amber-600 mt-2">
+                📍 Cette adresse sera utilisée pour trouver le cordonnier le plus proche de chez vous
+              </p>
+            </CardContent>
+          </Card>
+
           {/* Notes */}
           <Card className="border-amber-200" data-testid="notes-card">
             <CardHeader>
