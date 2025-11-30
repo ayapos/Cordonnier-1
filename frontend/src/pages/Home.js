@@ -367,6 +367,16 @@ export default function Home({ user }) {
                 <li><Link to="/become-partner" className="hover:text-white">Devenir Partenaire</Link></li>
                 <li><Link to="/auth" className="hover:text-white">Espace Cordonnier</Link></li>
               </ul>
+              {/* Nos Pays - ligne discrète */}
+              <div className="mt-3 pt-3 border-t border-gray-700">
+                <p className="text-xs text-gray-500 mb-1">{t('ourCountries')}</p>
+                <div className="flex gap-1 flex-wrap">
+                  <span title={t('switzerland')} className="text-base">🇨🇭</span>
+                  <span title={t('france')} className="text-base">🇫🇷</span>
+                  <span title={t('germany')} className="text-base">🇩🇪</span>
+                  <span title={t('italy')} className="text-base">🇮🇹</span>
+                </div>
+              </div>
             </div>
           </div>
 
