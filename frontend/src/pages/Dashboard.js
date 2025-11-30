@@ -24,7 +24,7 @@ const statusColors = {
   cancelled: 'bg-red-100 text-red-800'
 };
 
-export default function Dashboard({ user: initialUser }) {
+export default function Dashboard({ user: initialUser, refreshUser }) {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [orders, setOrders] = useState([]);
