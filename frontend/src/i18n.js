@@ -522,6 +522,21 @@ const resources = {
       "customerReviews": "Recensioni Clienti",
       "whatTheySay": "Cosa dicono di noi",
       
+      // Features
+      "autoAssignmentTitle": "Assegnazione automatica",
+      "autoAssignmentDesc": "Il tuo ordine viene assegnato automaticamente al calzolaio più vicino",
+      "fastAndConvenientTitle": "Veloce e conveniente",
+      "fastAndConvenientDesc": "Spedizione e reso inclusi. Standard 10g o Express 72h",
+      "securePaymentTitle": "Pagamento sicuro",
+      "securePaymentDesc": "Stripe Connect. Pagamento automatico ai calzolai",
+      
+      // Before After section
+      "beforeAfterGallery": "Prima / Dopo",
+      "repairResults": "I nostri risultati di riparazione",
+      "bootResole": "Risuolatura stivali",
+      "sneakersCleaning": "Pulizia sneakers",
+      "heelsRepair": "Riparazione tacchi",
+      
       // Services page
       "availableServices": "disponibili",
       "addToCart": "Aggiungi al carrello",
