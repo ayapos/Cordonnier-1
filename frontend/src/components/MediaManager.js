@@ -171,6 +171,36 @@ export default function MediaManager() {
             </div>
           </div>
 
+          <div className="grid md:grid-cols-2 gap-4">
+            <div>
+              <Label htmlFor="title">Titre / Description (optionnel)</Label>
+              <input
+                id="title"
+                type="text"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                placeholder="Ex: Slide 1 - Escarpins"
+                className="w-full mt-2 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+              />
+            </div>
+
+            <div>
+              <Label htmlFor="position">Position (optionnel)</Label>
+              <input
+                id="position"
+                type="number"
+                min="1"
+                value={position}
+                onChange={(e) => setPosition(e.target.value)}
+                placeholder="Ex: 1 pour première position"
+                className="w-full mt-2 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+              />
+              <p className="text-xs text-gray-500 mt-1">
+                Pour le carousel: 1, 2, 3...
+              </p>
+            </div>
+          </div>
+
           {previewUrl && (
             <div className="mt-4">
               <Label>Aperçu :</Label>
