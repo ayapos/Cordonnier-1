@@ -23,6 +23,7 @@ const categoryImages = {
 
 export default function Services({ user }) {
   const navigate = useNavigate();
+  const { addToCart, getCartCount } = useCart();
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedGender, setSelectedGender] = useState('femme');
