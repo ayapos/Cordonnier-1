@@ -250,6 +250,13 @@ async def get_me(current_user: dict = Depends(get_current_user)):
         raise HTTPException(status_code=404, detail="User not found")
     return user
 
+@api_router.get("/users/{user_id}")
+async def get_user(user_id: str, current_user: dict = Depends(get_current_user)):
+    user = await db.users.find_one({"id": user_id}, {"_id": 0, "password": 0, "id_recto": 0, "id_verso": 0, "che_kbis": 0, "bank_account": 0})
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    return user
+
 # Service Routes
 @api_router.post("/services", response_model=Service)
 async def create_service(service: ServiceCreate, current_user: dict = Depends(get_current_user)):
