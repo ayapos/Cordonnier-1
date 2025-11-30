@@ -282,10 +282,14 @@ export default function MediaManager() {
                       />
                       <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all rounded-lg flex items-center justify-center">
                         <Button
-                          onClick={() => handleDelete(media.id, media.filename)}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            handleDelete(media.id, media.filename);
+                          }}
                           variant="destructive"
                           size="sm"
-                          className="opacity-0 group-hover:opacity-100 transition-opacity"
+                          className="opacity-0 group-hover:opacity-100 transition-opacity z-10"
                         >
                           <Trash2 className="w-4 h-4 mr-1" />
                           Supprimer
