@@ -12,6 +12,8 @@ import uuid
 from datetime import datetime, timezone, timedelta
 import jwt
 from passlib.context import CryptContext
+from geopy import distance
+from geopy.geocoders import Nominatim
 import stripe
 import base64
 from io import BytesIO
