@@ -135,7 +135,7 @@ export default function CreateOrder({ user }) {
                 <SelectContent>
                   {services.map((srv) => (
                     <SelectItem key={srv.id} value={srv.id} data-testid={`service-option-${srv.id}`}>
-                      {srv.name} - {srv.price}€
+                      {srv.name} - {srv.price}CHF
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -219,7 +219,7 @@ export default function CreateOrder({ user }) {
                           <p className="text-sm text-amber-600">10 jours maximum</p>
                         </div>
                       </div>
-                      <span className="font-bold text-amber-700">5€</span>
+                      <span className="font-bold text-amber-700">5CHF</span>
                     </div>
                   </Label>
                 </div>
@@ -234,7 +234,7 @@ export default function CreateOrder({ user }) {
                           <p className="text-sm text-amber-600">72 heures</p>
                         </div>
                       </div>
-                      <span className="font-bold text-amber-700">15€</span>
+                      <span className="font-bold text-amber-700">15CHF</span>
                     </div>
                   </Label>
                 </div>
@@ -267,16 +267,16 @@ export default function CreateOrder({ user }) {
               <CardContent className="space-y-2">
                 <div className="flex justify-between">
                   <span className="text-amber-800">Service:</span>
-                  <span className="font-medium text-amber-950" data-testid="summary-service-price">{service.price}€</span>
+                  <span className="font-medium text-amber-950" data-testid="summary-service-price">{service.price}CHF</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-amber-800">Livraison:</span>
-                  <span className="font-medium text-amber-950" data-testid="summary-delivery-price">{deliveryOption === 'express' ? '15' : '5'}€</span>
+                  <span className="font-medium text-amber-950" data-testid="summary-delivery-price">{deliveryOption === 'express' ? '15' : '5'}CHF</span>
                 </div>
                 <div className="border-t border-amber-300 pt-2 mt-2">
                   <div className="flex justify-between text-lg">
                     <span className="font-bold text-amber-950">Total:</span>
-                    <span className="font-bold text-amber-700" data-testid="summary-total">{calculateTotal()}€</span>
+                    <span className="font-bold text-amber-700" data-testid="summary-total">{calculateTotal()}CHF</span>
                   </div>
                 </div>
               </CardContent>

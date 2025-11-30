@@ -187,7 +187,7 @@ export default function OrderDetails({ user }) {
                 </div>
                 <div className="flex justify-between">
                   <span className="text-amber-800">Prix:</span>
-                  <span className="font-medium text-amber-950" data-testid="service-price">{order.service_price.toFixed(2)}€</span>
+                  <span className="font-medium text-amber-950" data-testid="service-price">{order.service_price.toFixed(2)}CHF</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-amber-800">Livraison:</span>
@@ -197,12 +197,12 @@ export default function OrderDetails({ user }) {
                 </div>
                 <div className="flex justify-between">
                   <span className="text-amber-800">Frais de livraison:</span>
-                  <span className="font-medium text-amber-950" data-testid="delivery-price">{order.delivery_price.toFixed(2)}€</span>
+                  <span className="font-medium text-amber-950" data-testid="delivery-price">{order.delivery_price.toFixed(2)}CHF</span>
                 </div>
                 <div className="border-t border-amber-200 pt-3">
                   <div className="flex justify-between text-lg">
                     <span className="font-bold text-amber-950">Total:</span>
-                    <span className="font-bold text-amber-700" data-testid="total-amount">{order.total_amount.toFixed(2)}€</span>
+                    <span className="font-bold text-amber-700" data-testid="total-amount">{order.total_amount.toFixed(2)}CHF</span>
                   </div>
                 </div>
               </CardContent>

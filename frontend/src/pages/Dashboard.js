@@ -152,7 +152,7 @@ export default function Dashboard({ user }) {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-amber-900" data-testid="revenue-value">
-                {user?.role === 'admin' ? `${stats?.total_commission?.toFixed(2) || 0}€` : `${stats?.total_revenue?.toFixed(2) || 0}€`}
+                {user?.role === 'admin' ? `${stats?.total_commission?.toFixed(2) || 0}CHF` : `${stats?.total_revenue?.toFixed(2) || 0}CHF`}
               </div>
             </CardContent>
           </Card>
@@ -199,7 +199,7 @@ export default function Dashboard({ user }) {
                       </Badge>
                     </div>
                     <div className="flex justify-between items-center mt-3 text-sm">
-                      <span className="text-amber-700" data-testid={`order-amount-${order.id}`}>{order.total_amount.toFixed(2)}€</span>
+                      <span className="text-amber-700" data-testid={`order-amount-${order.id}`}>{order.total_amount.toFixed(2)}CHF</span>
                       <span className="text-amber-600" data-testid={`order-date-${order.id}`}>
                         {new Date(order.created_at).toLocaleDateString('fr-FR')}
                       </span>

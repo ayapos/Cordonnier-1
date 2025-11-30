@@ -77,11 +77,11 @@ export default function PartnerTerms() {
           <section>
             <h3 className="font-bold text-gray-900 mb-2">6. Rémunération</h3>
             <p><strong>Commission plateforme : 15%</strong></p>
-            <p className="mt-2">Exemple : Service à 50€</p>
+            <p className="mt-2">Exemple : Service à 50CHF</p>
             <ul className="list-disc pl-5 mt-2 space-y-1">
-              <li>Client paie : 50€ + frais livraison</li>
-              <li>Vous recevez : 42,50€ (50€ - 15%)</li>
-              <li>ShoeRepair prélève : 7,50€</li>
+              <li>Client paie : 50CHF + frais livraison</li>
+              <li>Vous recevez : 42,50CHF (50CHF - 15%)</li>
+              <li>ShoeRepair prélève : 7,50CHF</li>
             </ul>
             <p className="mt-2"><strong>Paiement :</strong> Virement automatique tous les lundis via Stripe Connect pour les commandes livrées la semaine précédente.</p>
           </section>
@@ -90,8 +90,8 @@ export default function PartnerTerms() {
             <h3 className="font-bold text-gray-900 mb-2">7. Frais de Livraison</h3>
             <p>Les frais de livraison sont supportés par le client :</p>
             <ul className="list-disc pl-5 mt-2 space-y-1">
-              <li>Standard (10j) : 5€</li>
-              <li>Express (72h) : 15€</li>
+              <li>Standard (10j) : 5CHF</li>
+              <li>Express (72h) : 15CHF</li>
             </ul>
             <p className="mt-2">Vous devez expédier les chaussures réparées via le service de livraison indiqué.</p>
           </section>

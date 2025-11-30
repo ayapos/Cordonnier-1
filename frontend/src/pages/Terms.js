@@ -59,8 +59,8 @@ export default function Terms() {
 
           <section>
             <h3 className="font-bold text-gray-900 mb-2">6. Livraison</h3>
-            <p><strong>Standard :</strong> 10 jours ouvrables maximum (5€)<br/>
-            <strong>Express :</strong> 72 heures (15€)</p>
+            <p><strong>Standard :</strong> 10 jours ouvrables maximum (5CHF)<br/>
+            <strong>Express :</strong> 72 heures (15CHF)</p>
             <p className="mt-2">Les délais sont indicatifs et dépendent de la complexité de la réparation.</p>
           </section>
 

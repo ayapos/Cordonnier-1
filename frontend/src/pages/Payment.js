@@ -144,7 +144,7 @@ function PaymentForm({ order }) {
         disabled={loading}
         data-testid="pay-button"
       >
-        {loading ? 'Traitement...' : demoMode ? 'Confirmer le paiement (Démo)' : `Payer ${order.total_amount.toFixed(2)}€`}
+        {loading ? 'Traitement...' : demoMode ? 'Confirmer le paiement (Démo)' : `Payer ${order.total_amount.toFixed(2)}CHF`}
       </Button>
     </form>
   );
@@ -220,7 +220,7 @@ export default function Payment({ user }) {
                 </div>
                 <div className="flex justify-between">
                   <span className="text-amber-800">Prix service:</span>
-                  <span className="font-medium text-amber-950" data-testid="order-service-price">{order.service_price.toFixed(2)}€</span>
+                  <span className="font-medium text-amber-950" data-testid="order-service-price">{order.service_price.toFixed(2)}CHF</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-amber-800">Livraison:</span>
@@ -228,12 +228,12 @@ export default function Payment({ user }) {
                 </div>
                 <div className="flex justify-between">
                   <span className="text-amber-800">Frais de livraison:</span>
-                  <span className="font-medium text-amber-950" data-testid="order-delivery-price">{order.delivery_price.toFixed(2)}€</span>
+                  <span className="font-medium text-amber-950" data-testid="order-delivery-price">{order.delivery_price.toFixed(2)}CHF</span>
                 </div>
                 <div className="border-t border-amber-300 pt-3">
                   <div className="flex justify-between text-xl">
                     <span className="font-bold text-amber-950">Total:</span>
-                    <span className="font-bold text-amber-700" data-testid="order-total">{order.total_amount.toFixed(2)}€</span>
+                    <span className="font-bold text-amber-700" data-testid="order-total">{order.total_amount.toFixed(2)}CHF</span>
                   </div>
                 </div>
               </CardContent>

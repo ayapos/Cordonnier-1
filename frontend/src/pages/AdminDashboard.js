@@ -189,7 +189,7 @@ export default function AdminDashboard({ user }) {
               <TrendingUp className="h-4 w-4 text-amber-600" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-amber-900" data-testid="revenue-value">{stats?.total_revenue?.toFixed(2) || 0}€</div>
+              <div className="text-2xl font-bold text-amber-900" data-testid="revenue-value">{stats?.total_revenue?.toFixed(2) || 0}CHF</div>
             </CardContent>
           </Card>
 
@@ -199,7 +199,7 @@ export default function AdminDashboard({ user }) {
               <TrendingUp className="h-4 w-4 text-amber-600" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-amber-700" data-testid="commission-value">{stats?.total_commission?.toFixed(2) || 0}€</div>
+              <div className="text-2xl font-bold text-amber-700" data-testid="commission-value">{stats?.total_commission?.toFixed(2) || 0}CHF</div>
             </CardContent>
           </Card>
         </div>
@@ -276,8 +276,8 @@ export default function AdminDashboard({ user }) {
                             </p>
                           </div>
                           <div className="text-right">
-                            <div className="text-lg font-bold text-amber-700" data-testid={`order-amount-${order.id}`}>{order.total_amount.toFixed(2)}€</div>
-                            <div className="text-xs text-green-600" data-testid={`order-commission-${order.id}`}>Commission: {order.commission.toFixed(2)}€</div>
+                            <div className="text-lg font-bold text-amber-700" data-testid={`order-amount-${order.id}`}>{order.total_amount.toFixed(2)}CHF</div>
+                            <div className="text-xs text-green-600" data-testid={`order-commission-${order.id}`}>Commission: {order.commission.toFixed(2)}CHF</div>
                             <div className="text-xs text-amber-600 mt-1">{new Date(order.created_at).toLocaleDateString('fr-FR')}</div>
                           </div>
                         </div>
@@ -378,7 +378,7 @@ export default function AdminDashboard({ user }) {
                                 </div>
                                 <div className="flex justify-between text-amber-800">
                                   <span>Revenus générés:</span>
-                                  <span className="font-bold text-amber-700" data-testid={`cobbler-revenue-${cobbler.id}`}>{revenue.toFixed(2)}€</span>
+                                  <span className="font-bold text-amber-700" data-testid={`cobbler-revenue-${cobbler.id}`}>{revenue.toFixed(2)}CHF</span>
                                 </div>
                               </div>
                               <p className="text-xs text-amber-600 mt-2">
@@ -433,7 +433,7 @@ export default function AdminDashboard({ user }) {
                           />
                         </div>
                         <div>
-                          <Label htmlFor="service-price">Prix (€)</Label>
+                          <Label htmlFor="service-price">Prix (CHF)</Label>
                           <Input
                             id="service-price"
                             type="number"
@@ -516,7 +516,7 @@ export default function AdminDashboard({ user }) {
                             <CardTitle className="text-base" data-testid={`service-name-${service.id}`}>{service.name}</CardTitle>
                             <Badge className="mt-2 bg-amber-100 text-amber-800" data-testid={`service-category-${service.id}`}>{service.category}</Badge>
                           </div>
-                          <div className="text-xl font-bold text-amber-700" data-testid={`service-price-${service.id}`}>{service.price}€</div>
+                          <div className="text-xl font-bold text-amber-700" data-testid={`service-price-${service.id}`}>{service.price}CHF</div>
                         </div>
                       </CardHeader>
                       <CardContent>
