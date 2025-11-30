@@ -33,12 +33,12 @@ export default function Cart({ user }) {
         <div className="container mx-auto px-4 py-16 text-center">
           <ShoppingCart className="w-24 h-24 text-amber-300 mx-auto mb-6" />
           <h2 className="text-3xl font-bold text-amber-950 mb-4" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
-            Votre panier est vide
+            {t('emptyCart')}
           </h2>
-          <p className="text-amber-700 mb-8">Découvrez nos services de réparation</p>
+          <p className="text-amber-700 mb-8">{t('discoverServices')}</p>
           <Link to="/services">
             <Button className="bg-amber-700 hover:bg-amber-800">
-              Voir les services
+              {t('viewServices')}
             </Button>
           </Link>
         </div>
