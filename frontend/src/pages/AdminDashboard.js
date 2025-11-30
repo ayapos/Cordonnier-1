@@ -557,25 +557,62 @@ export default function AdminDashboard({ user }) {
                 </div>
               </CardHeader>
               <CardContent>
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {services.map((service) => (
-                    <Card key={service.id} className="border-amber-200" data-testid={`service-card-${service.id}`}>
-                      <CardHeader>
-                        <div className="flex justify-between items-start">
-                          <div>
-                            <CardTitle className="text-base" data-testid={`service-name-${service.id}`}>{service.name}</CardTitle>
-                            <Badge className="mt-2 bg-amber-100 text-amber-800" data-testid={`service-category-${service.id}`}>{service.category}</Badge>
+                {services.length === 0 ? (
+                  <div className="text-center py-12" data-testid="no-services">
+                    <Package className="w-16 h-16 text-amber-300 mx-auto mb-4" />
+                    <p className="text-amber-800">Aucun service disponible</p>
+                  </div>
+                ) : (
+                  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {services.map((service) => (
+                      <Card key={service.id} className="border-amber-200" data-testid={`service-card-${service.id}`}>
+                        {service.image_url && (
+                          <div className="w-full h-40 overflow-hidden rounded-t-lg">
+                            <img 
+                              src={service.image_url} 
+                              alt={service.name}
+                              className="w-full h-full object-cover"
+                              data-testid={`service-image-${service.id}`}
+                            />
                           </div>
-                          <div className="text-xl font-bold text-amber-700" data-testid={`service-price-${service.id}`}>{service.price}CHF</div>
-                        </div>
-                      </CardHeader>
-                      <CardContent>
-                        <p className="text-sm text-amber-700 mb-2" data-testid={`service-description-${service.id}`}>{service.description}</p>
-                        <p className="text-xs text-amber-600" data-testid={`service-days-${service.id}`}>Délai: {service.estimated_days} jours</p>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
+                        )}
+                        <CardHeader>
+                          <div className="flex justify-between items-start">
+                            <div className="flex-1">
+                              <CardTitle className="text-base" data-testid={`service-name-${service.id}`}>{service.name}</CardTitle>
+                              <Badge className="mt-2 bg-amber-100 text-amber-800" data-testid={`service-category-${service.id}`}>{service.category}</Badge>
+                            </div>
+                            <div className="text-xl font-bold text-amber-700" data-testid={`service-price-${service.id}`}>{service.price}CHF</div>
+                          </div>
+                        </CardHeader>
+                        <CardContent>
+                          <p className="text-sm text-amber-700 mb-2" data-testid={`service-description-${service.id}`}>{service.description}</p>
+                          <p className="text-xs text-amber-600 mb-3" data-testid={`service-days-${service.id}`}>Délai: {service.estimated_days} jours</p>
+                          <div className="flex gap-2 mt-4">
+                            <Button 
+                              variant="outline" 
+                              size="sm" 
+                              className="flex-1"
+                              onClick={() => handleEditService(service)}
+                              data-testid={`edit-service-${service.id}`}
+                            >
+                              <Edit className="w-4 h-4 mr-1" /> Éditer
+                            </Button>
+                            <Button 
+                              variant="outline" 
+                              size="sm" 
+                              className="flex-1 text-red-600 hover:text-red-700 hover:bg-red-50"
+                              onClick={() => handleDeleteService(service.id, service.name)}
+                              data-testid={`delete-service-${service.id}`}
+                            >
+                              <Trash2 className="w-4 h-4 mr-1" /> Supprimer
+                            </Button>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+                )}
               </CardContent>
             </Card>
           </TabsContent>
