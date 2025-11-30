@@ -811,7 +811,8 @@ async def get_orders(current_user: dict = Depends(get_current_user)):
     elif current_user['role'] == 'cobbler':
         query['cobbler_id'] = current_user['user_id']
     
-    orders = await db.orders.find(query, {"_id": 0}).to_list(1000)
+    # Limit to 100 most recent orders and sort by created_at descending for performance
+    orders = await db.orders.find(query, {"_id": 0}).sort("created_at", -1).limit(100).to_list(100)
     for order in orders:
         if isinstance(order['created_at'], str):
             order['created_at'] = datetime.fromisoformat(order['created_at'])
