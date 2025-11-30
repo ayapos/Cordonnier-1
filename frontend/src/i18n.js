@@ -774,6 +774,33 @@ const resources = {
       "cartIsEmpty": "Il tuo carrello è vuoto",
       "provideDeliveryAddress": "Si prega di fornire un indirizzo di consegna",
       "loginRequired": "Si prega di accedere per ordinare",
+      "loadingDataError": "Errore nel caricamento dei dati",
+      "logoutSuccess": "Disconnessione riuscita",
+      "orderAccepted": "Ordine accettato!",
+      "errorOccurred": "Errore",
+      "statusUpdated": "Stato aggiornato",
+      "updateError": "Errore di aggiornamento",
+      
+      // Dashboard
+      "hello": "Ciao",
+      "newOrder": "Nuovo ordine",
+      "totalOrders": "Ordini Totali",
+      "inProgress": "In Corso",
+      "completed": "Completati",
+      "commission": "Commissione",
+      "revenue": "Entrate",
+      "myOrders": "I Miei Ordini",
+      "noOrdersYet": "Nessun ordine per ora",
+      "acceptOrder": "Accetta ordine",
+      "markAsShipped": "Segna come spedito",
+      
+      // Order status
+      "pending": "In attesa",
+      "accepted": "Accettato",
+      "in_progress": "In corso",
+      "shipped": "Spedito",
+      "delivered": "Consegnato",
+      "cancelled": "Annullato",
     }
   }
 };
