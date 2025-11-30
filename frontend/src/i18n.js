@@ -595,6 +595,12 @@ const resources = {
       "austria": "Austria",
       "netherlands": "Paesi Bassi",
       
+      // Stats section
+      "countries": "Paesi",
+      "happyClients": "Clienti soddisfatti",
+      "craftsmen": "Artigiani",
+      "repairedShoes": "Scarpe riparate",
+      
       // Features
       "autoAssignmentTitle": "Assegnazione automatica",
       "autoAssignmentDesc": "Il tuo ordine viene assegnato automaticamente al calzolaio più vicino",
