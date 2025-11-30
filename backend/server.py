@@ -1076,10 +1076,10 @@ async def upload_media(
         unique_filename = f"{uuid.uuid4()}.{file_extension}"
         
         # Check if an image already exists at this position and category
-        if position and category:
+        if position is not None and category:
             existing_media = await db.media.find_one({
                 "category": category,
-                "position": position
+                "position": int(position) if position else None
             })
             
             if existing_media:
