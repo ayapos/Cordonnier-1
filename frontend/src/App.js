@@ -45,13 +45,14 @@ const ProtectedRoute = ({ children }) => {
 
 function App() {
   const [user, setUser] = useState(null);
+  const [userVersion, setUserVersion] = useState(0);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
       fetchUserData();
     }
-  }, []);
+  }, [userVersion]);
 
   const fetchUserData = async () => {
     try {
@@ -61,6 +62,10 @@ function App() {
       console.error('Error fetching user data:', error);
       localStorage.removeItem('token');
     }
+  };
+
+  const refreshUserData = () => {
+    setUserVersion(v => v + 1);
   };
 
   return (
