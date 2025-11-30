@@ -1075,11 +1075,19 @@ async def upload_media(
         file_extension = file.filename.split('.')[-1]
         unique_filename = f"{uuid.uuid4()}.{file_extension}"
         
+        # Convert position to int if provided
+        position_int = None
+        if position:
+            try:
+                position_int = int(position)
+            except (ValueError, TypeError):
+                position_int = None
+        
         # Check if an image already exists at this position and category
-        if position is not None and category:
+        if position_int is not None and category:
             existing_media = await db.media.find_one({
                 "category": category,
-                "position": int(position) if position else None
+                "position": position_int
             })
             
             if existing_media:
@@ -1089,7 +1097,7 @@ async def upload_media(
                     old_file_path.unlink()
                 # Delete old record from DB
                 await db.media.delete_one({"id": existing_media['id']})
-                logger.info(f"Replaced existing media at position {position} in category {category}")
+                logger.info(f"Replaced existing media at position {position_int} in category {category}")
         
         # Save file to media folder
         media_dir = ROOT_DIR / 'uploads' / 'media'
