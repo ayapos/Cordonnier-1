@@ -9,8 +9,15 @@ import LanguageSwitcher from '@/components/LanguageSwitcher';
 
 export default function Cart({ user }) {
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { cartItems, removeFromCart, updateQuantity, getCartTotal, getCartCount } = useCart();
+  
+  // Helper function to get translated service field
+  const getServiceField = (item, field) => {
+    const lang = i18n.language;
+    const translatedField = `${field}_${lang}`;
+    return item[translatedField] || item[field]; // Fallback to French
+  };
 
   const handleCheckout = () => {
     if (cartItems.length === 0) return;
