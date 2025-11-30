@@ -239,15 +239,10 @@ export default function Checkout({ user }) {
           )}
 
           {/* Images Upload */}
-          <Card className={`border-2 ${images.length === 0 ? 'border-red-300 bg-red-50' : 'border-amber-200'}`}>
+          <Card className="border-amber-200">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                Photos de vos chaussures 
-                <span className="text-red-600">* OBLIGATOIRE</span>
-              </CardTitle>
-              <CardDescription className="text-red-700 font-medium">
-                ⚠️ Vous devez ajouter au moins 1 photo avant de pouvoir commander
-              </CardDescription>
+              <CardTitle>Photos de vos chaussures (optionnel)</CardTitle>
+              <CardDescription>Ajoutez jusqu'à 5 photos pour aider le cordonnier</CardDescription>
             </CardHeader>
             <CardContent>
               <Label htmlFor="images" className="cursor-pointer">
