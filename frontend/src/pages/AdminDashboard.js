@@ -634,19 +634,55 @@ export default function AdminDashboard({ user }) {
                         </div>
                         <div>
                           <Label htmlFor="service-category">Catégorie</Label>
-                          <Select 
-                            value={newService.category} 
-                            onValueChange={(value) => setNewService({...newService, category: value})}
-                          >
-                            <SelectTrigger data-testid="service-category-select">
-                              <SelectValue />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="Réparation">Réparation</SelectItem>
-                              <SelectItem value="Entretien">Entretien</SelectItem>
-                              <SelectItem value="Modification">Modification</SelectItem>
-                            </SelectContent>
-                          </Select>
+                          {!showNewCategoryInput ? (
+                            <div className="space-y-2">
+                              <Select 
+                                value={newService.category} 
+                                onValueChange={(value) => setNewService({...newService, category: value})}
+                              >
+                                <SelectTrigger data-testid="service-category-select">
+                                  <SelectValue />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  {categories.map((cat) => (
+                                    <SelectItem key={cat} value={cat}>{cat}</SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
+                              <Button 
+                                type="button" 
+                                variant="outline" 
+                                size="sm" 
+                                onClick={() => setShowNewCategoryInput(true)}
+                                className="w-full"
+                              >
+                                ➕ Ajouter une nouvelle catégorie
+                              </Button>
+                            </div>
+                          ) : (
+                            <div className="flex gap-2">
+                              <Input
+                                placeholder="Ex: Sneakers"
+                                value={newCategoryName}
+                                onChange={(e) => setNewCategoryName(e.target.value)}
+                                onKeyPress={(e) => e.key === 'Enter' && handleAddCategory()}
+                              />
+                              <Button type="button" onClick={handleAddCategory} size="sm">
+                                ✓
+                              </Button>
+                              <Button 
+                                type="button" 
+                                variant="outline" 
+                                size="sm"
+                                onClick={() => {
+                                  setShowNewCategoryInput(false);
+                                  setNewCategoryName('');
+                                }}
+                              >
+                                ✗
+                              </Button>
+                            </div>
+                          )}
                         </div>
                         <div>
                           <Label htmlFor="service-gender">Genre</Label>
