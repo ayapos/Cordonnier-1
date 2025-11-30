@@ -182,7 +182,7 @@ export default function Services({ user }) {
                           <h4 className="font-bold text-gray-900 mb-1" data-testid={`service-name-${service.id}`}>{service.name}</h4>
                           <p className="text-sm text-gray-600 mb-2" data-testid={`service-description-${service.id}`}>{service.description}</p>
                         </div>
-                        <div className="text-2xl font-bold text-indigo-600 ml-4" data-testid={`service-price-${service.id}`}>
+                        <div className="text-2xl font-bold text-orange-700 ml-4" data-testid={`service-price-${service.id}`}>
                           {service.price}€
                         </div>
                       </div>
