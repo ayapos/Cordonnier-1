@@ -42,6 +42,9 @@
 ##         - working: true
 ##         - agent: "testing"
 ##         - comment: "✅ TESTED: Partner registration with documents working. Files saved to /app/backend/uploads, status set to 'pending', supports id_recto, id_verso, che_kbis uploads as base64."
+##         - working: true
+##         - agent: "testing"
+##         - comment: "✅ RE-TESTED P1: Partner registration with exact test data from French requirements. Created partner 'Pierre Cordonnier' with email cobbler_new_*@test.com, phone +41791234567, address 'Rue de Genève 15, 1003 Lausanne, Suisse', bank account CH93 0000 0000 0000 0000 1. Documents (id_recto, id_verso, che_kbis) successfully uploaded to /app/backend/uploads. Status correctly set to 'pending'. Token returned with role='cobbler'."
 ##   - task: "Admin partner management"
 ##     implemented: true
 ##     working: true
