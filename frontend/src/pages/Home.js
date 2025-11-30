@@ -244,7 +244,7 @@ export default function Home({ user }) {
             {
               before: 'https://images.unsplash.com/photo-1552346154-21d32810aba3?w=500&q=80',
               after: 'https://images.unsplash.com/photo-1614252235316-8c857d38b5f4?w=500&q=80',
-              title: 'Nettoyage sneakers'
+              title: t('sneakersCleaning')
             },
             {
               before: 'https://images.unsplash.com/photo-1519226719127-9e805abb99b1?w=500&q=80',
