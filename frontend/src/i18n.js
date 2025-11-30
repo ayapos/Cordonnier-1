@@ -63,6 +63,19 @@ const resources = {
       "customerReviews": "Avis Clients",
       "whatTheySay": "Ce qu'ils disent de nous",
       
+      // Countries section
+      "ourCountries": "Nos Pays",
+      "presentInCountries": "Présent dans toute l'Europe",
+      "countriesCovered": "pays couverts",
+      "switzerland": "Suisse",
+      "france": "France",
+      "germany": "Allemagne",
+      "italy": "Italie",
+      "belgium": "Belgique",
+      "luxembourg": "Luxembourg",
+      "austria": "Autriche",
+      "netherlands": "Pays-Bas",
+      
       // Features
       "autoAssignmentTitle": "Attribution automatique",
       "autoAssignmentDesc": "Votre commande est assignée au cordonnier le plus proche automatiquement",
