@@ -292,12 +292,12 @@ export default function Checkout({ user }) {
           {/* Delivery Address */}
           <Card className="border-amber-200">
             <CardHeader>
-              <CardTitle>Adresse de livraison *</CardTitle>
-              <CardDescription>Le cordonnier le plus proche sera assigné automatiquement</CardDescription>
+              <CardTitle>{t('deliveryAddress')} {t('required')}</CardTitle>
+              <CardDescription>{t('deliveryAddressHelper')}</CardDescription>
             </CardHeader>
             <CardContent>
               <Input
-                placeholder="Ex: Rue du Commerce 5, 1003 Lausanne"
+                placeholder={t('deliveryAddressPlaceholder')}
                 value={deliveryAddress}
                 onChange={(e) => setDeliveryAddress(e.target.value)}
                 required
