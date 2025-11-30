@@ -230,6 +230,19 @@ const resources = {
       "customerReviews": "Customer Reviews",
       "whatTheySay": "What they say about us",
       
+      // Countries section
+      "ourCountries": "Our Countries",
+      "presentInCountries": "Present across Europe",
+      "countriesCovered": "countries covered",
+      "switzerland": "Switzerland",
+      "france": "France",
+      "germany": "Germany",
+      "italy": "Italy",
+      "belgium": "Belgium",
+      "luxembourg": "Luxembourg",
+      "austria": "Austria",
+      "netherlands": "Netherlands",
+      
       // Features
       "autoAssignmentTitle": "Automatic assignment",
       "autoAssignmentDesc": "Your order is assigned to the nearest cobbler automatically",
