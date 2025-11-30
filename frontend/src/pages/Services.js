@@ -123,7 +123,8 @@ export default function Services({ user }) {
               size="sm"
               variant={selectedCategory === 'all' ? 'default' : 'outline'}
               onClick={() => setSelectedCategory('all')}
-              className={selectedCategory === 'all' ? 'bg-indigo-600 text-white' : 'border-gray-300 text-gray-700'}
+              className={selectedCategory === 'all' ? 'bg-orange-700 text-white' : 'border-gray-300 text-gray-700'}
+              data-testid="category-all"
             >
               Tous
             </Button>
@@ -133,7 +134,7 @@ export default function Services({ user }) {
                 size="sm"
                 variant={selectedCategory === category ? 'default' : 'outline'}
                 onClick={() => setSelectedCategory(category)}
-                className={selectedCategory === category ? 'bg-indigo-600 text-white whitespace-nowrap' : 'border-gray-300 text-gray-700 whitespace-nowrap'}
+                className={selectedCategory === category ? 'bg-orange-700 text-white whitespace-nowrap' : 'border-gray-300 text-gray-700 whitespace-nowrap'}
               >
                 {category}
               </Button>
