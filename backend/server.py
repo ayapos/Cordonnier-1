@@ -1085,16 +1085,20 @@ async def upload_media(
         
         # Check if an image already exists at this position and category
         if position_int is not None and category:
+            logger.info(f"Checking for existing media: category={category}, position={position_int}")
             existing_media = await db.media.find_one({
                 "category": category,
                 "position": position_int
             })
+            logger.info(f"Existing media found: {existing_media is not None}")
             
             if existing_media:
+                logger.info(f"Replacing media ID: {existing_media['id']}")
                 # Delete the old file
                 old_file_path = ROOT_DIR / 'uploads' / 'media' / existing_media['filename']
                 if old_file_path.exists():
                     old_file_path.unlink()
+                    logger.info(f"Deleted old file: {old_file_path}")
                 # Delete old record from DB
                 await db.media.delete_one({"id": existing_media['id']})
                 logger.info(f"Replaced existing media at position {position_int} in category {category}")
