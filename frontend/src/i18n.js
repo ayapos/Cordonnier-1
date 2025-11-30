@@ -63,6 +63,21 @@ const resources = {
       "customerReviews": "Avis Clients",
       "whatTheySay": "Ce qu'ils disent de nous",
       
+      // Features
+      "autoAssignmentTitle": "Attribution automatique",
+      "autoAssignmentDesc": "Votre commande est assignée au cordonnier le plus proche automatiquement",
+      "fastAndConvenientTitle": "Rapide et pratique",
+      "fastAndConvenientDesc": "Envoi et retour inclus. Standard 10j ou Express 72h",
+      "securePaymentTitle": "Paiement sécurisé",
+      "securePaymentDesc": "Stripe Connect. Versement automatique aux cordonniers",
+      
+      // Before After section
+      "beforeAfterGallery": "Avant / Après",
+      "repairResults": "Résultats de nos réparations",
+      "bootResole": "Ressemelage bottes",
+      "sneakersCleaning": "Nettoyage sneakers",
+      "heelsRepair": "Réparation talons",
+      
       // Services page
       "availableServices": "disponibles",
       "addToCart": "Ajouter au panier",
