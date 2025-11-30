@@ -249,7 +249,7 @@ export default function Home({ user }) {
             {
               before: 'https://images.unsplash.com/photo-1519226719127-9e805abb99b1?w=500&q=80',
               after: 'https://images.unsplash.com/photo-1638609348722-aa2a3a67db26?w=500&q=80',
-              title: 'R\u00e9novation cuir'
+              title: t('leatherRenovation')
             }
           ].map((item, idx) => (
             <div key={idx} className="bg-white rounded-2xl p-4 shadow-lg">
