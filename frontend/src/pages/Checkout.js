@@ -308,7 +308,7 @@ export default function Checkout({ user }) {
           {/* Delivery Options */}
           <Card className="border-amber-200">
             <CardHeader>
-              <CardTitle>Options de livraison</CardTitle>
+              <CardTitle>{t('deliveryOptions')}</CardTitle>
             </CardHeader>
             <CardContent>
               <RadioGroup value={deliveryOption} onValueChange={setDeliveryOption}>
@@ -319,8 +319,8 @@ export default function Checkout({ user }) {
                       <div className="flex items-center gap-2">
                         <Truck className="w-5 h-5 text-amber-700" />
                         <div>
-                          <p className="font-medium text-amber-950">Standard</p>
-                          <p className="text-sm text-amber-600">10 jours maximum</p>
+                          <p className="font-medium text-amber-950">{t('standard')}</p>
+                          <p className="text-sm text-amber-600">10 {t('maxDays')}</p>
                         </div>
                       </div>
                       <span className="font-bold text-amber-700">5CHF</span>
@@ -334,8 +334,8 @@ export default function Checkout({ user }) {
                       <div className="flex items-center gap-2">
                         <Zap className="w-5 h-5 text-amber-700" />
                         <div>
-                          <p className="font-medium text-amber-950">Express</p>
-                          <p className="text-sm text-amber-600">72 heures</p>
+                          <p className="font-medium text-amber-950">{t('express')}</p>
+                          <p className="text-sm text-amber-600">72 {t('hours')}</p>
                         </div>
                       </div>
                       <span className="font-bold text-amber-700">15CHF</span>
