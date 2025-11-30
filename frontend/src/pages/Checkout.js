@@ -245,15 +245,15 @@ export default function Checkout({ user }) {
           {/* Images Upload */}
           <Card className="border-amber-200">
             <CardHeader>
-              <CardTitle>Photos de vos chaussures (optionnel)</CardTitle>
-              <CardDescription>Ajoutez jusqu'à 5 photos pour aider le cordonnier</CardDescription>
+              <CardTitle>{t('shoePhotos')} {t('photosOptional')}</CardTitle>
+              <CardDescription>{t('photosHelper')}</CardDescription>
             </CardHeader>
             <CardContent>
               <Label htmlFor="images" className="cursor-pointer">
                 <div className="border-2 border-dashed border-amber-300 rounded-lg p-8 text-center hover:border-amber-500 transition-colors">
                   <Upload className="w-12 h-12 text-amber-600 mx-auto mb-2" />
-                  <p className="text-amber-700">Cliquez pour ajouter des photos</p>
-                  <p className="text-sm text-amber-600 mt-1">{images.length}/5 photos</p>
+                  <p className="text-amber-700">{t('clickToAddPhotos')}</p>
+                  <p className="text-sm text-amber-600 mt-1">{images.length}/5 {t('photosCount')}</p>
                 </div>
                 <Input
                   id="images"
