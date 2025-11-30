@@ -846,19 +846,55 @@ export default function AdminDashboard({ user }) {
                           </div>
                           <div>
                             <Label htmlFor="edit-service-category">Catégorie</Label>
-                            <Select 
-                              value={editService.category} 
-                              onValueChange={(value) => setEditService({...editService, category: value})}
-                            >
-                              <SelectTrigger data-testid="edit-service-category-select">
-                                <SelectValue />
-                              </SelectTrigger>
-                              <SelectContent>
-                                <SelectItem value="Réparation">Réparation</SelectItem>
-                                <SelectItem value="Entretien">Entretien</SelectItem>
-                                <SelectItem value="Modification">Modification</SelectItem>
-                              </SelectContent>
-                            </Select>
+                            {!showEditCategoryInput ? (
+                              <div className="space-y-2">
+                                <Select 
+                                  value={editService.category} 
+                                  onValueChange={(value) => setEditService({...editService, category: value})}
+                                >
+                                  <SelectTrigger data-testid="edit-service-category-select">
+                                    <SelectValue />
+                                  </SelectTrigger>
+                                  <SelectContent>
+                                    {categories.map((cat) => (
+                                      <SelectItem key={cat} value={cat}>{cat}</SelectItem>
+                                    ))}
+                                  </SelectContent>
+                                </Select>
+                                <Button 
+                                  type="button" 
+                                  variant="outline" 
+                                  size="sm" 
+                                  onClick={() => setShowEditCategoryInput(true)}
+                                  className="w-full"
+                                >
+                                  ➕ Ajouter une nouvelle catégorie
+                                </Button>
+                              </div>
+                            ) : (
+                              <div className="flex gap-2">
+                                <Input
+                                  placeholder="Ex: Sneakers"
+                                  value={editCategoryName}
+                                  onChange={(e) => setEditCategoryName(e.target.value)}
+                                  onKeyPress={(e) => e.key === 'Enter' && handleAddCategoryEdit()}
+                                />
+                                <Button type="button" onClick={handleAddCategoryEdit} size="sm">
+                                  ✓
+                                </Button>
+                                <Button 
+                                  type="button" 
+                                  variant="outline" 
+                                  size="sm"
+                                  onClick={() => {
+                                    setShowEditCategoryInput(false);
+                                    setEditCategoryName('');
+                                  }}
+                                >
+                                  ✗
+                                </Button>
+                              </div>
+                            )}
                           </div>
                           <div>
                             <Label htmlFor="edit-service-gender">Genre</Label>
