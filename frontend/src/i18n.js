@@ -12,6 +12,7 @@ const resources = {
       "login": "Connexion",
       "logout": "Déconnexion",
       "dashboard": "Tableau de bord",
+      "backHome": "Retour à l'accueil",
       
       // Home page
       "appTitle": "ShoeRepair",
@@ -20,6 +21,45 @@ const resources = {
       "heroSubtitle": "À domicile, par des artisans qualifiés",
       "viewServices": "Voir nos services",
       "becomePartner": "Devenir partenaire",
+      
+      // Carousel
+      "pumpsHeels": "Escarpins & Talons",
+      "expertRepair": "Réparation experte",
+      "qualifiedCraftsmen": "Artisans Qualifiés",
+      "traditionalKnowHow": "Savoir-faire traditionnel",
+      "mensShoes": "Chaussures Homme",
+      "premiumRenovation": "Rénovation premium",
+      
+      // How it works
+      "howItWorks": "Comment ça marche ?",
+      "simpleAndFast": "Simple et rapide en 4 étapes",
+      "step1Title": "Choisissez",
+      "step1Desc": "Sélectionnez votre service",
+      "step2Title": "Payez",
+      "step2Desc": "Paiement sécurisé",
+      "step3Title": "Envoyez",
+      "step3Desc": "Avec votre référence",
+      "step4Title": "Recevez",
+      "step4Desc": "Livraison à domicile",
+      
+      // Why choose us
+      "whyChooseUs": "Pourquoi nous choisir ?",
+      "localCraftsmenTitle": "Artisans Locaux",
+      "localCraftsmenDesc": "Cordonniers qualifiés près de chez vous",
+      "fastDeliveryTitle": "Livraison Rapide",
+      "fastDeliveryDesc": "Service express en 72h disponible",
+      "qualityGuaranteeTitle": "Qualité Garantie",
+      "qualityGuaranteeDesc": "Satisfaction garantie ou remboursé",
+      
+      // Before After
+      "beforeAfter": "Avant / Après",
+      "seeTransformation": "Découvrez la transformation",
+      "before": "Avant",
+      "after": "Après",
+      
+      // Reviews
+      "customerReviews": "Avis Clients",
+      "whatTheySay": "Ce qu'ils disent de nous",
       
       // Services
       "availableServices": "disponibles",
