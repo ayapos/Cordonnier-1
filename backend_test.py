@@ -278,8 +278,341 @@ class ShoeRepairAPITester:
             return True
         return False
 
+    def create_fake_base64_image(self):
+        """Create a fake base64 encoded image for testing"""
+        # Create a simple 1x1 pixel image in base64
+        return "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg=="
+
+    def create_fake_base64_pdf(self):
+        """Create a fake base64 encoded PDF for testing"""
+        # Simple PDF header in base64
+        return "JVBERi0xLjQKJcOkw7zDtsO4CjIgMCBvYmoKPDwKL1R5cGUgL0NhdGFsb2cKL1BhZ2VzIDMgMCBSCj4+CmVuZG9iagoKMyAwIG9iago8PAovVHlwZSAvUGFnZXMKL0tpZHMgWzQgMCBSXQovQ291bnQgMQo+PgplbmRvYmoKCjQgMCBvYmoKPDwKL1R5cGUgL1BhZ2UKL1BhcmVudCAzIDAgUgovTWVkaWFCb3ggWzAgMCA2MTIgNzkyXQo+PgplbmRvYmoKCnhyZWYKMCA1CjAwMDAwMDAwMDAgNjU1MzUgZiAKMDAwMDAwMDAwOSAwMDAwMCBuIAowMDAwMDAwMDc0IDAwMDAwIG4gCjAwMDAwMDAxMjAgMDAwMDAgbiAKMDAwMDAwMDE3OSAwMDAwMCBuIAp0cmFpbGVyCjw8Ci9TaXplIDUKL1Jvb3QgMiAwIFIKPj4Kc3RhcnR4cmVmCjI2NQolJUVPRg=="
+
+    def test_admin_login(self):
+        """Test admin login"""
+        login_data = {
+            "email": "admin@shoerepair.com",
+            "password": "Arden2018@"
+        }
+        
+        success, response = self.run_test(
+            "Admin Login",
+            "POST",
+            "auth/login",
+            200,
+            data=login_data
+        )
+        
+        if success and 'token' in response:
+            self.admin_token = response['token']
+            print(f"   ✅ Admin token received: {self.admin_token[:20]}...")
+            return True
+        return False
+
+    def test_partner_registration_with_documents(self):
+        """Test partner registration with document upload"""
+        timestamp = int(time.time())
+        
+        # Create fake documents
+        id_recto_b64 = self.create_fake_base64_image()
+        id_verso_b64 = self.create_fake_base64_image()
+        che_kbis_b64 = self.create_fake_base64_pdf()
+        
+        test_data = {
+            "email": "cobbler_test@test.com",
+            "password": "TestPass123",
+            "name": "Jean Cordonnier",
+            "role": "cobbler",
+            "phone": "+41791234567",
+            "address": "Rue de Lausanne 10, 1003 Lausanne, Suisse",
+            "bank_account": "CH93 0000 0000 0000 0000 0",
+            "id_recto": f"data:image/png;base64,{id_recto_b64}",
+            "id_verso": f"data:image/png;base64,{id_verso_b64}",
+            "che_kbis": f"data:application/pdf;base64,{che_kbis_b64}"
+        }
+        
+        success, response = self.run_test(
+            "Partner Registration with Documents",
+            "POST",
+            "auth/register",
+            200,
+            data=test_data
+        )
+        
+        if success and 'token' in response and response.get('user', {}).get('role') == 'cobbler':
+            self.cobbler_token = response['token']
+            self.partner_id = response['user']['id']
+            print(f"   ✅ Partner registered: {self.partner_id}")
+            print(f"   ✅ Partner status should be 'pending'")
+            return True
+        return False
+
+    def test_check_uploads_directory(self):
+        """Test that files were created in uploads directory"""
+        import os
+        uploads_dir = "/app/backend/uploads"
+        
+        if os.path.exists(uploads_dir):
+            files = os.listdir(uploads_dir)
+            print(f"   ✅ Uploads directory exists with {len(files)} files")
+            if len(files) >= 3:  # Should have at least 3 files (id_recto, id_verso, che_kbis)
+                print(f"   ✅ Expected document files found: {files}")
+                self.log_test("Check Uploads Directory", True, f"Found {len(files)} files")
+                return True
+            else:
+                self.log_test("Check Uploads Directory", False, f"Expected 3+ files, found {len(files)}")
+                return False
+        else:
+            self.log_test("Check Uploads Directory", False, "Uploads directory does not exist")
+            return False
+
+    def test_admin_get_pending_partners(self):
+        """Test admin getting pending partner requests"""
+        if not self.admin_token:
+            print("   ❌ No admin token available")
+            return False
+            
+        # Set admin token temporarily
+        original_token = self.token
+        self.token = self.admin_token
+        
+        success, response = self.run_test(
+            "Admin Get Pending Partners",
+            "GET",
+            "admin/partners/pending",
+            200
+        )
+        
+        # Restore original token
+        self.token = original_token
+        
+        if success and isinstance(response, list):
+            print(f"   ✅ Found {len(response)} pending partners")
+            # Check if our partner is in the list
+            partner_found = False
+            for partner in response:
+                if partner.get('id') == self.partner_id:
+                    partner_found = True
+                    print(f"   ✅ Partner found in pending list")
+                    # Check for preview keys
+                    if 'id_recto_preview' in partner and 'id_verso_preview' in partner and 'che_kbis_preview' in partner:
+                        print(f"   ✅ Document previews available")
+                    else:
+                        print(f"   ⚠️ Some document previews missing")
+                    break
+            
+            if not partner_found and self.partner_id:
+                print(f"   ⚠️ Registered partner not found in pending list")
+            
+            return True
+        return False
+
+    def test_admin_approve_partner(self):
+        """Test admin approving a partner"""
+        if not self.admin_token or not self.partner_id:
+            print("   ❌ No admin token or partner ID available")
+            return False
+            
+        # Set admin token temporarily
+        original_token = self.token
+        self.token = self.admin_token
+        
+        success, response = self.run_test(
+            "Admin Approve Partner",
+            "POST",
+            f"admin/partners/{self.partner_id}/approve",
+            200
+        )
+        
+        # Restore original token
+        self.token = original_token
+        
+        if success:
+            print(f"   ✅ Partner approved successfully")
+            return True
+        return False
+
+    def test_verify_partner_approved(self):
+        """Test that partner is no longer in pending list after approval"""
+        if not self.admin_token:
+            print("   ❌ No admin token available")
+            return False
+            
+        # Set admin token temporarily
+        original_token = self.token
+        self.token = self.admin_token
+        
+        success, response = self.run_test(
+            "Verify Partner Not in Pending List",
+            "GET",
+            "admin/partners/pending",
+            200
+        )
+        
+        # Restore original token
+        self.token = original_token
+        
+        if success and isinstance(response, list):
+            # Check that our partner is NOT in the pending list anymore
+            partner_found = False
+            for partner in response:
+                if partner.get('id') == self.partner_id:
+                    partner_found = True
+                    break
+            
+            if not partner_found:
+                print(f"   ✅ Partner no longer in pending list (approved)")
+                self.log_test("Verify Partner Not in Pending List", True, "Partner successfully removed from pending")
+                return True
+            else:
+                self.log_test("Verify Partner Not in Pending List", False, "Partner still in pending list")
+                return False
+        return False
+
+    def test_cobbler_update_address(self):
+        """Test cobbler updating their address"""
+        if not self.cobbler_token:
+            print("   ❌ No cobbler token available")
+            return False
+            
+        # Set cobbler token temporarily
+        original_token = self.token
+        self.token = self.cobbler_token
+        
+        address_data = {
+            "address": "Avenue de la Gare 5, 1003 Lausanne, Suisse"
+        }
+        
+        success, response = self.run_test(
+            "Cobbler Update Address",
+            "PUT",
+            "cobbler/address",
+            200,
+            data=address_data
+        )
+        
+        # Restore original token
+        self.token = original_token
+        
+        if success and 'latitude' in response and 'longitude' in response:
+            lat = response['latitude']
+            lon = response['longitude']
+            print(f"   ✅ Address updated with coordinates: lat={lat}, lon={lon}")
+            
+            # Validate coordinates are reasonable
+            if -90 <= lat <= 90 and -180 <= lon <= 180:
+                print(f"   ✅ Coordinates are valid")
+                return True
+            else:
+                print(f"   ❌ Invalid coordinates: lat={lat}, lon={lon}")
+                return False
+        return False
+
+    def test_unauthorized_access(self):
+        """Test unauthorized access to admin endpoints"""
+        # Try to access admin endpoint without admin token
+        original_token = self.token
+        self.token = self.cobbler_token  # Use cobbler token instead of admin
+        
+        success, response = self.run_test(
+            "Unauthorized Access to Admin Endpoint",
+            "GET",
+            "admin/partners/pending",
+            403  # Expect 403 Forbidden
+        )
+        
+        # Restore original token
+        self.token = original_token
+        
+        return success
+
+    def test_invalid_address_geocoding(self):
+        """Test address update with invalid address"""
+        if not self.cobbler_token:
+            print("   ❌ No cobbler token available")
+            return False
+            
+        # Set cobbler token temporarily
+        original_token = self.token
+        self.token = self.cobbler_token
+        
+        invalid_address_data = {
+            "address": "XXXXX"
+        }
+        
+        success, response = self.run_test(
+            "Invalid Address Geocoding",
+            "PUT",
+            "cobbler/address",
+            400  # Expect 400 Bad Request
+        )
+        
+        # Restore original token
+        self.token = original_token
+        
+        return success
+
+    def test_partner_rejection(self):
+        """Test admin rejecting a partner"""
+        # First create another partner to reject
+        timestamp = int(time.time())
+        
+        id_recto_b64 = self.create_fake_base64_image()
+        id_verso_b64 = self.create_fake_base64_image()
+        che_kbis_b64 = self.create_fake_base64_pdf()
+        
+        test_data = {
+            "email": f"reject_cobbler_{timestamp}@test.com",
+            "password": "TestPass123",
+            "name": f"Reject Cobbler {timestamp}",
+            "role": "cobbler",
+            "phone": "+41791234568",
+            "address": "Test Street 1, 1000 Lausanne, Suisse",
+            "bank_account": "CH93 0000 0000 0000 0001 0",
+            "id_recto": f"data:image/png;base64,{id_recto_b64}",
+            "id_verso": f"data:image/png;base64,{id_verso_b64}",
+            "che_kbis": f"data:application/pdf;base64,{che_kbis_b64}"
+        }
+        
+        success, response = self.run_test(
+            "Create Partner for Rejection Test",
+            "POST",
+            "auth/register",
+            200,
+            data=test_data
+        )
+        
+        if not success:
+            return False
+            
+        reject_partner_id = response['user']['id']
+        
+        # Now reject this partner as admin
+        if not self.admin_token:
+            print("   ❌ No admin token available")
+            return False
+            
+        # Set admin token temporarily
+        original_token = self.token
+        self.token = self.admin_token
+        
+        success, response = self.run_test(
+            "Admin Reject Partner",
+            "POST",
+            f"admin/partners/{reject_partner_id}/reject",
+            200
+        )
+        
+        # Restore original token
+        self.token = original_token
+        
+        if success:
+            print(f"   ✅ Partner rejected successfully")
+            return True
+        return False
+
     def test_cobbler_registration(self):
-        """Test cobbler registration"""
+        """Test basic cobbler registration (legacy test)"""
         timestamp = int(time.time())
         test_data = {
             "email": f"testcobbler_{timestamp}@example.com",
@@ -291,7 +624,7 @@ class ShoeRepairAPITester:
         }
         
         success, response = self.run_test(
-            "Cobbler Registration",
+            "Basic Cobbler Registration",
             "POST",
             "auth/register",
             200,
@@ -299,9 +632,7 @@ class ShoeRepairAPITester:
         )
         
         if success and 'token' in response:
-            self.cobbler_token = response['token']
-            self.cobbler_id = response['user']['id']
-            print(f"   ✅ Cobbler registered: {self.cobbler_id}")
+            print(f"   ✅ Basic cobbler registered")
             return True
         return False
 
