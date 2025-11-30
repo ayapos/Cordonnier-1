@@ -2,6 +2,7 @@ import requests
 import sys
 import json
 import time
+import base64
 from datetime import datetime
 
 class ShoeRepairAPITester:
@@ -10,6 +11,10 @@ class ShoeRepairAPITester:
         self.api_url = f"{base_url}/api"
         self.token = None
         self.user_id = None
+        self.admin_token = None
+        self.cobbler_token = None
+        self.cobbler_id = None
+        self.partner_id = None
         self.tests_run = 0
         self.tests_passed = 0
         self.test_results = []
