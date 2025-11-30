@@ -163,7 +163,7 @@ export default function Dashboard({ user }) {
           <div className="mb-6">
             <Link to="/order/new">
               <Button className="bg-amber-700 hover:bg-amber-800" data-testid="new-order-btn">
-                <Plus className="w-4 h-4 mr-2" /> Nouvelle commande
+                <Plus className="w-4 h-4 mr-2" /> {t('newOrder')}
               </Button>
             </Link>
           </div>
@@ -172,13 +172,13 @@ export default function Dashboard({ user }) {
         {/* Orders List */}
         <Card className="border-amber-200">
           <CardHeader>
-            <CardTitle>Mes Commandes</CardTitle>
+            <CardTitle>{t('myOrders')}</CardTitle>
           </CardHeader>
           <CardContent>
             {orders.length === 0 ? (
               <div className="text-center py-12" data-testid="no-orders">
                 <Package className="w-16 h-16 text-amber-300 mx-auto mb-4" />
-                <p className="text-amber-800">Aucune commande pour le moment</p>
+                <p className="text-amber-800">{t('noOrdersYet')}</p>
               </div>
             ) : (
               <div className="space-y-4">
@@ -195,7 +195,7 @@ export default function Dashboard({ user }) {
                         <p className="text-sm text-amber-700" data-testid={`order-service-${order.id}`}>{order.service_name}</p>
                       </div>
                       <Badge className={statusColors[order.status]} data-testid={`order-status-${order.id}`}>
-                        {statusLabels[order.status]}
+                        {t(order.status)}
                       </Badge>
                     </div>
                     <div className="flex justify-between items-center mt-3 text-sm">
@@ -214,7 +214,7 @@ export default function Dashboard({ user }) {
                         className="mt-3 bg-amber-700 hover:bg-amber-800"
                         data-testid={`accept-order-btn-${order.id}`}
                       >
-                        Accepter la commande
+                        {t('acceptOrder')}
                       </Button>
                     )}
                     {user?.role === 'cobbler' && order.cobbler_id === user.id && order.status === 'in_progress' && (
@@ -227,7 +227,7 @@ export default function Dashboard({ user }) {
                         className="mt-3 bg-amber-700 hover:bg-amber-800"
                         data-testid={`ship-order-btn-${order.id}`}
                       >
-                        Marquer comme expédié
+                        {t('markAsShipped')}
                       </Button>
                     )}
                   </div>
