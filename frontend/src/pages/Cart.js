@@ -24,8 +24,9 @@ export default function Cart({ user }) {
           <div className="container mx-auto px-4 py-4 flex justify-between items-center">
             <Link to="/" className="flex items-center gap-2">
               <Wrench className="w-8 h-8 text-amber-700" />
-              <h1 className="text-2xl font-bold text-amber-900" style={{ fontFamily: 'Cormorant Garamond, serif' }}>ShoeRepair</h1>
+              <h1 className="text-2xl font-bold text-amber-900" style={{ fontFamily: 'Cormorant Garamond, serif' }}>{t('appTitle')}</h1>
             </Link>
+            <LanguageSwitcher />
           </div>
         </header>
 
