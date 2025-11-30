@@ -312,7 +312,7 @@ class ShoeRepairAPITester:
         return False
 
     def test_partner_registration_with_documents(self):
-        """Test partner registration with document upload"""
+        """Test partner registration with document upload - P1 Feature"""
         timestamp = int(time.time())
         
         # Create fake documents
@@ -320,14 +320,15 @@ class ShoeRepairAPITester:
         id_verso_b64 = self.create_fake_base64_image()
         che_kbis_b64 = self.create_fake_base64_pdf()
         
+        # Use the exact test data from the French review request
         test_data = {
-            "email": "cobbler_test@test.com",
+            "email": f"cobbler_new_{timestamp}@test.com",  # Make unique
             "password": "TestPass123",
-            "name": "Jean Cordonnier",
+            "name": "Pierre Cordonnier",
             "role": "cobbler",
             "phone": "+41791234567",
-            "address": "Rue de Lausanne 10, 1003 Lausanne, Suisse",
-            "bank_account": "CH93 0000 0000 0000 0000 0",
+            "address": "Rue de Genève 15, 1003 Lausanne, Suisse",
+            "bank_account": "CH93 0000 0000 0000 0000 1",
             "id_recto": f"data:image/png;base64,{id_recto_b64}",
             "id_verso": f"data:image/png;base64,{id_verso_b64}",
             "che_kbis": f"data:application/pdf;base64,{che_kbis_b64}"
