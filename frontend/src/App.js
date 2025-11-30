@@ -45,14 +45,14 @@ const ProtectedRoute = ({ children }) => {
 
 function App() {
   const [user, setUser] = useState(null);
-  const [userVersion, setUserVersion] = useState(0);
 
+  // Fetch user data on mount and when token changes
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
       fetchUserData();
     }
-  }, [userVersion]);
+  }, []);
 
   const fetchUserData = async () => {
     try {
@@ -65,7 +65,7 @@ function App() {
   };
 
   const refreshUserData = () => {
-    setUserVersion(v => v + 1);
+    fetchUserData();
   };
 
   return (
