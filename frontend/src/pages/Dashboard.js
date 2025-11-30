@@ -168,6 +168,7 @@ export default function Dashboard({ user: initialUser, refreshUser }) {
               user={user} 
               onProfileUpdated={(updatedUser) => {
                 setUser(updatedUser);
+                if (refreshUser) refreshUser();
               }} 
             />
           </div>
