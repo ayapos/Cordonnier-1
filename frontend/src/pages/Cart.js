@@ -4,6 +4,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Wrench, ShoppingCart, Trash2, Plus, Minus, ArrowLeft } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
+import { useTranslation } from 'react-i18next';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
 
 export default function Cart({ user }) {
   const navigate = useNavigate();
