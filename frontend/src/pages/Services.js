@@ -25,6 +25,7 @@ const categoryImages = {
 
 export default function Services({ user }) {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const { addToCart, getCartCount } = useCart();
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
