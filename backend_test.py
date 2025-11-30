@@ -346,7 +346,8 @@ class ShoeRepairAPITester:
             self.cobbler_token = response['token']
             self.partner_id = response['user']['id']
             print(f"   ✅ Partner registered: {self.partner_id}")
-            print(f"   ✅ Partner status should be 'pending'")
+            print(f"   ✅ Partner role: {response.get('user', {}).get('role')}")
+            print(f"   ✅ Token received - status should be 'pending'")
             return True
         return False
 
