@@ -216,6 +216,21 @@ const resources = {
       "customerReviews": "Customer Reviews",
       "whatTheySay": "What they say about us",
       
+      // Features
+      "autoAssignmentTitle": "Automatic assignment",
+      "autoAssignmentDesc": "Your order is assigned to the nearest cobbler automatically",
+      "fastAndConvenientTitle": "Fast and convenient",
+      "fastAndConvenientDesc": "Shipping and return included. Standard 10d or Express 72h",
+      "securePaymentTitle": "Secure payment",
+      "securePaymentDesc": "Stripe Connect. Automatic payment to cobblers",
+      
+      // Before After section
+      "beforeAfterGallery": "Before / After",
+      "repairResults": "Our repair results",
+      "bootResole": "Boot resole",
+      "sneakersCleaning": "Sneakers cleaning",
+      "heelsRepair": "Heels repair",
+      
       // Services page
       "availableServices": "available",
       "addToCart": "Add to cart",
