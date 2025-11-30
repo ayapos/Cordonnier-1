@@ -469,6 +469,33 @@ export default function AdminDashboard({ user }) {
                             </SelectContent>
                           </Select>
                         </div>
+                        <div>
+                          <Label htmlFor="service-gender">Genre</Label>
+                          <Select 
+                            value={newService.gender} 
+                            onValueChange={(value) => setNewService({...newService, gender: value})}
+                          >
+                            <SelectTrigger data-testid="service-gender-select">
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="femme">Femme</SelectItem>
+                              <SelectItem value="homme">Homme</SelectItem>
+                              <SelectItem value="mixte">Mixte</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                        <div>
+                          <Label htmlFor="service-image">URL de l'image</Label>
+                          <Input
+                            id="service-image"
+                            placeholder="https://exemple.com/image.jpg"
+                            value={newService.image_url}
+                            onChange={(e) => setNewService({...newService, image_url: e.target.value})}
+                            data-testid="service-image-input"
+                          />
+                          <p className="text-xs text-gray-500 mt-1">URL d'une image Unsplash ou autre</p>
+                        </div>
                         <Button type="submit" className="w-full bg-amber-700 hover:bg-amber-800" data-testid="submit-service-btn">
                           Créer le service
                         </Button>
