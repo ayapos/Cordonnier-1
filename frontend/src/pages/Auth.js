@@ -153,21 +153,6 @@ export default function Auth({ setUser }) {
                     />
                   </div>
                   <div>
-                    <Label htmlFor="register-role">Type de compte</Label>
-                    <Select 
-                      value={formData.role} 
-                      onValueChange={(value) => setFormData({ ...formData, role: value })}
-                    >
-                      <SelectTrigger data-testid="register-role">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="client" data-testid="role-client">Client</SelectItem>
-                        <SelectItem value="cobbler" data-testid="role-cobbler">Cordonnier</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div>
                     <Label htmlFor="register-phone">Téléphone (optionnel)</Label>
                     <Input
                       id="register-phone"
