@@ -93,6 +93,7 @@ class Service(BaseModel):
     estimated_days: int
     category: str
     gender: str  # 'homme', 'femme', 'mixte'
+    image_url: Optional[str] = None  # URL de l'image du service
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 class ServiceCreate(BaseModel):
