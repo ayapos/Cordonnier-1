@@ -39,7 +39,7 @@ export function CartProvider({ children }) {
       const existing = prev.find(item => item.id === service.id);
       if (existing) {
         // Increase quantity
-        toast.success('Quantité mise à jour dans le panier');
+        toast.success(t('quantityUpdated'));
         return prev.map(item =>
           item.id === service.id
             ? { ...item, quantity: item.quantity + 1 }
@@ -47,7 +47,7 @@ export function CartProvider({ children }) {
         );
       } else {
         // Add new item
-        toast.success('Service ajouté au panier');
+        toast.success(t('addedToCart'));
         return [...prev, { ...service, quantity: 1 }];
       }
     });
@@ -55,7 +55,7 @@ export function CartProvider({ children }) {
 
   const removeFromCart = (serviceId) => {
     setCartItems((prev) => prev.filter(item => item.id !== serviceId));
-    toast.success('Service retiré du panier');
+    toast.success(t('removedFromCart'));
   };
 
   const updateQuantity = (serviceId, quantity) => {
