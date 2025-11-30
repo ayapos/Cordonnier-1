@@ -364,7 +364,7 @@ export default function Checkout({ user }) {
           {/* Summary */}
           <Card className="border-amber-300 bg-amber-50">
             <CardHeader>
-              <CardTitle>Récapitulatif de la commande</CardTitle>
+              <CardTitle>{t('orderSummary')}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
               <div className="space-y-2">
@@ -377,17 +377,17 @@ export default function Checkout({ user }) {
               </div>
               <div className="border-t border-amber-300 pt-2">
                 <div className="flex justify-between text-amber-800">
-                  <span>Sous-total ({getCartCount()} articles)</span>
+                  <span>{t('subtotal')} ({getCartCount()} {getCartCount() > 1 ? t('articles') : t('article')})</span>
                   <span className="font-medium">{getCartTotal().toFixed(2)}CHF</span>
                 </div>
                 <div className="flex justify-between text-amber-800 mt-2">
-                  <span>Livraison</span>
+                  <span>{t('delivery')}</span>
                   <span className="font-medium">{calculateDeliveryPrice()}CHF</span>
                 </div>
               </div>
               <div className="border-t border-amber-300 pt-3 mt-3">
                 <div className="flex justify-between text-lg">
-                  <span className="font-bold text-amber-950">Total</span>
+                  <span className="font-bold text-amber-950">{t('total')}</span>
                   <span className="font-bold text-amber-700">{calculateTotal().toFixed(2)}CHF</span>
                 </div>
               </div>
@@ -399,7 +399,7 @@ export default function Checkout({ user }) {
                 }
                 className="w-full bg-amber-700 hover:bg-amber-800 text-lg py-6 mt-4"
               >
-                {loading ? 'Traitement...' : 'Confirmer et payer'}
+                {loading ? t('processing') : t('confirmAndPay')}
               </Button>
             </CardContent>
           </Card>
