@@ -1339,7 +1339,10 @@ async def delete_service(service_id: str, current_user: dict = Depends(get_curre
 app.include_router(api_router)
 
 # Mount static files for media
-app.mount("/uploads", StaticFiles(directory=str(ROOT_DIR / "uploads")), name="uploads")
+try:
+    app.mount("/uploads", StaticFiles(directory=str(ROOT_DIR / "uploads")), name="uploads")
+except Exception as e:
+    logger.warning(f"Could not mount static files: {e}")
 
 app.add_middleware(
     CORSMiddleware,
