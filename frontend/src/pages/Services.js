@@ -1,15 +1,24 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Sparkles, Clock, ArrowLeft, Heart } from 'lucide-react';
+import { Clock, ArrowLeft, Filter } from 'lucide-react';
 import { toast } from 'sonner';
 import axios from 'axios';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
+
+const categoryImages = {
+  'Talons & Escarpins': 'https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=600&q=80',
+  'Chaussures de ville': 'https://images.unsplash.com/photo-1638609348722-aa2a3a67db26?w=600&q=80',
+  'Bottes & Bottines': 'https://images.unsplash.com/photo-1605812860427-4024433a70fd?w=600&q=80',
+  'Sneakers & Baskets': 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=600&q=80',
+  'Sandales': 'https://images.unsplash.com/photo-1581101767113-1677fc2beaa8?w=600&q=80',
+  'Entretien & Rénovation': 'https://images.unsplash.com/photo-1614252235316-8c857d38b5f4?w=600&q=80',
+  'Ajustements': 'https://images.unsplash.com/photo-1616406432452-07bc5938759d?w=600&q=80'
+};
 
 export default function Services({ user }) {
   const navigate = useNavigate();
@@ -50,136 +59,147 @@ export default function Services({ user }) {
     return matchesGender && matchesCategory;
   });
 
+  const groupedServices = categories.reduce((acc, category) => {
+    const categoryServices = filteredServices.filter(s => s.category === category);
+    if (categoryServices.length > 0) {
+      acc[category] = categoryServices;
+    }
+    return acc;
+  }, {});
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-rose-50 to-purple-50">
-      {/* Header */}
-      <header className="sticky top-0 z-50 backdrop-blur-lg bg-white/80 border-b border-pink-200 shadow-sm">
-        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <div className="flex items-center gap-4">
+    <div className="min-h-screen bg-white">
+      {/* Fixed Mobile Header */}
+      <header className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-200">
+        <div className="px-4 py-3 flex justify-between items-center max-w-md mx-auto">
+          <div className="flex items-center gap-3">
             <Link to="/">
-              <Button variant="ghost" size="icon" data-testid="back-home-btn" className="hover:bg-pink-100">
-                <ArrowLeft className="w-5 h-5 text-pink-700" />
+              <Button variant="ghost" size="icon" data-testid="back-home-btn" className="-ml-2">
+                <ArrowLeft className="w-5 h-5 text-gray-700" />
               </Button>
             </Link>
-            <div className="flex items-center gap-3">
-              <div className="bg-gradient-to-br from-pink-400 to-purple-500 p-2 rounded-2xl shadow-lg">
-                <Sparkles className="w-6 h-6 text-white" />
-              </div>
-              <div>
-                <h1 className="text-2xl font-bold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent" style={{ fontFamily: 'Playfair Display, serif' }}>ShoeRepair</h1>
-                <p className="text-xs text-pink-600">L'élégance à portée de main</p>
-              </div>
+            <div>
+              <h1 className="text-lg font-bold text-gray-900">Services</h1>
+              <p className="text-xs text-gray-500">{filteredServices.length} disponibles</p>
             </div>
           </div>
-          <nav className="flex items-center gap-4">
-            {user ? (
-              <Link to="/dashboard">
-                <Button data-testid="dashboard-nav-btn" className="bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white">Tableau de bord</Button>
-              </Link>
-            ) : (
-              <Link to="/auth">
-                <Button data-testid="auth-nav-btn" className="bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white">Connexion</Button>
-              </Link>
-            )}
-          </nav>
+          {user && (
+            <Link to="/dashboard">
+              <Button size="sm" className="bg-indigo-600 text-white">Dashboard</Button>
+            </Link>
+          )}
         </div>
       </header>
 
-      {/* Services Section */}
-      <div className="container mx-auto px-4 py-12">
-        <div className="text-center mb-12">
-          <h2 className="text-5xl font-bold mb-4" style={{ fontFamily: 'Playfair Display, serif' }} data-testid="services-title">
-            <span className="bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">Nos Services</span>
-          </h2>
-          <p className="text-lg text-gray-700">Des prestations sur mesure pour sublimer vos chaussures</p>
+      <div className="pt-16 pb-6">
+        {/* Gender Tabs - Sticky */}
+        <div className="sticky top-16 bg-white border-b border-gray-200 z-40">
+          <div className="px-4 py-3 max-w-md mx-auto">
+            <Tabs value={selectedGender} onValueChange={setSelectedGender}>
+              <TabsList className="grid w-full grid-cols-2 bg-gray-100 p-1 rounded-xl">
+                <TabsTrigger 
+                  value="femme" 
+                  className="data-[state=active]:bg-indigo-600 data-[state=active]:text-white rounded-lg" 
+                  data-testid="femme-tab"
+                >
+                  Femme
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="homme" 
+                  className="data-[state=active]:bg-indigo-600 data-[state=active]:text-white rounded-lg" 
+                  data-testid="homme-tab"
+                >
+                  Homme
+                </TabsTrigger>
+              </TabsList>
+            </Tabs>
+          </div>
         </div>
 
-        {/* Gender Tabs */}
-        <Tabs value={selectedGender} onValueChange={setSelectedGender} className="mb-8">
-          <TabsList className="grid w-full max-w-md mx-auto grid-cols-2 bg-white/60 backdrop-blur border border-pink-200 p-1 rounded-2xl">
-            <TabsTrigger value="femme" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-pink-500 data-[state=active]:to-purple-500 data-[state=active]:text-white rounded-xl" data-testid="femme-tab">
-              <Heart className="w-4 h-4 mr-2" /> Femme
-            </TabsTrigger>
-            <TabsTrigger value="homme" className="data-[state=active]:bg-gradient-to-r data-[state=active]:from-pink-500 data-[state=active]:to-purple-500 data-[state=active]:text-white rounded-xl" data-testid="homme-tab">
-              Homme
-            </TabsTrigger>
-          </TabsList>
-        </Tabs>
-
         {/* Category Filter */}
-        <div className="flex flex-wrap justify-center gap-3 mb-8">
-          <Button
-            variant={selectedCategory === 'all' ? 'default' : 'outline'}
-            onClick={() => setSelectedCategory('all')}
-            className={selectedCategory === 'all' ? 'bg-gradient-to-r from-pink-500 to-purple-500 text-white' : 'border-pink-300 text-pink-700 hover:bg-pink-50'}
-            data-testid="category-all"
-          >
-            Tous
-          </Button>
-          {categories.map((category) => (
+        <div className="px-4 py-4 max-w-md mx-auto overflow-x-auto">
+          <div className="flex gap-2 pb-2">
             <Button
-              key={category}
-              variant={selectedCategory === category ? 'default' : 'outline'}
-              onClick={() => setSelectedCategory(category)}
-              className={selectedCategory === category ? 'bg-gradient-to-r from-pink-500 to-purple-500 text-white' : 'border-pink-300 text-pink-700 hover:bg-pink-50'}
-              data-testid={`category-${category}`}
+              size="sm"
+              variant={selectedCategory === 'all' ? 'default' : 'outline'}
+              onClick={() => setSelectedCategory('all')}
+              className={selectedCategory === 'all' ? 'bg-indigo-600 text-white' : 'border-gray-300 text-gray-700'}
             >
-              {category}
+              Tous
             </Button>
-          ))}
+            {categories.map((category) => (
+              <Button
+                key={category}
+                size="sm"
+                variant={selectedCategory === category ? 'default' : 'outline'}
+                onClick={() => setSelectedCategory(category)}
+                className={selectedCategory === category ? 'bg-indigo-600 text-white whitespace-nowrap' : 'border-gray-300 text-gray-700 whitespace-nowrap'}
+              >
+                {category}
+              </Button>
+            ))}
+          </div>
         </div>
 
         {loading ? (
           <div className="text-center py-20">
-            <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-pink-500 border-t-transparent"></div>
+            <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-indigo-600 border-t-transparent"></div>
           </div>
         ) : filteredServices.length === 0 ? (
-          <div className="text-center py-20" data-testid="no-services">
-            <p className="text-gray-700 text-lg">Aucun service disponible dans cette catégorie.</p>
+          <div className="text-center py-20 px-4" data-testid="no-services">
+            <p className="text-gray-600">Aucun service disponible</p>
           </div>
         ) : (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredServices.map((service) => (
-              <Card 
-                key={service.id} 
-                className="border-pink-200 hover:shadow-2xl transition-all cursor-pointer group bg-white/70 backdrop-blur rounded-3xl overflow-hidden"
-                data-testid={`service-card-${service.id}`}
-              >
-                <CardHeader className="bg-gradient-to-br from-pink-50 to-purple-50">
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1">
-                      <CardTitle className="text-xl text-gray-800 mb-2" data-testid={`service-name-${service.id}`}>{service.name}</CardTitle>
-                      <div className="flex gap-2">
-                        <Badge className="bg-gradient-to-r from-pink-400 to-purple-400 text-white border-0" data-testid={`service-category-${service.id}`}>{service.category}</Badge>
+          <div className="px-4 max-w-md mx-auto space-y-8 pb-8">
+            {Object.entries(groupedServices).map(([category, categoryServices]) => (
+              <div key={category}>
+                {/* Category Header with Image */}
+                <div className="relative rounded-2xl overflow-hidden mb-4 h-32">
+                  <img 
+                    src={categoryImages[category] || 'https://images.unsplash.com/photo-1605812860427-4024433a70fd?w=600&q=80'} 
+                    alt={category}
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                  <div className="absolute bottom-3 left-3 right-3 text-white">
+                    <h3 className="text-xl font-bold">{category}</h3>
+                    <p className="text-sm text-gray-200">{categoryServices.length} services</p>
+                  </div>
+                </div>
+
+                {/* Services List */}
+                <div className="space-y-3">
+                  {categoryServices.map((service) => (
+                    <div 
+                      key={service.id} 
+                      className="bg-white border border-gray-200 rounded-2xl p-4 shadow-sm active:scale-[0.98] transition-transform"
+                      onClick={() => handleSelectService(service.id)}
+                      data-testid={`service-card-${service.id}`}
+                    >
+                      <div className="flex justify-between items-start mb-2">
+                        <div className="flex-1">
+                          <h4 className="font-bold text-gray-900 mb-1" data-testid={`service-name-${service.id}`}>{service.name}</h4>
+                          <p className="text-sm text-gray-600 mb-2" data-testid={`service-description-${service.id}`}>{service.description}</p>
+                        </div>
+                        <div className="text-2xl font-bold text-indigo-600 ml-4" data-testid={`service-price-${service.id}`}>
+                          {service.price}€
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2 text-gray-600">
+                          <Clock className="w-4 h-4" />
+                          <span className="text-sm" data-testid={`service-days-${service.id}`}>{service.estimated_days}j</span>
+                        </div>
                         {service.gender !== 'mixte' && (
-                          <Badge className="bg-white text-pink-700 border border-pink-300" data-testid={`service-gender-${service.id}`}>
-                            {service.gender === 'femme' ? '♀ Femme' : '♂ Homme'}
+                          <Badge className="bg-gray-100 text-gray-700 border-0">
+                            {service.gender === 'femme' ? '♀' : '♂'} {service.gender}
                           </Badge>
                         )}
                       </div>
                     </div>
-                    <div className="text-right">
-                      <div className="text-3xl font-bold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent" data-testid={`service-price-${service.id}`}>{service.price}€</div>
-                    </div>
-                  </div>
-                </CardHeader>
-                <CardContent className="pt-6">
-                  <CardDescription className="text-base text-gray-700 mb-4" data-testid={`service-description-${service.id}`}>{service.description}</CardDescription>
-                  <div className="flex items-center gap-2 text-pink-700">
-                    <Clock className="w-4 h-4" />
-                    <span className="text-sm font-medium" data-testid={`service-days-${service.id}`}>{service.estimated_days} jours</span>
-                  </div>
-                </CardContent>
-                <CardFooter>
-                  <Button 
-                    onClick={() => handleSelectService(service.id)}
-                    className="w-full bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white group-hover:shadow-lg transition-all"
-                    data-testid={`select-service-btn-${service.id}`}
-                  >
-                    Choisir ce service
-                  </Button>
-                </CardFooter>
-              </Card>
+                  ))}
+                </div>
+              </div>
             ))}
           </div>
         )}
