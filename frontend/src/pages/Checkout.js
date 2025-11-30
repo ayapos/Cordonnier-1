@@ -162,13 +162,13 @@ export default function Checkout({ user }) {
           {!user && (
             <Card className="border-amber-200">
               <CardHeader>
-                <CardTitle>Comment souhaitez-vous continuer ?</CardTitle>
+                <CardTitle>{t('howToContinue')}</CardTitle>
               </CardHeader>
               <CardContent>
                 <Tabs value={checkoutMode} onValueChange={setCheckoutMode}>
                   <TabsList className="grid w-full grid-cols-2">
-                    <TabsTrigger value="guest">Invité</TabsTrigger>
-                    <TabsTrigger value="login">Se connecter</TabsTrigger>
+                    <TabsTrigger value="guest">{t('guest')}</TabsTrigger>
+                    <TabsTrigger value="login">{t('signIn')}</TabsTrigger>
                   </TabsList>
                   
                   <TabsContent value="guest" className="space-y-4">
