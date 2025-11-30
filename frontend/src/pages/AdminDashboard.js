@@ -163,16 +163,23 @@ export default function AdminDashboard({ user }) {
     }
   };
 
-  const handleDeleteService = async (serviceId, serviceName) => {
-    if (!window.confirm(`Êtes-vous sûr de vouloir supprimer le service "${serviceName}" ?`)) {
-      return;
-    }
+  const handleDeleteService = (service) => {
+    setServiceToDelete(service);
+    setDeleteConfirmOpen(true);
+  };
+
+  const confirmDelete = async () => {
+    if (!serviceToDelete) return;
+    
     try {
-      await axios.delete(`${API}/services/${serviceId}`);
+      await axios.delete(`${API}/services/${serviceToDelete.id}`);
       toast.success('Service supprimé avec succès !');
+      setDeleteConfirmOpen(false);
+      setServiceToDelete(null);
       fetchAllData();
     } catch (error) {
       toast.error('Erreur de suppression du service');
+      console.error('Delete error:', error);
     }
   };
 
