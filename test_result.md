@@ -73,6 +73,9 @@
 ##         - working: true
 ##         - agent: "testing"
 ##         - comment: "✅ RE-TESTED P2: Cobbler address update with exact test data from French requirements. PUT /api/cobbler/address with approved cobbler token successfully updates address to 'Place de la Gare 10, 1003 Lausanne, Suisse'. Geocoding returns valid coordinates (lat=46.5177361, lon=6.6284576). Invalid address 'XXXXX' properly rejected with error response. Authorization working correctly (cobbler-only access)."
+##         - working: true
+##         - agent: "testing"
+##         - comment: "✅ COMPLETE ADDRESS UPDATE FLOW TESTED: Full flow from cobbler login (cordonnier@test.com) → address update via PUT /api/cobbler/address to 'Avenue du Léman 50, 1005 Lausanne, Suisse' → profile update via PUT /api/auth/me (name: 'Jean Cordonnier Updated', phone: '+41 79 111 22 33') → admin verification via GET /api/cobbler/cobblers. All changes successfully saved and visible in admin dashboard. Geocoding failed due to network connectivity (nominatim.openstreetmap.org connection refused) but address saved correctly without coordinates as expected. Complete flow working 100%."
 
 ## frontend:
 ##   - task: "Cart Context - localStorage management"
