@@ -1267,6 +1267,9 @@ async def delete_service(service_id: str, current_user: dict = Depends(get_curre
 # Include router
 app.include_router(api_router)
 
+# Mount static files for media
+app.mount("/uploads", StaticFiles(directory=str(ROOT_DIR / "uploads")), name="uploads")
+
 app.add_middleware(
     CORSMiddleware,
     allow_credentials=True,
