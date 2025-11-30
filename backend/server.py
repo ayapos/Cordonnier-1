@@ -950,6 +950,38 @@ async def get_pending_partners(current_user: dict = Depends(get_current_user)):
         logger.error(f"Error fetching pending partners: {e}")
         raise HTTPException(status_code=500, detail="Error fetching pending partners")
 
+@api_router.get("/admin/partners/{partner_id}/document/{doc_type}")
+async def get_partner_document(
+    partner_id: str, 
+    doc_type: str,
+    current_user: dict = Depends(get_current_user)
+):
+    if current_user['role'] != 'admin':
+        raise HTTPException(status_code=403, detail="Admin access required")
+    
+    try:
+        # Find partner
+        partner = await db.users.find_one({"id": partner_id, "role": "cobbler"})
+        if not partner:
+            raise HTTPException(status_code=404, detail="Partner not found")
+        
+        # Get document path
+        doc_path = partner.get(doc_type)
+        if not doc_path:
+            raise HTTPException(status_code=404, detail="Document not found")
+        
+        # Load and return document as base64
+        doc_data = load_file_as_base64(doc_path)
+        if not doc_data:
+            raise HTTPException(status_code=404, detail="Document file not found")
+        
+        return {"document": doc_data, "type": doc_type}
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error loading document: {e}")
+        raise HTTPException(status_code=500, detail="Error loading document")
+
 @api_router.post("/admin/partners/{partner_id}/approve")
 async def approve_partner(partner_id: str, current_user: dict = Depends(get_current_user)):
     if current_user['role'] != 'admin':
