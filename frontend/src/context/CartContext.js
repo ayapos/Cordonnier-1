@@ -13,6 +13,7 @@ export function useCart() {
 }
 
 export function CartProvider({ children }) {
+  const { t } = useTranslation();
   const [cartItems, setCartItems] = useState([]);
 
   // Load cart from localStorage on mount
