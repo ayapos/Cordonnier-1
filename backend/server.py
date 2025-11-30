@@ -306,6 +306,43 @@ async def get_user(user_id: str, current_user: dict = Depends(get_current_user))
         raise HTTPException(status_code=404, detail="User not found")
     return user
 
+@api_router.put("/users/{user_id}/location")
+async def update_user_location(
+    user_id: str,
+    address: str = Form(...),
+    current_user: dict = Depends(get_current_user)
+):
+    """Update user's location coordinates from address"""
+    # Only allow users to update their own location or admins
+    if current_user['user_id'] != user_id and current_user['role'] != 'admin':
+        raise HTTPException(status_code=403, detail="Not authorized")
+    
+    # Geocode the address
+    coords = get_coordinates_from_address(address)
+    if not coords:
+        raise HTTPException(status_code=400, detail="Could not geocode address")
+    
+    lat, lon = coords
+    
+    # Update user location
+    result = await db.users.update_one(
+        {"id": user_id},
+        {"$set": {
+            "address": address,
+            "latitude": lat,
+            "longitude": lon
+        }}
+    )
+    
+    if result.matched_count == 0:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    return {
+        "message": "Location updated successfully",
+        "latitude": lat,
+        "longitude": lon
+    }
+
 # Service Routes
 @api_router.post("/services", response_model=Service)
 async def create_service(service: ServiceCreate, current_user: dict = Depends(get_current_user)):
