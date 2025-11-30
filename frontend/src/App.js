@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { toast } from "sonner";
 import axios from "axios";
 import { CartProvider } from "@/context/CartContext";
+import "./i18n"; // Initialize i18n
 
 // Pages
 import Home from "@/pages/Home";
