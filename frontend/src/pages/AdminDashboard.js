@@ -56,6 +56,8 @@ export default function AdminDashboard({ user }) {
   const [createServiceOpen, setCreateServiceOpen] = useState(false);
   const [editService, setEditService] = useState(null);
   const [editServiceOpen, setEditServiceOpen] = useState(false);
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
+  const [serviceToDelete, setServiceToDelete] = useState(null);
 
   useEffect(() => {
     if (!user || user.role !== 'admin') {
