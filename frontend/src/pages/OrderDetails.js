@@ -58,7 +58,7 @@ export default function OrderDetails({ user }) {
       // Fetch cobbler info if assigned
       if (response.data.cobbler_id) {
         try {
-          const cobblerResponse = await axios.get(`${API}/users/${response.data.cobbler_id}`);
+          const cobblerResponse = await axios.get(`${API}/auth/users/${response.data.cobbler_id}`);
           setCobbler(cobblerResponse.data);
         } catch (err) {
           console.error('Could not fetch cobbler info');
