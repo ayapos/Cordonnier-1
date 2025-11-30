@@ -33,9 +33,10 @@ export default function Home({ user }) {
   const { getCartCount } = useCart();
   const { t } = useTranslation();
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [carouselImages, setCarouselImages] = useState(getFallbackCarouselImages(t));
+  const [carouselImages, setCarouselImages] = useState([]);
+  const [isLoadingImages, setIsLoadingImages] = useState(true);
 
-  // Load carousel images from API
+  // Load carousel images from API FIRST
   useEffect(() => {
     const loadCarouselImages = async () => {
       try {
@@ -50,10 +51,16 @@ export default function Home({ user }) {
             subtitle: '' // Admin can set this in future
           }));
           setCarouselImages(mappedImages);
+        } else {
+          // No uploaded images, use fallback
+          setCarouselImages(getFallbackCarouselImages(t));
         }
       } catch (error) {
-        console.log('Using fallback carousel images');
-        // Keep fallback images if API fails
+        console.log('API error, using fallback carousel images');
+        // Use fallback images if API fails
+        setCarouselImages(getFallbackCarouselImages(t));
+      } finally {
+        setIsLoadingImages(false);
       }
     };
     loadCarouselImages();
