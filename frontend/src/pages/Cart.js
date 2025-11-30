@@ -67,7 +67,7 @@ export default function Cart({ user }) {
 
       <div className="container mx-auto px-4 py-8 max-w-4xl">
         <h2 className="text-4xl font-bold text-amber-950 mb-8" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
-          Mon Panier ({getCartCount()} {getCartCount() > 1 ? 'articles' : 'article'})
+          {t('myCart')} ({getCartCount()} {getCartCount() > 1 ? t('articles') : t('article')})
         </h2>
 
         <div className="space-y-6">
