@@ -114,7 +114,9 @@ export default function AdminDashboard({ user }) {
         description: '',
         price: '',
         estimated_days: '',
-        category: 'Réparation'
+        category: 'Réparation',
+        gender: 'mixte',
+        image_url: ''
       });
       fetchAllData();
     } catch (error) {
