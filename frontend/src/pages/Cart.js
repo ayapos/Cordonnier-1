@@ -92,9 +92,9 @@ export default function Cart({ user }) {
                       />
                     )}
                     <div className="flex-1">
-                      <h3 className="font-bold text-amber-950">{item.name}</h3>
-                      <p className="text-sm text-amber-600">{item.description}</p>
-                      <p className="text-sm text-amber-700 mt-1">Délai: {item.estimated_days} jours</p>
+                      <h3 className="font-bold text-amber-950">{getServiceField(item, 'name')}</h3>
+                      <p className="text-sm text-amber-600">{getServiceField(item, 'description')}</p>
+                      <p className="text-sm text-amber-700 mt-1">Délai: {item.estimated_days} {t('days')}</p>
                     </div>
                     <div className="flex items-center gap-3">
                       <Button
