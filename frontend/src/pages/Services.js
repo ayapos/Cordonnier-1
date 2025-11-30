@@ -227,7 +227,7 @@ export default function Services({ user }) {
                         data-testid={`add-to-cart-${service.id}`}
                       >
                         <ShoppingCart className="w-4 h-4 mr-2" />
-                        Ajouter au panier
+                        {t('addToCart')}
                       </Button>
                     </div>
                   ))}
