@@ -336,7 +336,9 @@ export default function AdminDashboard({ user }) {
                                 <CardTitle className="text-lg" data-testid={`cobbler-name-${cobbler.id}`}>{cobbler.name}</CardTitle>
                                 <p className="text-sm text-amber-600" data-testid={`cobbler-email-${cobbler.id}`}>{cobbler.email}</p>
                               </div>
-                              <Badge className="bg-green-100 text-green-800">Actif</Badge>
+                              <Badge className={cobbler.status === 'approved' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}>
+                                {cobbler.status === 'approved' ? 'Actif' : cobbler.status === 'pending' ? 'En attente' : 'Rejeté'}
+                              </Badge>
                             </div>
                           </CardHeader>
                           <CardContent>
@@ -350,6 +352,14 @@ export default function AdminDashboard({ user }) {
                                 <p className="text-amber-700" data-testid={`cobbler-address-${cobbler.id}`}>
                                   📍 {cobbler.address}
                                 </p>
+                              )}
+                              {cobbler.terms_signed_at && (
+                                <div className="bg-green-50 border border-green-200 rounded-lg p-2 mt-2">
+                                  <p className="text-xs font-medium text-green-800">✓ CGU Partenaire signées</p>
+                                  <p className="text-xs text-green-700">
+                                    {new Date(cobbler.terms_signed_at).toLocaleString('fr-FR')}
+                                  </p>
+                                </div>
                               )}
                               <div className="pt-3 border-t border-amber-200 mt-3">
                                 <div className="flex justify-between text-amber-800">
