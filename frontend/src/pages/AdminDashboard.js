@@ -66,6 +66,8 @@ export default function AdminDashboard({ user }) {
   const [serviceToDelete, setServiceToDelete] = useState(null);
   const [newCategoryName, setNewCategoryName] = useState('');
   const [showNewCategoryInput, setShowNewCategoryInput] = useState(false);
+  const [showEditCategoryInput, setShowEditCategoryInput] = useState(false);
+  const [editCategoryName, setEditCategoryName] = useState('');
   const [categories, setCategories] = useState(['Réparation', 'Entretien', 'Modification', 'Talons & Escarpins', 'Bottes & Bottines', 'Chaussures de ville']);
 
   useEffect(() => {
