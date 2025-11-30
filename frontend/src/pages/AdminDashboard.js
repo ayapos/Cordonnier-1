@@ -663,11 +663,12 @@ export default function AdminDashboard({ user }) {
                           {!showNewCategoryInput ? (
                             <div className="space-y-2">
                               <Select 
+                                key={categories.length} 
                                 value={newService.category} 
                                 onValueChange={(value) => setNewService({...newService, category: value})}
                               >
                                 <SelectTrigger data-testid="service-category-select">
-                                  <SelectValue />
+                                  <SelectValue placeholder="Sélectionner une catégorie" />
                                 </SelectTrigger>
                                 <SelectContent>
                                   {categories.map((cat) => (
@@ -686,27 +687,31 @@ export default function AdminDashboard({ user }) {
                               </Button>
                             </div>
                           ) : (
-                            <div className="flex gap-2">
-                              <Input
-                                placeholder="Ex: Sneakers"
-                                value={newCategoryName}
-                                onChange={(e) => setNewCategoryName(e.target.value)}
-                                onKeyPress={(e) => e.key === 'Enter' && handleAddCategory()}
-                              />
-                              <Button type="button" onClick={handleAddCategory} size="sm">
-                                ✓
-                              </Button>
-                              <Button 
-                                type="button" 
-                                variant="outline" 
-                                size="sm"
-                                onClick={() => {
-                                  setShowNewCategoryInput(false);
-                                  setNewCategoryName('');
-                                }}
-                              >
-                                ✗
-                              </Button>
+                            <div className="space-y-2">
+                              <div className="flex gap-2">
+                                <Input
+                                  placeholder="Ex: Sneakers"
+                                  value={newCategoryName}
+                                  onChange={(e) => setNewCategoryName(e.target.value)}
+                                  onKeyPress={(e) => e.key === 'Enter' && handleAddCategory()}
+                                  autoFocus
+                                />
+                                <Button type="button" onClick={handleAddCategory} size="sm" className="bg-green-600 hover:bg-green-700 text-white">
+                                  ✓
+                                </Button>
+                                <Button 
+                                  type="button" 
+                                  variant="outline" 
+                                  size="sm"
+                                  onClick={() => {
+                                    setShowNewCategoryInput(false);
+                                    setNewCategoryName('');
+                                  }}
+                                >
+                                  ✗
+                                </Button>
+                              </div>
+                              <p className="text-xs text-amber-600">Entrez le nom de la nouvelle catégorie et appuyez sur ✓</p>
                             </div>
                           )}
                         </div>
