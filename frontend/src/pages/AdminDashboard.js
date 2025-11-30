@@ -11,6 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Wrench, Users, Package, TrendingUp, LogOut, Plus, Edit, Search } from 'lucide-react';
 import { toast } from 'sonner';
 import axios from 'axios';
+import AdminSettings from './AdminSettings';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
