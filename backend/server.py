@@ -1116,7 +1116,7 @@ async def upload_media(
             url=f"/api/media/{unique_filename}",  # Use API endpoint instead of static
             category=category,
             title=title,
-            position=position,
+            position=position_int,  # Use converted int
             uploaded_by=current_user['user_id']
         )
         
