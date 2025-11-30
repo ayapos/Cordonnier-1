@@ -79,6 +79,8 @@ export default function MediaManager() {
       const formData = new FormData();
       formData.append('file', selectedFile);
       formData.append('category', selectedCategory);
+      if (title) formData.append('title', title);
+      if (position) formData.append('position', position);
 
       await axios.post(`${API}/admin/media/upload`, formData, {
         headers: {
@@ -89,6 +91,8 @@ export default function MediaManager() {
       toast.success('Image uploadée avec succès !');
       setSelectedFile(null);
       setPreviewUrl(null);
+      setTitle('');
+      setPosition('');
       fetchMedia();
     } catch (error) {
       toast.error(error.response?.data?.detail || 'Erreur lors de l\'upload');
