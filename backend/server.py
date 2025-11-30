@@ -179,6 +179,16 @@ class Stats(BaseModel):
     pending_orders: int
     completed_orders: int
 
+class Media(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    filename: str
+    original_name: str
+    url: str
+    category: str  # 'carousel', 'services', 'gallery', 'other'
+    uploaded_by: str  # admin user id
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
 # Helper functions
 def hash_password(password: str) -> str:
     return pwd_context.hash(password)
