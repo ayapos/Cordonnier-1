@@ -131,7 +131,7 @@ export default function OrderDetails({ user }) {
                 <div className="text-center">
                   <p className="text-sm text-amber-700 mb-2">Numéro de référence</p>
                   <p className="text-3xl font-bold text-amber-950" data-testid="order-reference">{order.reference_number}</p>
-                  <p className="text-xs text-amber-600 mt-2">À indiquer lors de l'envoi</p>
+                  <p className="text-xs text-amber-600 mt-2">À indiquer lors de l&apos;envoi</p>
                 </div>
               </CardContent>
             </Card>
