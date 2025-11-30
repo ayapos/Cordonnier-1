@@ -539,6 +539,7 @@ const resources = {
       "bootResole": "Risuolatura stivali",
       "sneakersCleaning": "Pulizia sneakers",
       "heelsRepair": "Riparazione tacchi",
+      "leatherRenovation": "Ristrutturazione pelle",
       
       // Services page
       "availableServices": "disponibili",
