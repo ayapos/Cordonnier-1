@@ -17,31 +17,48 @@ async def update_cobbler_address(address_data: dict, current_user: dict = Depend
     
     try:
         address = address_data.get('address')
+        skip_geocoding = address_data.get('skip_geocoding', False)
+        
         if not address:
             raise HTTPException(status_code=400, detail="Address is required")
         
-        # Get coordinates from address
-        coords = get_coordinates_from_address(address)
-        if not coords:
-            raise HTTPException(status_code=400, detail="Could not geocode address. Please verify the address.")
+        update_data = {
+            "address": address,
+            "address_updated_at": datetime.now(timezone.utc).isoformat()
+        }
         
-        # Update user address and coordinates
+        # Try to get coordinates from address
+        if not skip_geocoding:
+            coords = get_coordinates_from_address(address)
+            if coords:
+                update_data["latitude"] = coords[0]
+                update_data["longitude"] = coords[1]
+                logger.info(f"Address geocoded successfully for user {current_user['user_id']}")
+            else:
+                logger.warning(f"Could not geocode address for user {current_user['user_id']}, saving without coordinates")
+                # Don't fail - save address without coordinates
+        
+        # Update user address (with or without coordinates)
         await db.users.update_one(
             {"id": current_user['user_id']},
-            {"$set": {
-                "address": address,
-                "latitude": coords[0],
-                "longitude": coords[1],
-                "address_updated_at": datetime.now(timezone.utc).isoformat()
-            }}
+            {"$set": update_data}
         )
         
-        return {
+        response = {
             "message": "Address updated successfully",
-            "address": address,
-            "latitude": coords[0],
-            "longitude": coords[1]
+            "address": address
         }
+        
+        if "latitude" in update_data and "longitude" in update_data:
+            response["latitude"] = update_data["latitude"]
+            response["longitude"] = update_data["longitude"]
+            response["geocoded"] = True
+        else:
+            response["geocoded"] = False
+            response["warning"] = "Address saved but could not be geocoded. You may receive fewer order assignments."
+        
+        return response
+        
     except HTTPException:
         raise
     except Exception as e:
