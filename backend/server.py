@@ -916,6 +916,142 @@ async def get_cobbler_reviews(cobbler_id: str):
             review['created_at'] = datetime.fromisoformat(review['created_at'])
     return reviews
 
+# Admin Routes - Partner Management
+@api_router.get("/admin/partners/pending")
+async def get_pending_partners(current_user: dict = Depends(get_current_user)):
+    if current_user['role'] != 'admin':
+        raise HTTPException(status_code=403, detail="Admin access required")
+    
+    try:
+        # Get all pending cobbler applications
+        pending_partners = await db.users.find({
+            "role": "cobbler",
+            "status": "pending"
+        }, {"_id": 0, "password": 0}).to_list(1000)
+        
+        # Load documents as base64 for preview
+        for partner in pending_partners:
+            if partner.get('id_recto'):
+                partner['id_recto_preview'] = load_file_as_base64(partner['id_recto'])
+            if partner.get('id_verso'):
+                partner['id_verso_preview'] = load_file_as_base64(partner['id_verso'])
+            if partner.get('che_kbis'):
+                partner['che_kbis_preview'] = load_file_as_base64(partner['che_kbis'])
+        
+        return pending_partners
+    except Exception as e:
+        logger.error(f"Error fetching pending partners: {e}")
+        raise HTTPException(status_code=500, detail="Error fetching pending partners")
+
+@api_router.post("/admin/partners/{partner_id}/approve")
+async def approve_partner(partner_id: str, current_user: dict = Depends(get_current_user)):
+    if current_user['role'] != 'admin':
+        raise HTTPException(status_code=403, detail="Admin access required")
+    
+    try:
+        # Find partner
+        partner = await db.users.find_one({"id": partner_id, "role": "cobbler"})
+        if not partner:
+            raise HTTPException(status_code=404, detail="Partner not found")
+        
+        # Update status to approved and add coordinates if address exists
+        update_data = {
+            "status": "approved",
+            "approved_at": datetime.now(timezone.utc).isoformat()
+        }
+        
+        # Get coordinates from address
+        if partner.get('address'):
+            coords = get_coordinates_from_address(partner['address'])
+            if coords:
+                update_data['latitude'] = coords[0]
+                update_data['longitude'] = coords[1]
+        
+        await db.users.update_one(
+            {"id": partner_id},
+            {"$set": update_data}
+        )
+        
+        # TODO: Send approval email (mocked for now)
+        logger.info(f"Partner {partner_id} approved. Email would be sent to {partner['email']}")
+        
+        return {"message": "Partner approved successfully", "partner_id": partner_id}
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error approving partner: {e}")
+        raise HTTPException(status_code=500, detail="Error approving partner")
+
+@api_router.post("/admin/partners/{partner_id}/reject")
+async def reject_partner(partner_id: str, reason: str = None, current_user: dict = Depends(get_current_user)):
+    if current_user['role'] != 'admin':
+        raise HTTPException(status_code=403, detail="Admin access required")
+    
+    try:
+        # Find partner
+        partner = await db.users.find_one({"id": partner_id, "role": "cobbler"})
+        if not partner:
+            raise HTTPException(status_code=404, detail="Partner not found")
+        
+        # Update status to rejected
+        await db.users.update_one(
+            {"id": partner_id},
+            {"$set": {
+                "status": "rejected",
+                "rejected_at": datetime.now(timezone.utc).isoformat(),
+                "rejection_reason": reason
+            }}
+        )
+        
+        # TODO: Send rejection email (mocked for now)
+        logger.info(f"Partner {partner_id} rejected. Email would be sent to {partner['email']}")
+        
+        return {"message": "Partner rejected", "partner_id": partner_id}
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error rejecting partner: {e}")
+        raise HTTPException(status_code=500, detail="Error rejecting partner")
+
+# Cobbler Routes - Address Management
+@api_router.put("/cobbler/address")
+async def update_cobbler_address(address_data: dict, current_user: dict = Depends(get_current_user)):
+    if current_user['role'] != 'cobbler':
+        raise HTTPException(status_code=403, detail="Cobbler access required")
+    
+    try:
+        address = address_data.get('address')
+        if not address:
+            raise HTTPException(status_code=400, detail="Address is required")
+        
+        # Get coordinates from address
+        coords = get_coordinates_from_address(address)
+        if not coords:
+            raise HTTPException(status_code=400, detail="Could not geocode address. Please verify the address.")
+        
+        # Update user address and coordinates
+        await db.users.update_one(
+            {"id": current_user['user_id']},
+            {"$set": {
+                "address": address,
+                "latitude": coords[0],
+                "longitude": coords[1],
+                "address_updated_at": datetime.now(timezone.utc).isoformat()
+            }}
+        )
+        
+        return {
+            "message": "Address updated successfully",
+            "address": address,
+            "latitude": coords[0],
+            "longitude": coords[1]
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error updating address: {e}")
+        raise HTTPException(status_code=500, detail="Error updating address")
+
 # Stats Routes
 @api_router.get("/stats", response_model=Stats)
 async def get_stats(current_user: dict = Depends(get_current_user)):
