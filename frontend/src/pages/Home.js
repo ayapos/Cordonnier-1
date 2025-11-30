@@ -54,6 +54,7 @@ export default function Home({ user }) {
             <p className="text-xs text-gray-500">Réparation à domicile</p>
           </div>
           <nav className="flex items-center gap-2">
+            <LanguageSwitcher />
             <Link to="/cart">
               <Button variant="ghost" size="icon" className="relative">
                 <ShoppingCart className="w-5 h-5 text-amber-700" />
@@ -70,7 +71,7 @@ export default function Home({ user }) {
               </Link>
             ) : (
               <Link to="/auth">
-                <Button size="sm" className="bg-orange-700 hover:bg-orange-800 text-white" data-testid="auth-nav-btn">Connexion</Button>
+                <Button size="sm" className="bg-orange-700 hover:bg-orange-800 text-white" data-testid="auth-nav-btn">{t('login')}</Button>
               </Link>
             )}
           </nav>
