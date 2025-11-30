@@ -422,6 +422,12 @@ const resources = {
       "austria": "Österreich",
       "netherlands": "Niederlande",
       
+      // Stats section
+      "countries": "Länder",
+      "happyClients": "Zufriedene Kunden",
+      "craftsmen": "Handwerker",
+      "repairedShoes": "Reparierte Schuhe",
+      
       // Features
       "autoAssignmentTitle": "Automatische Zuweisung",
       "autoAssignmentDesc": "Ihre Bestellung wird automatisch dem nächsten Schuster zugewiesen",
