@@ -266,11 +266,18 @@ export default function MediaManager() {
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  {medias.map((media) => (
+                  {medias
+                    .sort((a, b) => (a.position || 999) - (b.position || 999))
+                    .map((media) => (
                     <div key={media.id} className="relative group">
+                      {media.position && (
+                        <div className="absolute top-2 left-2 bg-orange-600 text-white text-xs font-bold px-2 py-1 rounded-full z-10">
+                          #{media.position}
+                        </div>
+                      )}
                       <img
                         src={`${BACKEND_URL}${media.url}`}
-                        alt={media.original_name}
+                        alt={media.title || media.original_name}
                         className="w-full h-40 object-cover rounded-lg border"
                       />
                       <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all rounded-lg flex items-center justify-center">
@@ -284,7 +291,12 @@ export default function MediaManager() {
                           Supprimer
                         </Button>
                       </div>
-                      <p className="text-xs text-gray-600 mt-1 truncate" title={media.original_name}>
+                      {media.title && (
+                        <p className="text-xs font-semibold text-gray-800 mt-1 truncate" title={media.title}>
+                          {media.title}
+                        </p>
+                      )}
+                      <p className="text-xs text-gray-600 truncate" title={media.original_name}>
                         {media.original_name}
                       </p>
                       <p className="text-xs text-gray-400">
