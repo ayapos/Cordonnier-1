@@ -13,6 +13,7 @@ import { toast } from 'sonner';
 import axios from 'axios';
 import AdminSettings from './AdminSettings';
 import PartnerManagement from '@/components/PartnerManagement';
+import MediaManager from '@/components/MediaManager';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
