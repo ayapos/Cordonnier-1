@@ -50,8 +50,8 @@ export default function Home({ user }) {
       <header className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-200">
         <div className="px-4 py-3 flex justify-between items-center max-w-md mx-auto">
           <div>
-            <h1 className="text-xl font-bold text-gray-900" style={{ fontFamily: 'Inter, sans-serif' }}>ShoeRepair</h1>
-            <p className="text-xs text-gray-500">Réparation à domicile</p>
+            <h1 className="text-xl font-bold text-gray-900" style={{ fontFamily: 'Inter, sans-serif' }}>{t('appTitle')}</h1>
+            <p className="text-xs text-gray-500">{t('appSubtitle')}</p>
           </div>
           <nav className="flex items-center gap-2">
             <LanguageSwitcher />
