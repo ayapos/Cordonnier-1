@@ -6,16 +6,53 @@ from config.database import db
 
 logger = logging.getLogger(__name__)
 
-def get_coordinates_from_address(address: str) -> Optional[tuple]:
-    """Get latitude and longitude from address using Nominatim"""
+def get_coordinates_from_address(address: str, strict: bool = False) -> Optional[tuple]:
+    """Get latitude and longitude from address using Nominatim
+    
+    Args:
+        address: The address to geocode
+        strict: If False, will try multiple formats and be more lenient
+    """
     try:
-        geolocator = Nominatim(user_agent="shoerepair_app")
-        location = geolocator.geocode(address, timeout=10)
+        geolocator = Nominatim(user_agent="shoerepair_app_v2", timeout=15)
+        
+        # Try exact address first
+        logger.info(f"Geocoding address: {address}")
+        location = geolocator.geocode(address, timeout=15, language='fr')
+        
         if location:
+            logger.info(f"Geocoding successful: {location.latitude}, {location.longitude}")
             return (location.latitude, location.longitude)
+        
+        # If strict mode, return None immediately
+        if strict:
+            logger.warning(f"Strict mode: Could not geocode address: {address}")
+            return None
+        
+        # Try with more generic search (country-biased)
+        logger.info("Trying with addressdetails...")
+        location = geolocator.geocode(address, addressdetails=True, timeout=15)
+        
+        if location:
+            logger.info(f"Geocoding successful with addressdetails: {location.latitude}, {location.longitude}")
+            return (location.latitude, location.longitude)
+        
+        # Try extracting just city and country as fallback
+        parts = [p.strip() for p in address.split(',')]
+        if len(parts) >= 2:
+            # Try with last two parts (usually city, country)
+            simplified = ', '.join(parts[-2:])
+            logger.info(f"Trying simplified address: {simplified}")
+            location = geolocator.geocode(simplified, timeout=15)
+            if location:
+                logger.info(f"Geocoding successful with simplified address: {location.latitude}, {location.longitude}")
+                return (location.latitude, location.longitude)
+        
+        logger.warning(f"Could not geocode address after all attempts: {address}")
         return None
+        
     except Exception as e:
-        logger.error(f"Geocoding error: {e}")
+        logger.error(f"Geocoding error for '{address}': {e}")
         return None
 
 async def find_nearest_cobbler(client_lat: float, client_lon: float) -> Optional[str]:
