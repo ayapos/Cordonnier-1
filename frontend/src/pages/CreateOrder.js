@@ -21,6 +21,7 @@ export default function CreateOrder({ user }) {
   const [selectedService, setSelectedService] = useState(location.state?.serviceId || '');
   const [deliveryOption, setDeliveryOption] = useState('standard');
   const [notes, setNotes] = useState('');
+  const [deliveryAddress, setDeliveryAddress] = useState(user?.address || '');
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [service, setService] = useState(null);
