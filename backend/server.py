@@ -592,7 +592,7 @@ async def create_bulk_order(
     delivery_option: str = Form(...),
     delivery_address: str = Form(...),
     notes: Optional[str] = Form(None),
-    images: List[UploadFile] = File(...),
+    images: List[UploadFile] = File(default=[]),
     current_user: dict = Depends(get_current_user)
 ):
     """Create order with multiple services for authenticated users"""
