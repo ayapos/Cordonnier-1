@@ -219,7 +219,7 @@ export default function Services({ user }) {
                           </p>
                         </div>
                         <div className="text-2xl font-bold text-orange-700 ml-4" data-testid={`service-price-${service.id}`}>
-                          {service.price}CHF
+                          {formatPrice(service.price)}
                         </div>
                       </div>
                       <div className="flex items-center justify-between mb-3">
