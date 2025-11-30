@@ -24,12 +24,13 @@ const statusColors = {
   cancelled: 'bg-red-100 text-red-800'
 };
 
-export default function Dashboard({ user }) {
+export default function Dashboard({ user: initialUser }) {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [orders, setOrders] = useState([]);
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState(initialUser);
 
   useEffect(() => {
     if (!user) {
