@@ -849,41 +849,15 @@ class ShoeRepairAPITester:
         return True
 
 def main():
-    print("🧪 Starting ShoeRepair Partner Registration Tests")
+    print("🧪 Starting ShoeRepair Address Update Flow Test")
     print("=" * 60)
     
     tester = ShoeRepairAPITester()
     
-    # Test sequence for partner registration features
+    # Test the specific flow requested
     tests = [
-        # Admin login first
-        tester.test_admin_login,
-        
-        # Test 1: Partner registration with documents
-        tester.test_partner_registration_with_documents,
-        tester.test_check_uploads_directory,
-        
-        # Test 2: Admin - List pending partners
-        tester.test_admin_get_pending_partners,
-        
-        # Test 3: Admin - Approve partner
-        tester.test_admin_approve_partner,
-        tester.test_verify_partner_approved,
-        tester.test_verify_partner_coordinates_added,
-        
-        # Test 4: Cobbler - Update address
-        tester.test_cobbler_update_address,
-        
-        # Test 5: Error handling and validations
-        tester.test_unauthorized_access,
-        tester.test_invalid_address_geocoding,
-        tester.test_partner_rejection,
-        
-        # Legacy tests (optional)
-        tester.test_user_registration,
-        tester.test_get_user_profile,
-        tester.test_get_services,
-        tester.test_get_cobblers,
+        # Main test: Complete address update flow
+        tester.test_complete_address_update_flow,
     ]
     
     # Run all tests
