@@ -110,7 +110,7 @@
 ##     implemented: true
 ##     working: false
 ##     file: "/app/frontend/src/pages/Checkout.js"
-##     stuck_count: 1
+##     stuck_count: 2
 ##     priority: "high"
 ##     needs_retesting: false
 ##     status_history:
@@ -120,6 +120,9 @@
 ##         - working: false
 ##         - agent: "testing"
 ##         - comment: "❌ CRITICAL ISSUE: Checkout page missing required address options. Expected radio buttons for 'Mon adresse de profil' and 'Autre adresse' not found. Only shows simple input field instead of proper address selection interface when user has profile address."
+##         - working: false
+##         - agent: "testing"
+##         - comment: "❌ CANNOT TEST CHECKOUT ADDRESS OPTIONS: Due to frontend not displaying user address in profile (see Profile address persistence issue), checkout page cannot show address options. Root cause is ProfileEditor not displaying user.address from backend. Need to fix profile display first, then retest checkout."
 ##   - task: "Add to cart buttons on Services page"
 ##     implemented: true
 ##     working: true
