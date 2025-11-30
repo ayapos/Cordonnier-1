@@ -89,8 +89,14 @@ class UserLogin(BaseModel):
 class Service(BaseModel):
     model_config = ConfigDict(extra="ignore")
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
-    name: str
-    description: str
+    name: str  # French
+    name_en: Optional[str] = None
+    name_de: Optional[str] = None
+    name_it: Optional[str] = None
+    description: str  # French
+    description_en: Optional[str] = None
+    description_de: Optional[str] = None
+    description_it: Optional[str] = None
     price: float
     estimated_days: int
     category: str
