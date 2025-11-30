@@ -233,7 +233,7 @@ export default function Home({ user }) {
       {/* Avant-Après Galerie */}
       <section className="px-4 py-12 max-w-md mx-auto">
         <h3 className="text-3xl font-bold mb-3 text-gray-900 text-center">{t('beforeAfterGallery')}</h3>
-        <p className="text-center text-gray-600 mb-8">Résultats de nos réparations</p>
+        <p className="text-center text-gray-600 mb-8">{t('repairResults')}</p>
         <div className="space-y-6">
           {[
             {
