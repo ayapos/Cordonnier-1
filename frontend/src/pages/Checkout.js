@@ -377,7 +377,7 @@ export default function Checkout({ user }) {
               <div className="space-y-2">
                 {cartItems.map((item) => (
                   <div key={item.id} className="flex justify-between text-sm">
-                    <span className="text-amber-800">{item.name} × {item.quantity}</span>
+                    <span className="text-amber-800">{getServiceField(item, 'name')} × {item.quantity}</span>
                     <span className="font-medium text-amber-950">{(item.price * item.quantity).toFixed(2)}CHF</span>
                   </div>
                 ))}
