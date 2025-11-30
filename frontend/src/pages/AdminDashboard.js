@@ -126,6 +126,54 @@ export default function AdminDashboard({ user }) {
     }
   };
 
+  const handleEditService = (service) => {
+    setEditService({
+      id: service.id,
+      name: service.name,
+      description: service.description,
+      price: service.price.toString(),
+      estimated_days: service.estimated_days.toString(),
+      category: service.category,
+      gender: service.gender,
+      image_url: service.image_url || ''
+    });
+    setEditServiceOpen(true);
+  };
+
+  const handleUpdateService = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.put(`${API}/services/${editService.id}`, {
+        name: editService.name,
+        description: editService.description,
+        price: parseFloat(editService.price),
+        estimated_days: parseInt(editService.estimated_days),
+        category: editService.category,
+        gender: editService.gender,
+        image_url: editService.image_url
+      });
+      toast.success('Service modifié avec succès !');
+      setEditServiceOpen(false);
+      setEditService(null);
+      fetchAllData();
+    } catch (error) {
+      toast.error('Erreur de modification du service');
+    }
+  };
+
+  const handleDeleteService = async (serviceId, serviceName) => {
+    if (!window.confirm(`Êtes-vous sûr de vouloir supprimer le service "${serviceName}" ?`)) {
+      return;
+    }
+    try {
+      await axios.delete(`${API}/services/${serviceId}`);
+      toast.success('Service supprimé avec succès !');
+      fetchAllData();
+    } catch (error) {
+      toast.error('Erreur de suppression du service');
+    }
+  };
+
   const filteredOrders = orders.filter(order => {
     const matchesSearch = order.reference_number.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          order.service_name.toLowerCase().includes(searchTerm.toLowerCase());
