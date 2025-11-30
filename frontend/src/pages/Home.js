@@ -345,6 +345,30 @@ export default function Home({ user }) {
         </div>
       </section>
 
+      {/* Stats Section */}
+      <section className="px-4 py-12 bg-orange-700">
+        <div className="max-w-md mx-auto">
+          <div className="grid grid-cols-2 gap-6">
+            <div className="text-center">
+              <div className="text-4xl font-bold text-white mb-2">8</div>
+              <p className="text-orange-100 text-sm">{t('countries')}</p>
+            </div>
+            <div className="text-center">
+              <div className="text-4xl font-bold text-white mb-2">17k+</div>
+              <p className="text-orange-100 text-sm">{t('happyClients')}</p>
+            </div>
+            <div className="text-center">
+              <div className="text-4xl font-bold text-white mb-2">250+</div>
+              <p className="text-orange-100 text-sm">{t('craftsmen')}</p>
+            </div>
+            <div className="text-center">
+              <div className="text-4xl font-bold text-white mb-2">45k+</div>
+              <p className="text-orange-100 text-sm">{t('repairedShoes')}</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Footer */}
       <footer className="bg-gray-900 text-white py-8 mt-12">
         <div className="max-w-md mx-auto px-4">
