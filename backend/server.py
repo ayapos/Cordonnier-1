@@ -55,6 +55,15 @@ class User(BaseModel):
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     phone: Optional[str] = None
     address: Optional[str] = None
+    # Cordonnier specific fields
+    status: Optional[str] = None  # 'pending', 'approved', 'rejected' (for cobblers)
+    id_recto: Optional[str] = None  # Base64 image
+    id_verso: Optional[str] = None  # Base64 image
+    che_kbis: Optional[str] = None  # Base64 document
+    bank_account: Optional[str] = None  # JSON with bank details
+    stripe_account_id: Optional[str] = None  # Stripe Connect account ID
+    latitude: Optional[float] = None
+    longitude: Optional[float] = None
 
 class UserCreate(BaseModel):
     email: EmailStr
