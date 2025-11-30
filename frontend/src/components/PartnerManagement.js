@@ -54,23 +54,24 @@ export default function PartnerManagement() {
     }
   };
 
-  const viewDocument = (partner, docType) => {
-    let docData = null;
-    let docName = '';
+  const viewDocument = async (partner, docType) => {
+    try {
+      let docName = '';
+      if (docType === 'id_recto') {
+        docName = 'Pièce d\'identité (Recto)';
+      } else if (docType === 'id_verso') {
+        docName = 'Pièce d\'identité (Verso)';
+      } else if (docType === 'che_kbis') {
+        docName = 'CHE/KBIS';
+      }
 
-    if (docType === 'id_recto' && partner.id_recto_preview) {
-      docData = partner.id_recto_preview;
-      docName = 'Pièce d\'identité (Recto)';
-    } else if (docType === 'id_verso' && partner.id_verso_preview) {
-      docData = partner.id_verso_preview;
-      docName = 'Pièce d\'identité (Verso)';
-    } else if (docType === 'che_kbis' && partner.che_kbis_preview) {
-      docData = partner.che_kbis_preview;
-      docName = 'CHE/KBIS';
+      // Load document on-demand from API
+      const response = await axios.get(`${API}/admin/partners/${partner.id}/document/${docType}`);
+      setDocumentToView({ data: response.data.document, name: docName });
+      setViewDocumentOpen(true);
+    } catch (error) {
+      toast.error('Erreur lors du chargement du document');
     }
-
-    setDocumentToView({ data: docData, name: docName });
-    setViewDocumentOpen(true);
   };
 
   if (loading) {
