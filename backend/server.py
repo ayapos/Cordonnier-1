@@ -1059,7 +1059,7 @@ async def upload_media(
     file: UploadFile = File(...),
     category: str = Form(...),
     title: Optional[str] = Form(None),
-    position: Optional[int] = Form(None),
+    position: Optional[str] = Form(None),  # Changed to str, will convert to int
     current_user: dict = Depends(get_current_user)
 ):
     if current_user['role'] != 'admin':
