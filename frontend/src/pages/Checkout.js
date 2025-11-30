@@ -137,28 +137,7 @@ export default function Checkout({ user }) {
       navigate(`/payment/${response.data.order_id}`);
     } catch (error) {
       console.error('Checkout error:', error);
-      
-      // Format error message properly
-      let errorMessage = 'Erreur lors de la commande';
-      
-      if (error.response?.data?.detail) {
-        const detail = error.response.data.detail;
-        
-        // If detail is an array of validation errors
-        if (Array.isArray(detail)) {
-          errorMessage = detail.map(err => err.msg || JSON.stringify(err)).join(', ');
-        } 
-        // If detail is a string
-        else if (typeof detail === 'string') {
-          errorMessage = detail;
-        }
-        // If detail is an object
-        else if (typeof detail === 'object') {
-          errorMessage = detail.msg || JSON.stringify(detail);
-        }
-      }
-      
-      toast.error(errorMessage);
+      toast.error(formatApiError(error, 'Erreur lors de la commande'));
     } finally {
       setLoading(false);
     }
