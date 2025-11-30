@@ -249,6 +249,12 @@ const resources = {
       "austria": "Austria",
       "netherlands": "Netherlands",
       
+      // Stats section
+      "countries": "Countries",
+      "happyClients": "Happy clients",
+      "craftsmen": "Craftsmen",
+      "repairedShoes": "Repaired shoes",
+      
       // Features
       "autoAssignmentTitle": "Automatic assignment",
       "autoAssignmentDesc": "Your order is assigned to the nearest cobbler automatically",
