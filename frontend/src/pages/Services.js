@@ -89,11 +89,23 @@ export default function Services({ user }) {
               <p className="text-xs text-gray-500">{filteredServices.length} disponibles</p>
             </div>
           </div>
-          {user && (
-            <Link to="/dashboard">
-              <Button size="sm" className="bg-orange-700 text-white">Dashboard</Button>
+          <div className="flex items-center gap-2">
+            <Link to="/cart">
+              <Button variant="ghost" size="icon" className="relative">
+                <ShoppingCart className="w-5 h-5 text-amber-700" />
+                {getCartCount() > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-amber-700 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                    {getCartCount()}
+                  </span>
+                )}
+              </Button>
             </Link>
-          )}
+            {user && (
+              <Link to="/dashboard">
+                <Button size="sm" className="bg-orange-700 text-white">Dashboard</Button>
+              </Link>
+            )}
+          </div>
         </div>
       </header>
 
