@@ -244,6 +244,31 @@ export default function BecomePartner() {
             </CardContent>
           </Card>
 
+          <Card className="border-orange-300 bg-orange-50">
+            <CardContent className="pt-6">
+              <div className="flex items-start gap-3">
+                <input
+                  type="checkbox"
+                  id="accept_terms"
+                  required
+                  className="mt-1 w-5 h-5 text-orange-700 border-gray-300 rounded focus:ring-orange-500"
+                  data-testid="accept-terms-checkbox"
+                />
+                <label htmlFor="accept_terms" className="text-sm text-gray-700 cursor-pointer">
+                  <p className="font-bold mb-1">J'accepte les Conditions Générales Partenaires *</p>
+                  <p className="mb-2">En cochant cette case, j'appose ma signature électronique et reconnais avoir lu et accepté les CGU Partenaires.</p>
+                  <Link to="/partner-terms" target="_blank" className="text-orange-700 underline font-medium">
+                    📄 Lire les CGU Partenaires
+                  </Link>
+                </label>
+              </div>
+              <div className="mt-4 pt-4 border-t border-orange-200 text-xs text-gray-600">
+                <p>🔒 Signature électronique conforme au règlement eIDAS</p>
+                <p className="mt-1">Date et heure de signature seront enregistrées automatiquement.</p>
+              </div>
+            </CardContent>
+          </Card>
+
           <div className="bg-blue-50 rounded-xl p-4 text-sm text-gray-700">
             <p className="font-medium mb-2">📋 Validation :</p>
             <p>Votre demande sera examinée sous 48h. Nous vérifierons vos documents et vous contacterons par email.</p>
@@ -256,7 +281,7 @@ export default function BecomePartner() {
             disabled={loading}
             data-testid="submit-partner-btn"
           >
-            {loading ? 'Envoi en cours...' : 'Envoyer ma demande'}
+            {loading ? 'Envoi en cours...' : 'Signer et envoyer ma demande'}
           </Button>
         </form>
       </div>
