@@ -22,17 +22,9 @@ const statusColors = {
   cancelled: 'bg-red-100 text-red-800'
 };
 
-const statusLabels = {
-  pending: 'En attente',
-  accepted: 'Accepté',
-  in_progress: 'En cours',
-  shipped: 'Expédié',
-  delivered: 'Livré',
-  cancelled: 'Annulé'
-};
-
 export default function Dashboard({ user }) {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [orders, setOrders] = useState([]);
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
