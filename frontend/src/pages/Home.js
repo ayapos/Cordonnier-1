@@ -291,8 +291,8 @@ export default function Home({ user }) {
       {/* Avis Clients */}
       <section className="px-4 py-12 bg-gray-50">
         <div className="max-w-md mx-auto">
-          <h3 className="text-3xl font-bold mb-3 text-gray-900 text-center">Ils nous font confiance</h3>
-          <p className="text-center text-gray-600 mb-8">Des centaines de clients satisfaits</p>
+          <h3 className="text-3xl font-bold mb-3 text-gray-900 text-center">{t('customerReviews')}</h3>
+          <p className="text-center text-gray-600 mb-8">{t('whatTheySay')}</p>
           <div className="space-y-4">
             {[
               {
