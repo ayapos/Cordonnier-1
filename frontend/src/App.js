@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { Toaster } from "@/components/ui/sonner";
 import { toast } from "sonner";
 import axios from "axios";
+import { CartProvider } from "@/context/CartContext";
 
 // Pages
 import Home from "@/pages/Home";
