@@ -25,6 +25,8 @@ export default function MediaManager() {
   const [selectedCategory, setSelectedCategory] = useState('carousel');
   const [filterCategory, setFilterCategory] = useState('all');
   const [previewUrl, setPreviewUrl] = useState(null);
+  const [title, setTitle] = useState('');
+  const [position, setPosition] = useState('');
 
   useEffect(() => {
     fetchMedia();
