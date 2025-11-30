@@ -385,6 +385,7 @@ const resources = {
       "bootResole": "Stiefel Neubesohlung",
       "sneakersCleaning": "Sneakers Reinigung",
       "heelsRepair": "Absätze Reparatur",
+      "leatherRenovation": "Leder Renovierung",
       
       // Services page
       "availableServices": "verfügbar",
