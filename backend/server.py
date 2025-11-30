@@ -1173,6 +1173,21 @@ async def update_media(
         logger.error(f"Error updating media: {e}")
         raise HTTPException(status_code=500, detail="Error updating media")
 
+@api_router.get("/media/{filename}")
+async def serve_media(filename: str):
+    """Serve media files via API endpoint"""
+    try:
+        from fastapi.responses import FileResponse
+        file_path = ROOT_DIR / 'uploads' / 'media' / filename
+        if not file_path.exists():
+            raise HTTPException(status_code=404, detail="Media not found")
+        return FileResponse(file_path)
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error serving media: {e}")
+        raise HTTPException(status_code=500, detail="Error serving media")
+
 @api_router.delete("/admin/media/{media_id}")
 async def delete_media(
     media_id: str,
