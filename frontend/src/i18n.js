@@ -564,6 +564,19 @@ const resources = {
       "customerReviews": "Recensioni Clienti",
       "whatTheySay": "Cosa dicono di noi",
       
+      // Countries section
+      "ourCountries": "I Nostri Paesi",
+      "presentInCountries": "Presente in tutta Europa",
+      "countriesCovered": "paesi coperti",
+      "switzerland": "Svizzera",
+      "france": "Francia",
+      "germany": "Germania",
+      "italy": "Italia",
+      "belgium": "Belgio",
+      "luxembourg": "Lussemburgo",
+      "austria": "Austria",
+      "netherlands": "Paesi Bassi",
+      
       // Features
       "autoAssignmentTitle": "Assegnazione automatica",
       "autoAssignmentDesc": "Il tuo ordine viene assegnato automaticamente al calzolaio più vicino",
