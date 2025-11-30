@@ -532,62 +532,46 @@ export default function Home({ user }) {
           {/* Stats in one horizontal line */}
           <div className="flex gap-3 min-w-max justify-center">
             {/* Stat 1 - Countries */}
-            <div className="bg-gradient-to-r from-orange-500 to-orange-600 rounded-xl p-4 shadow-md hover:shadow-lg transition-all duration-300">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="flex items-center justify-center w-12 h-12 bg-white/20 rounded-full">
-                    <MapPin className="w-6 h-6 text-white" />
-                  </div>
-                  <div>
-                    <div className="text-3xl font-bold text-white">4</div>
-                    <p className="text-white/90 text-xs font-medium">{t('countries')}</p>
-                  </div>
+            <div className="bg-gradient-to-r from-orange-500 to-orange-600 rounded-xl p-4 shadow-md hover:shadow-lg transition-all duration-300 w-44">
+              <div className="text-center">
+                <div className="flex items-center justify-center w-12 h-12 bg-white/20 rounded-full mx-auto mb-2">
+                  <MapPin className="w-6 h-6 text-white" />
                 </div>
+                <div className="text-3xl font-bold text-white mb-1">4</div>
+                <p className="text-white/90 text-xs font-medium">{t('countries')}</p>
               </div>
             </div>
 
             {/* Stat 2 - Clients */}
-            <div className="bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl p-4 shadow-md hover:shadow-lg transition-all duration-300">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="flex items-center justify-center w-12 h-12 bg-white/20 rounded-full">
-                    <Star className="w-6 h-6 text-white" />
-                  </div>
-                  <div>
-                    <div className="text-3xl font-bold text-white">17k+</div>
-                    <p className="text-white/90 text-xs font-medium">{t('happyClients')}</p>
-                  </div>
+            <div className="bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl p-4 shadow-md hover:shadow-lg transition-all duration-300 w-44">
+              <div className="text-center">
+                <div className="flex items-center justify-center w-12 h-12 bg-white/20 rounded-full mx-auto mb-2">
+                  <Star className="w-6 h-6 text-white" />
                 </div>
+                <div className="text-3xl font-bold text-white mb-1">17k+</div>
+                <p className="text-white/90 text-xs font-medium">{t('happyClients')}</p>
               </div>
             </div>
 
             {/* Stat 3 - Craftsmen */}
-            <div className="bg-gradient-to-r from-green-500 to-green-600 rounded-xl p-4 shadow-md hover:shadow-lg transition-all duration-300">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="flex items-center justify-center w-12 h-12 bg-white/20 rounded-full">
-                    <Shield className="w-6 h-6 text-white" />
-                  </div>
-                  <div>
-                    <div className="text-3xl font-bold text-white">250+</div>
-                    <p className="text-white/90 text-xs font-medium">{t('craftsmen')}</p>
-                  </div>
+            <div className="bg-gradient-to-r from-green-500 to-green-600 rounded-xl p-4 shadow-md hover:shadow-lg transition-all duration-300 w-44">
+              <div className="text-center">
+                <div className="flex items-center justify-center w-12 h-12 bg-white/20 rounded-full mx-auto mb-2">
+                  <Shield className="w-6 h-6 text-white" />
                 </div>
+                <div className="text-3xl font-bold text-white mb-1">250+</div>
+                <p className="text-white/90 text-xs font-medium">{t('craftsmen')}</p>
               </div>
             </div>
 
             {/* Stat 4 - Shoes */}
-            <div className="bg-gradient-to-r from-purple-500 to-purple-600 rounded-xl p-4 shadow-md hover:shadow-lg transition-all duration-300">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="flex items-center justify-center w-12 h-12 bg-white/20 rounded-full">
-                    <ArrowRight className="w-6 h-6 text-white" />
-                  </div>
-                  <div>
-                    <div className="text-3xl font-bold text-white">45k+</div>
-                    <p className="text-white/90 text-xs font-medium">{t('repairedShoes')}</p>
-                  </div>
+            <div className="bg-gradient-to-r from-purple-500 to-purple-600 rounded-xl p-4 shadow-md hover:shadow-lg transition-all duration-300 w-44">
+              <div className="text-center">
+                <div className="flex items-center justify-center w-12 h-12 bg-white/20 rounded-full mx-auto mb-2">
+                  <ArrowRight className="w-6 h-6 text-white" />
                 </div>
+                <div className="text-3xl font-bold text-white mb-1">45k+</div>
+                <p className="text-white/90 text-xs font-medium">{t('repairedShoes')}</p>
               </div>
             </div>
           </div>
