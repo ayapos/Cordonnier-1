@@ -154,7 +154,7 @@ export default function Checkout({ user }) {
 
       <div className="container mx-auto px-4 py-8 max-w-4xl">
         <h2 className="text-4xl font-bold text-amber-950 mb-8" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
-          Finaliser ma commande
+          {t('finalizeOrder')}
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-6">
