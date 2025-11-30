@@ -712,6 +712,7 @@ def main():
         # Test 3: Admin - Approve partner
         tester.test_admin_approve_partner,
         tester.test_verify_partner_approved,
+        tester.test_verify_partner_coordinates_added,
         
         # Test 4: Cobbler - Update address
         tester.test_cobbler_update_address,
