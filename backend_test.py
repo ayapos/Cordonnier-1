@@ -604,7 +604,7 @@ class ShoeRepairAPITester:
         success, response = self.run_test(
             "Admin Reject Partner",
             "POST",
-            f"admin/partners/{reject_partner_id}/reject",
+            f"admin/partners/{reject_partner_id}/reject?reason=Documents non conformes",
             200
         )
         
