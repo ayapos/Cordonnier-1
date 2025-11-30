@@ -106,6 +106,7 @@ function App() {
             } 
           />
           <Route path="/become-partner" element={<BecomePartner />} />
+          <Route path="/partner-terms" element={<PartnerTerms />} />
           <Route path="/terms" element={<Terms />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/legal" element={<Legal />} />
