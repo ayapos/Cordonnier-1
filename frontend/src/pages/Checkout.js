@@ -12,6 +12,7 @@ import { toast } from 'sonner';
 import { useCart } from '@/context/CartContext';
 import { useTranslation } from 'react-i18next';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
+import { formatApiError } from '@/utils/errorHandler';
 import axios from 'axios';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
