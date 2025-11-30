@@ -64,6 +64,9 @@ export default function AdminDashboard({ user }) {
   const [editServiceOpen, setEditServiceOpen] = useState(false);
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const [serviceToDelete, setServiceToDelete] = useState(null);
+  const [newCategoryName, setNewCategoryName] = useState('');
+  const [showNewCategoryInput, setShowNewCategoryInput] = useState(false);
+  const [categories, setCategories] = useState(['Réparation', 'Entretien', 'Modification', 'Talons & Escarpins', 'Bottes & Bottines', 'Chaussures de ville']);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
