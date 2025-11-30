@@ -87,10 +87,9 @@
 ##
 ## test_plan:
 ##   current_focus:
-##     - "Admin Dashboard - Edit Service functionality"
 ##     - "Admin Dashboard - Delete Service functionality"
-##     - "Admin Dashboard - Display service images"
-##   stuck_tasks: []
+##   stuck_tasks: 
+##     - "Admin Dashboard - Delete Service functionality"
 ##   test_all: false
 ##   test_priority: "high_first"
 ##
