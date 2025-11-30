@@ -152,13 +152,16 @@
 ##     implemented: true
 ##     working: false
 ##     file: "/app/frontend/src/components/ProfileEditor.js"
-##     stuck_count: 1
+##     stuck_count: 2
 ##     priority: "high"
 ##     needs_retesting: false
 ##     status_history:
 ##         - working: false
 ##         - agent: "testing"
 ##         - comment: "❌ CRITICAL ISSUE: Address persistence broken. Address can be saved in profile editor and shows immediately, but does NOT persist after logout/login. Address reverts to 'Non renseignée' after re-login. Backend PUT /api/auth/me may not be saving address properly to database."
+##         - working: false
+##         - agent: "testing"
+##         - comment: "❌ CRITICAL FRONTEND-BACKEND SYNC ISSUE: Backend API shows user has address 'Avenue de la Gare 25, 1003 Lausanne, Suisse' (confirmed via curl GET /api/auth/me), but frontend displays 'Non renseignée'. Frontend ProfileEditor component not properly displaying user.address from backend response. This is a data binding/display issue, not persistence issue."
 
 ## metadata:
 ##   created_by: "main_agent"
