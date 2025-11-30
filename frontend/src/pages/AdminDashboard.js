@@ -868,11 +868,12 @@ export default function AdminDashboard({ user }) {
                             {!showEditCategoryInput ? (
                               <div className="space-y-2">
                                 <Select 
+                                  key={categories.length}
                                   value={editService.category} 
                                   onValueChange={(value) => setEditService({...editService, category: value})}
                                 >
                                   <SelectTrigger data-testid="edit-service-category-select">
-                                    <SelectValue />
+                                    <SelectValue placeholder="Sélectionner une catégorie" />
                                   </SelectTrigger>
                                   <SelectContent>
                                     {categories.map((cat) => (
@@ -891,27 +892,31 @@ export default function AdminDashboard({ user }) {
                                 </Button>
                               </div>
                             ) : (
-                              <div className="flex gap-2">
-                                <Input
-                                  placeholder="Ex: Sneakers"
-                                  value={editCategoryName}
-                                  onChange={(e) => setEditCategoryName(e.target.value)}
-                                  onKeyPress={(e) => e.key === 'Enter' && handleAddCategoryEdit()}
-                                />
-                                <Button type="button" onClick={handleAddCategoryEdit} size="sm">
-                                  ✓
-                                </Button>
-                                <Button 
-                                  type="button" 
-                                  variant="outline" 
-                                  size="sm"
-                                  onClick={() => {
-                                    setShowEditCategoryInput(false);
-                                    setEditCategoryName('');
-                                  }}
-                                >
-                                  ✗
-                                </Button>
+                              <div className="space-y-2">
+                                <div className="flex gap-2">
+                                  <Input
+                                    placeholder="Ex: Sneakers"
+                                    value={editCategoryName}
+                                    onChange={(e) => setEditCategoryName(e.target.value)}
+                                    onKeyPress={(e) => e.key === 'Enter' && handleAddCategoryEdit()}
+                                    autoFocus
+                                  />
+                                  <Button type="button" onClick={handleAddCategoryEdit} size="sm" className="bg-green-600 hover:bg-green-700 text-white">
+                                    ✓
+                                  </Button>
+                                  <Button 
+                                    type="button" 
+                                    variant="outline" 
+                                    size="sm"
+                                    onClick={() => {
+                                      setShowEditCategoryInput(false);
+                                      setEditCategoryName('');
+                                    }}
+                                  >
+                                    ✗
+                                  </Button>
+                                </div>
+                                <p className="text-xs text-amber-600">Entrez le nom de la nouvelle catégorie et appuyez sur ✓</p>
                               </div>
                             )}
                           </div>
