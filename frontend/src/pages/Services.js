@@ -99,14 +99,14 @@ export default function Services({ user }) {
               <TabsList className="grid w-full grid-cols-2 bg-gray-100 p-1 rounded-xl">
                 <TabsTrigger 
                   value="femme" 
-                  className="data-[state=active]:bg-indigo-600 data-[state=active]:text-white rounded-lg" 
+                  className="data-[state=active]:bg-orange-700 data-[state=active]:text-white rounded-lg" 
                   data-testid="femme-tab"
                 >
                   Femme
                 </TabsTrigger>
                 <TabsTrigger 
                   value="homme" 
-                  className="data-[state=active]:bg-indigo-600 data-[state=active]:text-white rounded-lg" 
+                  className="data-[state=active]:bg-orange-700 data-[state=active]:text-white rounded-lg" 
                   data-testid="homme-tab"
                 >
                   Homme
