@@ -397,6 +397,19 @@ const resources = {
       "customerReviews": "Kundenbewertungen",
       "whatTheySay": "Was sie über uns sagen",
       
+      // Countries section
+      "ourCountries": "Unsere Länder",
+      "presentInCountries": "In ganz Europa vertreten",
+      "countriesCovered": "Länder abgedeckt",
+      "switzerland": "Schweiz",
+      "france": "Frankreich",
+      "germany": "Deutschland",
+      "italy": "Italien",
+      "belgium": "Belgien",
+      "luxembourg": "Luxemburg",
+      "austria": "Österreich",
+      "netherlands": "Niederlande",
+      
       // Features
       "autoAssignmentTitle": "Automatische Zuweisung",
       "autoAssignmentDesc": "Ihre Bestellung wird automatisch dem nächsten Schuster zugewiesen",
