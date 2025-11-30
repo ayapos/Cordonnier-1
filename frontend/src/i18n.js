@@ -574,6 +574,33 @@ const resources = {
       "cartIsEmpty": "Ihr Warenkorb ist leer",
       "provideDeliveryAddress": "Bitte geben Sie eine Lieferadresse an",
       "loginRequired": "Bitte melden Sie sich an, um zu bestellen",
+      "loadingDataError": "Fehler beim Laden der Daten",
+      "logoutSuccess": "Abmeldung erfolgreich",
+      "orderAccepted": "Bestellung akzeptiert!",
+      "errorOccurred": "Fehler",
+      "statusUpdated": "Status aktualisiert",
+      "updateError": "Aktualisierungsfehler",
+      
+      // Dashboard
+      "hello": "Hallo",
+      "newOrder": "Neue Bestellung",
+      "totalOrders": "Gesamtbestellungen",
+      "inProgress": "In Bearbeitung",
+      "completed": "Abgeschlossen",
+      "commission": "Provision",
+      "revenue": "Umsatz",
+      "myOrders": "Meine Bestellungen",
+      "noOrdersYet": "Noch keine Bestellungen",
+      "acceptOrder": "Bestellung annehmen",
+      "markAsShipped": "Als versendet markieren",
+      
+      // Order status
+      "pending": "Ausstehend",
+      "accepted": "Akzeptiert",
+      "in_progress": "In Bearbeitung",
+      "shipped": "Versendet",
+      "delivered": "Zugestellt",
+      "cancelled": "Storniert",
     }
   },
   it: {
