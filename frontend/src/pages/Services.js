@@ -25,12 +25,19 @@ const categoryImages = {
 
 export default function Services({ user }) {
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { addToCart, getCartCount } = useCart();
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedGender, setSelectedGender] = useState('femme');
   const [selectedCategory, setSelectedCategory] = useState('all');
+  
+  // Helper function to get translated service field
+  const getServiceField = (service, field) => {
+    const lang = i18n.language;
+    const translatedField = `${field}_${lang}`;
+    return service[translatedField] || service[field]; // Fallback to French
+  };
 
   useEffect(() => {
     fetchServices();
