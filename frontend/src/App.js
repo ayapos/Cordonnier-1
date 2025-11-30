@@ -64,10 +64,11 @@ function App() {
   };
 
   return (
-    <CartProvider>
-      <div className="App">
-        <BrowserRouter>
-          <Routes>
+    <CurrencyProvider>
+      <CartProvider>
+        <div className="App">
+          <BrowserRouter>
+            <Routes>
             <Route path="/" element={<Home user={user} />} />
             <Route path="/auth" element={<Auth setUser={setUser} />} />
             <Route path="/services" element={<Services user={user} />} />
