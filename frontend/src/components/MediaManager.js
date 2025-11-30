@@ -323,6 +323,30 @@ export default function MediaManager() {
         </div>
       )}
 
+      {/* Delete Confirmation Dialog */}
+      {deletingId && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 max-w-md mx-4">
+            <h3 className="text-lg font-bold mb-4">Confirmer la suppression</h3>
+            <p className="text-gray-600 mb-6">Êtes-vous sûr de vouloir supprimer cette image ? Cette action est irréversible.</p>
+            <div className="flex gap-3 justify-end">
+              <Button
+                variant="outline"
+                onClick={() => setDeletingId(null)}
+              >
+                Annuler
+              </Button>
+              <Button
+                variant="destructive"
+                onClick={confirmDelete}
+              >
+                Supprimer
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Info Box */}
       <Card className="border-blue-200 bg-blue-50">
         <CardContent className="pt-6">
