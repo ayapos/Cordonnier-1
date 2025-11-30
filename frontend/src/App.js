@@ -14,6 +14,10 @@ import Services from "@/pages/Services";
 import CreateOrder from "@/pages/CreateOrder";
 import OrderDetails from "@/pages/OrderDetails";
 import Payment from "@/pages/Payment";
+import BecomePartner from "@/pages/BecomePartner";
+import Terms from "@/pages/Terms";
+import Privacy from "@/pages/Privacy";
+import Legal from "@/pages/Legal";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
