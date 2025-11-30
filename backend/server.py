@@ -387,6 +387,105 @@ async def get_service(service_id: str):
     return service
 
 # Order Routes
+@api_router.post("/orders/guest")
+async def create_guest_order(
+    delivery_option: str = Form(...),
+    delivery_address: str = Form(...),
+    guest_name: str = Form(...),
+    guest_email: str = Form(...),
+    guest_phone: str = Form(...),
+    notes: Optional[str] = Form(None),
+    images: List[UploadFile] = File(...),
+    create_account: bool = Form(False),
+    password: Optional[str] = Form(None)
+):
+    """Create order as guest (multiple services support)"""
+    # Get form data for services
+    form_data = {}
+    # Note: We'll need to parse services from form fields like services[0][id], services[0][quantity]
+    # For now, let's create a simpler version that accepts JSON
+    
+    # Process images
+    image_data_list = []
+    for image in images:
+        contents = await image.read()
+        image_base64 = base64.b64encode(contents).decode('utf-8')
+        image_data_list.append(f"data:image/jpeg;base64,{image_base64}")
+    
+    # Get services from form (simplified - expecting service_ids as comma-separated)
+    # This will be improved based on frontend implementation
+    
+    # Geocode address and find nearest cobbler
+    cobbler_id = None
+    client_coords = get_coordinates_from_address(delivery_address)
+    if client_coords:
+        client_lat, client_lon = client_coords
+        cobbler_id = await find_nearest_cobbler(client_lat, client_lon)
+        logger.info(f"Auto-assigned guest order to cobbler {cobbler_id}")
+    
+    # Calculate prices (simplified for single service for now)
+    delivery_price = 15.0 if delivery_option == 'express' else 5.0
+    
+    # Create order
+    order_status = 'accepted' if cobbler_id else 'pending'
+    
+    order = Order(
+        reference_number=generate_reference_number(),
+        client_name=guest_name,
+        client_email=guest_email,
+        client_phone=guest_phone,
+        cobbler_id=cobbler_id,
+        delivery_option=delivery_option,
+        delivery_address=delivery_address,
+        delivery_price=delivery_price,
+        commission=0,  # Will be calculated based on services
+        total_amount=delivery_price,  # Will be updated
+        status=order_status,
+        shoe_images=image_data_list,
+        notes=notes,
+        is_guest=True,
+        items=[]
+    )
+    
+    order_dict = order.model_dump()
+    order_dict['created_at'] = order_dict['created_at'].isoformat()
+    order_dict['updated_at'] = order_dict['updated_at'].isoformat()
+    
+    await db.orders.insert_one(order_dict)
+    
+    # If create_account is True, create user account
+    if create_account and password:
+        try:
+            existing_user = await db.users.find_one({"email": guest_email})
+            if not existing_user:
+                new_user = {
+                    "id": str(uuid.uuid4()),
+                    "email": guest_email,
+                    "name": guest_name,
+                    "phone": guest_phone,
+                    "address": delivery_address,
+                    "role": "client",
+                    "password": hash_password(password),
+                    "created_at": datetime.now(timezone.utc).isoformat()
+                }
+                await db.users.insert_one(new_user)
+                # Update order with client_id
+                await db.orders.update_one(
+                    {"id": order.id},
+                    {"$set": {"client_id": new_user["id"], "is_guest": False}}
+                )
+                logger.info(f"Created account for guest {guest_email}")
+        except Exception as e:
+            logger.error(f"Error creating account: {e}")
+    
+    return {
+        "order_id": order.id,
+        "reference_number": order.reference_number,
+        "total_amount": order.total_amount,
+        "cobbler_assigned": cobbler_id is not None,
+        "account_created": create_account and password is not None
+    }
+
 @api_router.post("/orders")
 async def create_order(
     service_id: str = Form(...),
