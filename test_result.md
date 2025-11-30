@@ -5,26 +5,65 @@
 ## backend:
 ##   - task: "POST /api/orders/guest - Guest order with multi-services"
 ##     implemented: true
-##     working: "unknown"
+##     working: true
 ##     file: "/app/backend/server.py"
 ##     stuck_count: 0
 ##     priority: "high"
-##     needs_retesting: true
+##     needs_retesting: false
 ##     status_history:
 ##         - working: "unknown"
 ##         - agent: "main"
 ##         - comment: "Endpoint créé pour commandes invités avec validation obligatoire des photos et support multi-services via JSON"
+##         - working: true
+##         - agent: "testing"
+##         - comment: "✅ TESTED: Guest order with multi-services working correctly. Created order 923dd0bb-7a92-4537-a6c3-48a957b17457 with total 127.0 CHF, cobbler auto-assigned via geocoding. Supports multiple services in cart, image upload, and guest checkout flow."
 ##   - task: "POST /api/orders/bulk - Authenticated user multi-service order"
 ##     implemented: true
-##     working: "unknown"
+##     working: true
 ##     file: "/app/backend/server.py"
 ##     stuck_count: 0
 ##     priority: "high"
-##     needs_retesting: true
+##     needs_retesting: false
 ##     status_history:
 ##         - working: "unknown"
 ##         - agent: "main"
 ##         - comment: "Endpoint créé pour utilisateurs connectés avec support multi-services"
+##         - working: true
+##         - agent: "testing"
+##         - comment: "✅ TESTED: Authenticated bulk order working correctly. Created order 9b5e0529-cd85-4d2f-8ac0-14632e1ce05d with total 127.0 CHF, cobbler auto-assigned. Supports multiple services, express delivery option, and authenticated user flow."
+##   - task: "Partner registration with document upload"
+##     implemented: true
+##     working: true
+##     file: "/app/backend/server.py"
+##     stuck_count: 0
+##     priority: "high"
+##     needs_retesting: false
+##     status_history:
+##         - working: true
+##         - agent: "testing"
+##         - comment: "✅ TESTED: Partner registration with documents working. Files saved to /app/backend/uploads, status set to 'pending', supports id_recto, id_verso, che_kbis uploads as base64."
+##   - task: "Admin partner management"
+##     implemented: true
+##     working: true
+##     file: "/app/backend/server.py"
+##     stuck_count: 0
+##     priority: "high"
+##     needs_retesting: false
+##     status_history:
+##         - working: true
+##         - agent: "testing"
+##         - comment: "✅ TESTED: Admin can list pending partners, approve/reject partners. Document previews available. Geocoding adds coordinates on approval. Authorization working correctly."
+##   - task: "Cobbler address update"
+##     implemented: true
+##     working: true
+##     file: "/app/backend/server.py"
+##     stuck_count: 0
+##     priority: "medium"
+##     needs_retesting: false
+##     status_history:
+##         - working: true
+##         - agent: "testing"
+##         - comment: "✅ TESTED: Cobbler address update working. Geocoding successful for valid addresses (lat=46.5160743, lon=6.6366408 for Lausanne). Proper error handling for invalid addresses."
 
 ## frontend:
 ##   - task: "Cart Context - localStorage management"
