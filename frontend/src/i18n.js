@@ -174,6 +174,33 @@ const resources = {
       "cartIsEmpty": "Votre panier est vide",
       "provideDeliveryAddress": "Veuillez fournir une adresse de livraison",
       "loginRequired": "Veuillez vous connecter pour commander",
+      "loadingDataError": "Erreur de chargement des données",
+      "logoutSuccess": "Déconnexion réussie",
+      "orderAccepted": "Commande acceptée !",
+      "errorOccurred": "Erreur",
+      "statusUpdated": "Statut mis à jour",
+      "updateError": "Erreur de mise à jour",
+      
+      // Dashboard
+      "hello": "Bonjour",
+      "newOrder": "Nouvelle commande",
+      "totalOrders": "Total Commandes",
+      "inProgress": "En cours",
+      "completed": "Terminées",
+      "commission": "Commission",
+      "revenue": "Revenus",
+      "myOrders": "Mes Commandes",
+      "noOrdersYet": "Aucune commande pour le moment",
+      "acceptOrder": "Accepter la commande",
+      "markAsShipped": "Marquer comme expédié",
+      
+      // Order status
+      "pending": "En attente",
+      "accepted": "Accepté",
+      "in_progress": "En cours",
+      "shipped": "Expédié",
+      "delivered": "Livré",
+      "cancelled": "Annulé",
     }
   },
   en: {
