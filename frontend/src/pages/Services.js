@@ -191,8 +191,7 @@ export default function Services({ user }) {
                   {categoryServices.map((service) => (
                     <div 
                       key={service.id} 
-                      className="bg-white border border-gray-200 rounded-2xl p-4 shadow-sm active:scale-[0.98] transition-transform"
-                      onClick={() => handleSelectService(service.id)}
+                      className="bg-white border border-gray-200 rounded-2xl p-4 shadow-sm"
                       data-testid={`service-card-${service.id}`}
                     >
                       <div className="flex justify-between items-start mb-2">
@@ -204,7 +203,7 @@ export default function Services({ user }) {
                           {service.price}CHF
                         </div>
                       </div>
-                      <div className="flex items-center justify-between">
+                      <div className="flex items-center justify-between mb-3">
                         <div className="flex items-center gap-2 text-gray-600">
                           <Clock className="w-4 h-4" />
                           <span className="text-sm" data-testid={`service-days-${service.id}`}>{service.estimated_days}j</span>
@@ -215,6 +214,17 @@ export default function Services({ user }) {
                           </Badge>
                         )}
                       </div>
+                      <Button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleAddToCart(service);
+                        }}
+                        className="w-full bg-amber-700 hover:bg-amber-800"
+                        data-testid={`add-to-cart-${service.id}`}
+                      >
+                        <ShoppingCart className="w-4 h-4 mr-2" />
+                        Ajouter au panier
+                      </Button>
                     </div>
                   ))}
                 </div>
