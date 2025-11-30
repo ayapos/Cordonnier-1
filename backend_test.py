@@ -549,7 +549,7 @@ class ShoeRepairAPITester:
             "Invalid Address Geocoding",
             "PUT",
             "cobbler/address",
-            400  # Expect 400 Bad Request
+            422  # Expect 422 Validation Error (correct for Pydantic validation)
         )
         
         # Restore original token
