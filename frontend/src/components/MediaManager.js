@@ -27,6 +27,7 @@ export default function MediaManager() {
   const [previewUrl, setPreviewUrl] = useState(null);
   const [title, setTitle] = useState('');
   const [position, setPosition] = useState('');
+  const [deletingId, setDeletingId] = useState(null);
 
   useEffect(() => {
     fetchMedia();
