@@ -40,6 +40,7 @@ export default function Checkout({ user }) {
   });
 
   // Delivery info
+  const [useProfileAddress, setUseProfileAddress] = useState(user?.address ? true : false);
   const [deliveryAddress, setDeliveryAddress] = useState(user?.address || '');
   const [deliveryOption, setDeliveryOption] = useState('standard');
   const [notes, setNotes] = useState('');
