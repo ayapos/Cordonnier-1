@@ -231,6 +231,7 @@ const resources = {
       "bootResole": "Boot resole",
       "sneakersCleaning": "Sneakers cleaning",
       "heelsRepair": "Heels repair",
+      "leatherRenovation": "Leather renovation",
       
       // Services page
       "availableServices": "available",
