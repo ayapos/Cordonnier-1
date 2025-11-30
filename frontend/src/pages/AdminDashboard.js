@@ -46,7 +46,13 @@ export default function AdminDashboard({ user }) {
   const [filterStatus, setFilterStatus] = useState('all');
   const [newService, setNewService] = useState({
     name: '',
+    name_en: '',
+    name_de: '',
+    name_it: '',
     description: '',
+    description_en: '',
+    description_de: '',
+    description_it: '',
     price: '',
     estimated_days: '',
     category: 'Réparation',
