@@ -210,7 +210,7 @@ export default function Services({ user }) {
                       <div className="flex items-center justify-between mb-3">
                         <div className="flex items-center gap-2 text-gray-600">
                           <Clock className="w-4 h-4" />
-                          <span className="text-sm" data-testid={`service-days-${service.id}`}>{service.estimated_days}j</span>
+                          <span className="text-sm" data-testid={`service-days-${service.id}`}>{service.estimated_days}{t('day')}</span>
                         </div>
                         {service.gender !== 'mixte' && (
                           <Badge className="bg-gray-100 text-gray-700 border-0">
