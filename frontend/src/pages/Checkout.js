@@ -19,10 +19,17 @@ const API = `${BACKEND_URL}/api`;
 
 export default function Checkout({ user }) {
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { cartItems, getCartTotal, clearCart, getCartCount } = useCart();
   const [checkoutMode, setCheckoutMode] = useState(user ? 'user' : 'guest');
   const [loading, setLoading] = useState(false);
+  
+  // Helper function to get translated service field
+  const getServiceField = (item, field) => {
+    const lang = i18n.language;
+    const translatedField = `${field}_${lang}`;
+    return item[translatedField] || item[field]; // Fallback to French
+  };
 
   // Guest info
   const [guestInfo, setGuestInfo] = useState({
