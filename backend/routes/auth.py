@@ -88,6 +88,36 @@ async def get_me(current_user: dict = Depends(get_current_user)):
         raise HTTPException(status_code=404, detail="User not found")
     return user
 
+@router.put("/me")
+async def update_me(user_data: dict, current_user: dict = Depends(get_current_user)):
+    """Update current user's profile information"""
+    # Only allow updating specific fields
+    allowed_fields = ['name', 'phone', 'address']
+    update_data = {k: v for k, v in user_data.items() if k in allowed_fields}
+    
+    if not update_data:
+        raise HTTPException(status_code=400, detail="No valid fields to update")
+    
+    # Update user
+    result = await db.users.update_one(
+        {"id": current_user['user_id']},
+        {"$set": update_data}
+    )
+    
+    if result.matched_count == 0:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    # Return updated user
+    updated_user = await db.users.find_one(
+        {"id": current_user['user_id']}, 
+        {"_id": 0, "password": 0}
+    )
+    
+    return {
+        "message": "Profile updated successfully",
+        "user": updated_user
+    }
+
 @router.get("/users/{user_id}")
 async def get_user(user_id: str, current_user: dict = Depends(get_current_user)):
     user = await db.users.find_one({"id": user_id}, {"_id": 0, "password": 0, "id_recto": 0, "id_verso": 0, "che_kbis": 0, "bank_account": 0})
