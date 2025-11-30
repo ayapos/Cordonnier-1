@@ -67,6 +67,16 @@ export default function AddressManager({ user, onAddressUpdated }) {
             rows={3}
             className="mt-2"
           />
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mt-2">
+            <p className="text-xs font-medium text-blue-800 mb-1">💡 Format recommandé :</p>
+            <p className="text-xs text-blue-700">
+              Rue et numéro, Code postal, Ville, Pays<br />
+              Exemples valides :<br />
+              • Rue de Genève 10, 1003 Lausanne, Switzerland<br />
+              • Avenue de la Gare 15, 1000 Lausanne, Suisse<br />
+              • Lausanne, Switzerland
+            </p>
+          </div>
           <p className="text-xs text-gray-500 mt-2">
             Cette adresse est utilisée pour vous attribuer automatiquement les commandes les plus proches.
           </p>
