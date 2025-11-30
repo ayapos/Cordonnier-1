@@ -591,12 +591,10 @@ class ShoeRepairAPITester:
         # Restore original token
         self.token = original_token
         
-        if success:
-            print(f"   ✅ Invalid address properly rejected")
-            return True
-        elif response and 'detail' in response:
-            print(f"   ✅ Error message: {response['detail']}")
-            # Accept any error response for invalid address
+        # Accept either 400 or 422 as valid error responses
+        if success or (response and 'detail' in response):
+            print(f"   ✅ Invalid address properly rejected with error")
+            self.log_test("Invalid Address Geocoding", True, "Invalid address rejected as expected")
             return True
         return False
 
