@@ -101,7 +101,7 @@ export default function AdminDashboard({ user }) {
     try {
       const [ordersRes, cobblersRes, statsRes, servicesRes] = await Promise.all([
         axios.get(`${API}/orders`),
-        axios.get(`${API}/cobblers`),
+        axios.get(`${API}/cobbler/cobblers`),
         axios.get(`${API}/stats`),
         axios.get(`${API}/services`)
       ]);
