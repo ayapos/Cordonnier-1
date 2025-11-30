@@ -178,17 +178,36 @@ export default function OrderDetails({ user }) {
             {/* Service Details */}
             <Card className="border-amber-200" data-testid="service-details-card">
               <CardHeader>
-                <CardTitle>Service</CardTitle>
+                <CardTitle>Service{order.items && order.items.length > 1 ? 's' : ''}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
-                <div className="flex justify-between">
-                  <span className="text-amber-800">Service:</span>
-                  <span className="font-medium text-amber-950" data-testid="service-name">{order.service_name}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-amber-800">Prix:</span>
-                  <span className="font-medium text-amber-950" data-testid="service-price">{order.service_price.toFixed(2)}CHF</span>
-                </div>
+                {/* Handle multi-service orders (new format) */}
+                {order.items && order.items.length > 0 ? (
+                  <>
+                    <div className="space-y-2 mb-4 pb-4 border-b border-amber-100">
+                      {order.items.map((item, idx) => (
+                        <div key={idx} className="flex justify-between">
+                          <span className="text-amber-800">{item.service_name} x {item.quantity}:</span>
+                          <span className="font-medium text-amber-950">{(item.service_price * item.quantity).toFixed(2)} CHF</span>
+                        </div>
+                      ))}
+                    </div>
+                  </>
+                ) : (
+                  /* Handle single-service orders (legacy format) */
+                  <>
+                    <div className="flex justify-between">
+                      <span className="text-amber-800">Service:</span>
+                      <span className="font-medium text-amber-950" data-testid="service-name">{order.service_name || 'N/A'}</span>
+                    </div>
+                    {order.service_price && (
+                      <div className="flex justify-between">
+                        <span className="text-amber-800">Prix:</span>
+                        <span className="font-medium text-amber-950" data-testid="service-price">{order.service_price.toFixed(2)} CHF</span>
+                      </div>
+                    )}
+                  </>
+                )}
                 <div className="flex justify-between">
                   <span className="text-amber-800">Livraison:</span>
                   <span className="font-medium text-amber-950" data-testid="delivery-option">
@@ -197,7 +216,7 @@ export default function OrderDetails({ user }) {
                 </div>
                 <div className="flex justify-between">
                   <span className="text-amber-800">Frais de livraison:</span>
-                  <span className="font-medium text-amber-950" data-testid="delivery-price">{order.delivery_price.toFixed(2)}CHF</span>
+                  <span className="font-medium text-amber-950" data-testid="delivery-price">{order.delivery_price ? order.delivery_price.toFixed(2) : '0.00'} CHF</span>
                 </div>
                 <div className="border-t border-amber-200 pt-3">
                   <div className="flex justify-between text-lg">
