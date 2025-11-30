@@ -29,13 +29,14 @@ export default function Home({ user }) {
   const { getCartCount } = useCart();
   const { t } = useTranslation();
   const [currentSlide, setCurrentSlide] = useState(0);
+  const carouselImages = getCarouselImages(t);
 
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % carouselImages.length);
     }, 4000);
     return () => clearInterval(timer);
-  }, []);
+  }, [carouselImages.length]);
 
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev + 1) % carouselImages.length);
