@@ -1023,6 +1023,113 @@ async def reject_partner(partner_id: str, reason: str = None, current_user: dict
         logger.error(f"Error rejecting partner: {e}")
         raise HTTPException(status_code=500, detail="Error rejecting partner")
 
+# Admin Routes - Media Management
+@api_router.post("/admin/media/upload")
+async def upload_media(
+    file: UploadFile = File(...),
+    category: str = Form(...),
+    current_user: dict = Depends(get_current_user)
+):
+    if current_user['role'] != 'admin':
+        raise HTTPException(status_code=403, detail="Admin access required")
+    
+    try:
+        # Validate file type
+        allowed_types = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp']
+        if file.content_type not in allowed_types:
+            raise HTTPException(status_code=400, detail="Only image files are allowed (JPEG, PNG, WEBP)")
+        
+        # Generate unique filename
+        file_extension = file.filename.split('.')[-1]
+        unique_filename = f"{uuid.uuid4()}.{file_extension}"
+        
+        # Save file to media folder
+        media_dir = ROOT_DIR / 'uploads' / 'media'
+        media_dir.mkdir(exist_ok=True, parents=True)
+        file_path = media_dir / unique_filename
+        
+        # Read and save file
+        contents = await file.read()
+        with open(file_path, 'wb') as f:
+            f.write(contents)
+        
+        # Create media record in database
+        media = Media(
+            filename=unique_filename,
+            original_name=file.filename,
+            url=f"/uploads/media/{unique_filename}",
+            category=category,
+            uploaded_by=current_user['user_id']
+        )
+        
+        media_dict = media.model_dump()
+        media_dict['created_at'] = media_dict['created_at'].isoformat()
+        
+        await db.media.insert_one(media_dict)
+        
+        return {
+            "message": "Media uploaded successfully",
+            "media": {
+                "id": media.id,
+                "filename": media.filename,
+                "url": media.url,
+                "category": media.category
+            }
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error uploading media: {e}")
+        raise HTTPException(status_code=500, detail="Error uploading media")
+
+@api_router.get("/admin/media")
+async def list_media(
+    category: Optional[str] = None,
+    current_user: dict = Depends(get_current_user)
+):
+    if current_user['role'] != 'admin':
+        raise HTTPException(status_code=403, detail="Admin access required")
+    
+    try:
+        query = {}
+        if category:
+            query['category'] = category
+        
+        media_list = await db.media.find(query, {"_id": 0}).to_list(1000)
+        return media_list
+    except Exception as e:
+        logger.error(f"Error listing media: {e}")
+        raise HTTPException(status_code=500, detail="Error listing media")
+
+@api_router.delete("/admin/media/{media_id}")
+async def delete_media(
+    media_id: str,
+    current_user: dict = Depends(get_current_user)
+):
+    if current_user['role'] != 'admin':
+        raise HTTPException(status_code=403, detail="Admin access required")
+    
+    try:
+        # Find media
+        media = await db.media.find_one({"id": media_id})
+        if not media:
+            raise HTTPException(status_code=404, detail="Media not found")
+        
+        # Delete file from disk
+        file_path = ROOT_DIR / 'uploads' / 'media' / media['filename']
+        if file_path.exists():
+            file_path.unlink()
+        
+        # Delete from database
+        await db.media.delete_one({"id": media_id})
+        
+        return {"message": "Media deleted successfully"}
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error deleting media: {e}")
+        raise HTTPException(status_code=500, detail="Error deleting media")
+
 # Cobbler Routes - Address Management
 @api_router.put("/cobbler/address")
 async def update_cobbler_address(address_data: dict, current_user: dict = Depends(get_current_user)):
