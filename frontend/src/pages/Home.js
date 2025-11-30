@@ -279,52 +279,8 @@ export default function Home({ user }) {
         </div>
       </section>
 
-      {/* Avant-Après Galerie */}
-      <section className="px-4 py-12 max-w-md mx-auto">
-        <h3 className="text-3xl font-bold mb-3 text-gray-900 text-center">{t('beforeAfterGallery')}</h3>
-        <p className="text-center text-gray-600 mb-8">{t('repairResults')}</p>
-        <div className="space-y-6">
-          {[
-            {
-              before: 'https://images.unsplash.com/photo-1608667508764-33cf0726b13a?w=500&q=80',
-              after: 'https://images.unsplash.com/photo-1529953717281-81a40b131119?w=500&q=80',
-              title: t('bootResole')
-            },
-            {
-              before: 'https://images.unsplash.com/photo-1552346154-21d32810aba3?w=500&q=80',
-              after: 'https://images.unsplash.com/photo-1614252235316-8c857d38b5f4?w=500&q=80',
-              title: t('sneakersCleaning')
-            },
-            {
-              before: 'https://images.unsplash.com/photo-1519226719127-9e805abb99b1?w=500&q=80',
-              after: 'https://images.unsplash.com/photo-1638609348722-aa2a3a67db26?w=500&q=80',
-              title: t('leatherRenovation')
-            }
-          ].map((item, idx) => (
-            <div key={idx} className="bg-white rounded-2xl p-4 shadow-lg">
-              <h4 className="font-bold text-gray-900 mb-3 text-center">{item.title}</h4>
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <div className="relative rounded-xl overflow-hidden mb-2">
-                    <img src={item.before} alt="Avant" className="w-full h-48 object-cover" />
-                    <div className="absolute top-2 left-2 bg-red-500 text-white px-3 py-1 rounded-full text-xs font-bold">
-                      AVANT
-                    </div>
-                  </div>
-                </div>
-                <div>
-                  <div className="relative rounded-xl overflow-hidden mb-2">
-                    <img src={item.after} alt="Après" className="w-full h-48 object-cover" />
-                    <div className="absolute top-2 left-2 bg-green-500 text-white px-3 py-1 rounded-full text-xs font-bold">
-                      APRÈS
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
+      {/* Avant-Après Galerie - Carousel */}
+      <BeforeAfterCarousel t={t} />
 
       {/* CTA Final */}
       <section className="px-4 py-12 max-w-md mx-auto text-center">
