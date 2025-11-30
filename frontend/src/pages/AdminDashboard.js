@@ -12,6 +12,7 @@ import { Wrench, Users, Package, TrendingUp, LogOut, Plus, Edit, Search, Trash2 
 import { toast } from 'sonner';
 import axios from 'axios';
 import AdminSettings from './AdminSettings';
+import PartnerManagement from '@/components/PartnerManagement';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
