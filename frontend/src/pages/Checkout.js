@@ -67,15 +67,7 @@ export default function Checkout({ user }) {
       return;
     }
 
-    // VALIDATION 2: Photos OBLIGATOIRES
-    if (images.length === 0) {
-      toast.error('⚠️ OBLIGATOIRE : Ajoutez au moins une photo de vos chaussures avant de commander', {
-        duration: 5000,
-      });
-      // Scroll to images section
-      document.getElementById('images')?.scrollIntoView({ behavior: 'smooth' });
-      return;
-    }
+    // Photos are optional - no validation needed
 
     // VALIDATION 3: Adresse de livraison
     if (!deliveryAddress.trim()) {
