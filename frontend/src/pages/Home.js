@@ -5,9 +5,13 @@ import { MapPin, Clock, Shield, ArrowRight, ChevronLeft, ChevronRight, Star, Sho
 import { useCart } from '@/context/CartContext';
 import { useTranslation } from 'react-i18next';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
+import axios from 'axios';
 
-// Carousel images with translation keys
-const getCarouselImages = (t) => [
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+const API = `${BACKEND_URL}/api`;
+
+// Fallback carousel images if no images uploaded
+const getFallbackCarouselImages = (t) => [
   {
     url: 'https://images.unsplash.com/photo-1621996659490-3275b4d0d951?w=800&q=80',
     title: t('pumpsHeels'),
@@ -29,7 +33,7 @@ export default function Home({ user }) {
   const { getCartCount } = useCart();
   const { t } = useTranslation();
   const [currentSlide, setCurrentSlide] = useState(0);
-  const carouselImages = getCarouselImages(t);
+  const [carouselImages, setCarouselImages] = useState(getFallbackCarouselImages(t));
 
   useEffect(() => {
     const timer = setInterval(() => {
