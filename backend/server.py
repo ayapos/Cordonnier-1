@@ -1064,6 +1064,8 @@ async def upload_media(
             original_name=file.filename,
             url=f"/uploads/media/{unique_filename}",
             category=category,
+            title=title,
+            position=position,
             uploaded_by=current_user['user_id']
         )
         
