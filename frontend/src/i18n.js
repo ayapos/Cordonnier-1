@@ -76,6 +76,12 @@ const resources = {
       "austria": "Autriche",
       "netherlands": "Pays-Bas",
       
+      // Stats section
+      "countries": "Pays",
+      "happyClients": "Clients satisfaits",
+      "craftsmen": "Artisans",
+      "repairedShoes": "Chaussures réparées",
+      
       // Features
       "autoAssignmentTitle": "Attribution automatique",
       "autoAssignmentDesc": "Votre commande est assignée au cordonnier le plus proche automatiquement",
