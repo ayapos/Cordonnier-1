@@ -341,6 +341,7 @@ async def get_service(service_id: str):
 async def create_order(
     service_id: str = Form(...),
     delivery_option: str = Form(...),
+    delivery_address: str = Form(...),
     notes: Optional[str] = Form(None),
     images: List[UploadFile] = File(...),
     current_user: dict = Depends(get_current_user)
@@ -364,10 +365,24 @@ async def create_order(
         image_base64 = base64.b64encode(contents).decode('utf-8')
         image_data_list.append(f"data:image/jpeg;base64,{image_base64}")
     
-    # Create order
+    # Geocode client address and find nearest cobbler
+    cobbler_id = None
+    client_coords = get_coordinates_from_address(delivery_address)
+    
+    if client_coords:
+        client_lat, client_lon = client_coords
+        cobbler_id = await find_nearest_cobbler(client_lat, client_lon)
+        logger.info(f"Auto-assigned order to cobbler {cobbler_id} based on location")
+    else:
+        logger.warning(f"Could not geocode address: {delivery_address}")
+    
+    # Create order with auto-assigned cobbler
+    order_status = 'accepted' if cobbler_id else 'pending'
+    
     order = Order(
         reference_number=generate_reference_number(),
         client_id=current_user['user_id'],
+        cobbler_id=cobbler_id,
         service_id=service_id,
         service_name=service['name'],
         service_price=service_price,
@@ -375,7 +390,7 @@ async def create_order(
         delivery_price=delivery_price,
         commission=commission,
         total_amount=total_amount,
-        status='pending',
+        status=order_status,
         shoe_images=image_data_list,
         notes=notes
     )
@@ -389,7 +404,9 @@ async def create_order(
     return {
         "order_id": order.id,
         "reference_number": order.reference_number,
-        "total_amount": total_amount
+        "total_amount": total_amount,
+        "cobbler_assigned": cobbler_id is not None,
+        "cobbler_id": cobbler_id
     }
 
 @api_router.post("/orders/{order_id}/payment")
