@@ -115,7 +115,7 @@ export default function Dashboard({ user }) {
         <div className="grid md:grid-cols-4 gap-6 mb-8">
           <Card className="border-amber-200" data-testid="stat-total-orders">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Commandes</CardTitle>
+              <CardTitle className="text-sm font-medium">{t('totalOrders')}</CardTitle>
               <Package className="h-4 w-4 text-amber-600" />
             </CardHeader>
             <CardContent>
@@ -125,7 +125,7 @@ export default function Dashboard({ user }) {
 
           <Card className="border-amber-200" data-testid="stat-pending-orders">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">En cours</CardTitle>
+              <CardTitle className="text-sm font-medium">{t('inProgress')}</CardTitle>
               <Clock className="h-4 w-4 text-amber-600" />
             </CardHeader>
             <CardContent>
@@ -135,7 +135,7 @@ export default function Dashboard({ user }) {
 
           <Card className="border-amber-200" data-testid="stat-completed-orders">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Terminées</CardTitle>
+              <CardTitle className="text-sm font-medium">{t('completed')}</CardTitle>
               <TrendingUp className="h-4 w-4 text-amber-600" />
             </CardHeader>
             <CardContent>
@@ -146,7 +146,7 @@ export default function Dashboard({ user }) {
           <Card className="border-amber-200" data-testid="stat-revenue">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">
-                {user?.role === 'admin' ? 'Commission' : 'Revenus'}
+                {user?.role === 'admin' ? t('commission') : t('revenue')}
               </CardTitle>
               <TrendingUp className="h-4 w-4 text-amber-600" />
             </CardHeader>
