@@ -44,6 +44,10 @@ export default function Services({ user }) {
     }
   };
 
+  const handleAddToCart = (service) => {
+    addToCart(service);
+  };
+
   const handleSelectService = (serviceId) => {
     if (!user) {
       toast.error('Veuillez vous connecter pour commander');
