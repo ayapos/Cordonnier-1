@@ -184,12 +184,24 @@ export default function Dashboard({ user: initialUser }) {
           </div>
         )}
 
+        {/* Profile Editor for Cobblers */}
+        {user?.role === 'cobbler' && (
+          <div className="mb-6">
+            <ProfileEditor 
+              user={user} 
+              onProfileUpdated={(updatedUser) => {
+                setUser(updatedUser);
+              }} 
+            />
+          </div>
+        )}
+
         {/* Address Manager for Cobblers */}
         {user?.role === 'cobbler' && (
           <div className="mb-6">
             <AddressManager user={user} onAddressUpdated={(data) => {
-              // You can update the user object here if needed
-              console.log('Address updated:', data);
+              // Update user with new address data
+              setUser({ ...user, ...data });
             }} />
           </div>
         )}
