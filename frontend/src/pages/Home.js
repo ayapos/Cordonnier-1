@@ -5,6 +5,8 @@ import { MapPin, Clock, Shield, ArrowRight, ChevronLeft, ChevronRight, Star, Sho
 import { useCart } from '@/context/CartContext';
 import { useTranslation } from 'react-i18next';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
+import CurrencySwitcher from '@/components/CurrencySwitcher';
+import { useCurrency } from '@/context/CurrencyContext';
 import axios from 'axios';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
