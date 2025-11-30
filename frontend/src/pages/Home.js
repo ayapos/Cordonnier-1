@@ -329,9 +329,39 @@ export default function Home({ user }) {
 
       {/* Footer */}
       <footer className="bg-gray-900 text-white py-8 mt-12">
-        <div className="max-w-md mx-auto px-4 text-center">
-          <h4 className="font-bold text-lg mb-2">ShoeRepair</h4>
-          <p className="text-gray-400 text-sm">© 2025 ShoeRepair. Réparation professionnelle.</p>
+        <div className="max-w-md mx-auto px-4">
+          <div className="text-center mb-6">
+            <h4 className="font-bold text-lg mb-2">ShoeRepair</h4>
+            <p className="text-gray-400 text-sm">Réparation professionnelle de chaussures</p>
+          </div>
+          
+          <div className="grid grid-cols-2 gap-4 text-sm mb-6">
+            <div>
+              <h5 className="font-bold mb-2 text-orange-400">Services</h5>
+              <ul className="space-y-2 text-gray-400">
+                <li><Link to="/services" className="hover:text-white">Nos Services</Link></li>
+                <li><Link to="/services" className="hover:text-white">Tarifs</Link></li>
+              </ul>
+            </div>
+            <div>
+              <h5 className="font-bold mb-2 text-orange-400">Partenaires</h5>
+              <ul className="space-y-2 text-gray-400">
+                <li><Link to="/become-partner" className="hover:text-white">Devenir Partenaire</Link></li>
+                <li><Link to="/auth" className="hover:text-white">Espace Cordonnier</Link></li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="border-t border-gray-800 pt-4 text-center text-xs text-gray-400">
+            <div className="flex justify-center gap-4 mb-3">
+              <Link to="/terms" className="hover:text-white">CGU</Link>
+              <span>•</span>
+              <Link to="/privacy" className="hover:text-white">Confidentialité</Link>
+              <span>•</span>
+              <Link to="/legal" className="hover:text-white">Mentions Légales</Link>
+            </div>
+            <p>© 2025 ShoeRepair. Tous droits réservés.</p>
+          </div>
         </div>
       </footer>
     </div>
