@@ -88,8 +88,8 @@ export default function Services({ user }) {
               </Button>
             </Link>
             <div>
-              <h1 className="text-lg font-bold text-gray-900">Services</h1>
-              <p className="text-xs text-gray-500">{filteredServices.length} disponibles</p>
+              <h1 className="text-lg font-bold text-gray-900">{t('services')}</h1>
+              <p className="text-xs text-gray-500">{filteredServices.length} {t('availableServices')}</p>
             </div>
           </div>
           <div className="flex items-center gap-2">
