@@ -320,7 +320,7 @@ export default function MediaManager() {
               <li><strong>Carousel :</strong> Pour changer les slides de la page d'accueil (3 images recommandées)</li>
               <li><strong>Services :</strong> Images pour illustrer vos services de réparation</li>
               <li><strong>Galerie :</strong> Photos avant/après des réparations</li>
-              <li><strong>Formats acceptés :</strong> JPG, PNG, WEBP (max 5 MB)</li>
+              <li><strong>Formats acceptés :</strong> JPG, PNG, WEBP (max 50 MB)</li>
             </ul>
           </div>
         </CardContent>
