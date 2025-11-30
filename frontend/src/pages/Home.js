@@ -140,7 +140,7 @@ export default function Home({ user }) {
                 className="bg-orange-600 hover:bg-orange-700 text-white w-full shadow-xl"
                 data-testid="get-started-btn"
               >
-                Voir les services <ArrowRight className="ml-2 w-5 h-5" />
+                {t('viewServices')} <ArrowRight className="ml-2 w-5 h-5" />
               </Button>
             </Link>
           </div>
