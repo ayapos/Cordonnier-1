@@ -136,6 +136,45 @@ export default function OrderDetails({ user }) {
               </CardContent>
             </Card>
 
+            {/* Cobbler Info */}
+            {cobbler && (
+              <Card className="border-orange-300 bg-orange-50" data-testid="cobbler-info-card">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <span>Votre Cordonnier</span>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <div>
+                    <p className="text-sm text-gray-600 mb-1">Nom</p>
+                    <p className="font-bold text-gray-900" data-testid="cobbler-name">{cobbler.name}</p>
+                  </div>
+                  {cobbler.phone && (
+                    <div>
+                      <p className="text-sm text-gray-600 mb-1">Téléphone</p>
+                      <a href={`tel:${cobbler.phone}`} className="font-medium text-orange-700 hover:underline" data-testid="cobbler-phone">
+                        📞 {cobbler.phone}
+                      </a>
+                    </div>
+                  )}
+                  {cobbler.email && (
+                    <div>
+                      <p className="text-sm text-gray-600 mb-1">Email</p>
+                      <a href={`mailto:${cobbler.email}`} className="font-medium text-orange-700 hover:underline" data-testid="cobbler-email">
+                        ✉️ {cobbler.email}
+                      </a>
+                    </div>
+                  )}
+                  {cobbler.address && (
+                    <div>
+                      <p className="text-sm text-gray-600 mb-1">Atelier</p>
+                      <p className="text-sm text-gray-700" data-testid="cobbler-address">📍 {cobbler.address}</p>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            )}
+
             {/* Service Details */}
             <Card className="border-amber-200" data-testid="service-details-card">
               <CardHeader>
