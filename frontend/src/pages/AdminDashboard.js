@@ -414,7 +414,7 @@ export default function AdminDashboard({ user }) {
                             </div>
                             <p className="text-sm text-amber-700" data-testid={`order-service-${order.id}`}>{order.service_name}</p>
                             <p className="text-xs text-amber-600 mt-1">
-                              Client ID: {order.client_id.substring(0, 8)}... | 
+                              {order.client_id ? `Client ID: ${order.client_id.substring(0, 8)}...` : 'Client invité'} | 
                               {order.cobbler_id ? ` Cordonnier: ${order.cobbler_id.substring(0, 8)}...` : ' Pas encore assigné'}
                             </p>
                           </div>
