@@ -403,11 +403,8 @@ async def create_guest_order(
     """Create order as guest with multiple services"""
     import json
     
-    # Validate images
-    if not images or len(images) == 0:
-        raise HTTPException(status_code=400, detail="Au moins une photo est requise")
-    
-    # Process images
+    # Process images (optional)
+    images = images if images else []
     image_data_list = []
     for image in images:
         contents = await image.read()
@@ -531,11 +528,8 @@ async def create_bulk_order(
     """Create order with multiple services for authenticated users"""
     import json
     
-    # Validate images
-    if not images or len(images) == 0:
-        raise HTTPException(status_code=400, detail="Au moins une photo est requise")
-    
-    # Process images
+    # Process images (optional)
+    images = images if images else []
     image_data_list = []
     for image in images:
         contents = await image.read()
