@@ -19,6 +19,17 @@ export default function ProfileEditor({ user, onProfileUpdated }) {
     address: user?.address || ''
   });
 
+  // Update form data when user prop changes
+  useEffect(() => {
+    if (user) {
+      setFormData({
+        name: user.name || '',
+        phone: user.phone || '',
+        address: user.address || ''
+      });
+    }
+  }, [user]);
+
   const handleChange = (e) => {
     setFormData({
       ...formData,
