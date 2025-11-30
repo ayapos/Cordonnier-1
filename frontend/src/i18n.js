@@ -14,13 +14,9 @@ const resources = {
       "dashboard": "Tableau de bord",
       "backHome": "Retour à l'accueil",
       
-      // Home page
+      // Home page - Header
       "appTitle": "ShoeRepair",
       "appSubtitle": "Réparation à domicile",
-      "heroTitle": "Réparation professionnelle de chaussures",
-      "heroSubtitle": "À domicile, par des artisans qualifiés",
-      "viewServices": "Voir nos services",
-      "becomePartner": "Devenir partenaire",
       
       // Carousel
       "pumpsHeels": "Escarpins & Talons",
@@ -29,6 +25,12 @@ const resources = {
       "traditionalKnowHow": "Savoir-faire traditionnel",
       "mensShoes": "Chaussures Homme",
       "premiumRenovation": "Rénovation premium",
+      
+      // Hero section
+      "heroTitle": "Réparation professionnelle de chaussures",
+      "heroSubtitle": "À domicile, par des artisans qualifiés",
+      "viewServices": "Voir nos services",
+      "becomePartner": "Devenir partenaire",
       
       // How it works
       "howItWorks": "Comment ça marche ?",
@@ -61,13 +63,15 @@ const resources = {
       "customerReviews": "Avis Clients",
       "whatTheySay": "Ce qu'ils disent de nous",
       
-      // Services
+      // Services page
       "availableServices": "disponibles",
       "addToCart": "Ajouter au panier",
       "days": "jours",
+      "day": "jour",
       "woman": "Femme",
       "man": "Homme",
       "mixed": "Mixte",
+      "allCategories": "Toutes",
       
       // Cart
       "myCart": "Mon Panier",
@@ -81,6 +85,8 @@ const resources = {
       "delivery": "Livraison",
       "toCalculate": "À calculer",
       "estimatedTotal": "Total estimé",
+      "deliveryFeesNote": "+ frais de livraison selon l'option choisie",
+      "summary": "Récapitulatif",
       "checkout": "Passer la commande",
       
       // Checkout
@@ -94,16 +100,19 @@ const resources = {
       "password": "Mot de passe",
       "connectToAccount": "Connectez-vous pour accéder à votre historique",
       "signIn": "Se connecter",
+      "required": "*",
       
       // Photos
       "shoePhotos": "Photos de vos chaussures",
       "photosOptional": "(optionnel)",
       "photosHelper": "Ajoutez jusqu'à 5 photos pour aider le cordonnier",
       "clickToAddPhotos": "Cliquez pour ajouter des photos",
+      "photosCount": "photos",
       
       // Delivery
       "deliveryAddress": "Adresse de livraison",
       "deliveryAddressHelper": "Le cordonnier le plus proche sera assigné automatiquement",
+      "deliveryAddressPlaceholder": "Ex: Rue du Commerce 5, 1003 Lausanne",
       "deliveryOptions": "Options de livraison",
       "standard": "Standard",
       "express": "Express",
@@ -113,7 +122,7 @@ const resources = {
       // Order
       "notes": "Notes",
       "notesOptional": "(optionnel)",
-      "specialInstructions": "Instructions spéciales...",
+      "specialInstructions": "Ajoutez des instructions spéciales...",
       "orderSummary": "Récapitulatif de la commande",
       "total": "Total",
       "confirmAndPay": "Confirmer et payer",
@@ -129,6 +138,7 @@ const resources = {
       "providePassword": "Veuillez fournir un mot de passe pour créer le compte",
       "cartIsEmpty": "Votre panier est vide",
       "provideDeliveryAddress": "Veuillez fournir une adresse de livraison",
+      "loginRequired": "Veuillez vous connecter pour commander",
     }
   },
   en: {
@@ -140,22 +150,66 @@ const resources = {
       "login": "Login",
       "logout": "Logout",
       "dashboard": "Dashboard",
+      "backHome": "Back to home",
       
-      // Home page
+      // Home page - Header
       "appTitle": "ShoeRepair",
       "appSubtitle": "Home repair",
+      
+      // Carousel
+      "pumpsHeels": "Pumps & Heels",
+      "expertRepair": "Expert repair",
+      "qualifiedCraftsmen": "Qualified Craftsmen",
+      "traditionalKnowHow": "Traditional know-how",
+      "mensShoes": "Men's Shoes",
+      "premiumRenovation": "Premium renovation",
+      
+      // Hero section
       "heroTitle": "Professional shoe repair",
       "heroSubtitle": "At home, by qualified craftsmen",
       "viewServices": "View our services",
       "becomePartner": "Become a partner",
       
-      // Services
+      // How it works
+      "howItWorks": "How it works?",
+      "simpleAndFast": "Simple and fast in 4 steps",
+      "step1Title": "Choose",
+      "step1Desc": "Select your service",
+      "step2Title": "Pay",
+      "step2Desc": "Secure payment",
+      "step3Title": "Send",
+      "step3Desc": "With your reference",
+      "step4Title": "Receive",
+      "step4Desc": "Home delivery",
+      
+      // Why choose us
+      "whyChooseUs": "Why choose us?",
+      "localCraftsmenTitle": "Local Craftsmen",
+      "localCraftsmenDesc": "Qualified cobblers near you",
+      "fastDeliveryTitle": "Fast Delivery",
+      "fastDeliveryDesc": "Express service in 72h available",
+      "qualityGuaranteeTitle": "Quality Guarantee",
+      "qualityGuaranteeDesc": "Satisfaction guaranteed or refunded",
+      
+      // Before After
+      "beforeAfter": "Before / After",
+      "seeTransformation": "See the transformation",
+      "before": "Before",
+      "after": "After",
+      
+      // Reviews
+      "customerReviews": "Customer Reviews",
+      "whatTheySay": "What they say about us",
+      
+      // Services page
       "availableServices": "available",
       "addToCart": "Add to cart",
       "days": "days",
+      "day": "day",
       "woman": "Women",
       "man": "Men",
       "mixed": "Unisex",
+      "allCategories": "All",
       
       // Cart
       "myCart": "My Cart",
@@ -169,6 +223,8 @@ const resources = {
       "delivery": "Delivery",
       "toCalculate": "To calculate",
       "estimatedTotal": "Estimated total",
+      "deliveryFeesNote": "+ delivery fees according to option chosen",
+      "summary": "Summary",
       "checkout": "Checkout",
       
       // Checkout
@@ -182,16 +238,19 @@ const resources = {
       "password": "Password",
       "connectToAccount": "Sign in to access your history",
       "signIn": "Sign in",
+      "required": "*",
       
       // Photos
       "shoePhotos": "Shoe photos",
       "photosOptional": "(optional)",
       "photosHelper": "Add up to 5 photos to help the cobbler",
       "clickToAddPhotos": "Click to add photos",
+      "photosCount": "photos",
       
       // Delivery
       "deliveryAddress": "Delivery address",
       "deliveryAddressHelper": "The nearest cobbler will be automatically assigned",
+      "deliveryAddressPlaceholder": "Ex: 5 Commerce Street, 1003 Lausanne",
       "deliveryOptions": "Delivery options",
       "standard": "Standard",
       "express": "Express",
@@ -201,7 +260,7 @@ const resources = {
       // Order
       "notes": "Notes",
       "notesOptional": "(optional)",
-      "specialInstructions": "Special instructions...",
+      "specialInstructions": "Add special instructions...",
       "orderSummary": "Order summary",
       "total": "Total",
       "confirmAndPay": "Confirm and pay",
@@ -217,6 +276,7 @@ const resources = {
       "providePassword": "Please provide a password to create the account",
       "cartIsEmpty": "Your cart is empty",
       "provideDeliveryAddress": "Please provide a delivery address",
+      "loginRequired": "Please login to order",
     }
   },
   de: {
@@ -228,22 +288,66 @@ const resources = {
       "login": "Anmelden",
       "logout": "Abmelden",
       "dashboard": "Dashboard",
+      "backHome": "Zurück zur Startseite",
       
-      // Home page
+      // Home page - Header
       "appTitle": "ShoeRepair",
       "appSubtitle": "Reparatur zu Hause",
+      
+      // Carousel
+      "pumpsHeels": "Pumps & Absätze",
+      "expertRepair": "Expertenreparatur",
+      "qualifiedCraftsmen": "Qualifizierte Handwerker",
+      "traditionalKnowHow": "Traditionelles Know-how",
+      "mensShoes": "Herrenschuhe",
+      "premiumRenovation": "Premium-Renovierung",
+      
+      // Hero section
       "heroTitle": "Professionelle Schuhreparatur",
       "heroSubtitle": "Zu Hause, von qualifizierten Handwerkern",
       "viewServices": "Unsere Dienstleistungen ansehen",
       "becomePartner": "Partner werden",
       
-      // Services
+      // How it works
+      "howItWorks": "Wie funktioniert es?",
+      "simpleAndFast": "Einfach und schnell in 4 Schritten",
+      "step1Title": "Wählen",
+      "step1Desc": "Wählen Sie Ihren Service",
+      "step2Title": "Bezahlen",
+      "step2Desc": "Sichere Zahlung",
+      "step3Title": "Senden",
+      "step3Desc": "Mit Ihrer Referenz",
+      "step4Title": "Empfangen",
+      "step4Desc": "Lieferung nach Hause",
+      
+      // Why choose us
+      "whyChooseUs": "Warum uns wählen?",
+      "localCraftsmenTitle": "Lokale Handwerker",
+      "localCraftsmenDesc": "Qualifizierte Schuster in Ihrer Nähe",
+      "fastDeliveryTitle": "Schnelle Lieferung",
+      "fastDeliveryDesc": "Express-Service in 72h verfügbar",
+      "qualityGuaranteeTitle": "Qualitätsgarantie",
+      "qualityGuaranteeDesc": "Zufriedenheit garantiert oder Geld zurück",
+      
+      // Before After
+      "beforeAfter": "Vorher / Nachher",
+      "seeTransformation": "Sehen Sie die Transformation",
+      "before": "Vorher",
+      "after": "Nachher",
+      
+      // Reviews
+      "customerReviews": "Kundenbewertungen",
+      "whatTheySay": "Was sie über uns sagen",
+      
+      // Services page
       "availableServices": "verfügbar",
       "addToCart": "In den Warenkorb",
       "days": "Tage",
+      "day": "Tag",
       "woman": "Damen",
       "man": "Herren",
       "mixed": "Unisex",
+      "allCategories": "Alle",
       
       // Cart
       "myCart": "Mein Warenkorb",
@@ -257,6 +361,8 @@ const resources = {
       "delivery": "Lieferung",
       "toCalculate": "Zu berechnen",
       "estimatedTotal": "Geschätzte Summe",
+      "deliveryFeesNote": "+ Lieferkosten je nach gewählter Option",
+      "summary": "Zusammenfassung",
       "checkout": "Zur Kasse",
       
       // Checkout
@@ -270,16 +376,19 @@ const resources = {
       "password": "Passwort",
       "connectToAccount": "Melden Sie sich an, um auf Ihren Verlauf zuzugreifen",
       "signIn": "Anmelden",
+      "required": "*",
       
       // Photos
       "shoePhotos": "Schuhfotos",
       "photosOptional": "(optional)",
       "photosHelper": "Fügen Sie bis zu 5 Fotos hinzu, um dem Schuster zu helfen",
       "clickToAddPhotos": "Klicken Sie, um Fotos hinzuzufügen",
+      "photosCount": "Fotos",
       
       // Delivery
       "deliveryAddress": "Lieferadresse",
       "deliveryAddressHelper": "Der nächste Schuster wird automatisch zugewiesen",
+      "deliveryAddressPlaceholder": "Z.B.: Handelsstraße 5, 1003 Lausanne",
       "deliveryOptions": "Lieferoptionen",
       "standard": "Standard",
       "express": "Express",
@@ -289,7 +398,7 @@ const resources = {
       // Order
       "notes": "Notizen",
       "notesOptional": "(optional)",
-      "specialInstructions": "Besondere Anweisungen...",
+      "specialInstructions": "Besondere Anweisungen hinzufügen...",
       "orderSummary": "Bestellübersicht",
       "total": "Gesamt",
       "confirmAndPay": "Bestätigen und bezahlen",
@@ -305,6 +414,7 @@ const resources = {
       "providePassword": "Bitte geben Sie ein Passwort ein, um das Konto zu erstellen",
       "cartIsEmpty": "Ihr Warenkorb ist leer",
       "provideDeliveryAddress": "Bitte geben Sie eine Lieferadresse an",
+      "loginRequired": "Bitte melden Sie sich an, um zu bestellen",
     }
   },
   it: {
@@ -316,22 +426,66 @@ const resources = {
       "login": "Accedi",
       "logout": "Esci",
       "dashboard": "Dashboard",
+      "backHome": "Torna alla home",
       
-      // Home page
+      // Home page - Header
       "appTitle": "ShoeRepair",
       "appSubtitle": "Riparazione a domicilio",
+      
+      // Carousel
+      "pumpsHeels": "Décolleté & Tacchi",
+      "expertRepair": "Riparazione esperta",
+      "qualifiedCraftsmen": "Artigiani Qualificati",
+      "traditionalKnowHow": "Know-how tradizionale",
+      "mensShoes": "Scarpe da Uomo",
+      "premiumRenovation": "Ristrutturazione premium",
+      
+      // Hero section
       "heroTitle": "Riparazione professionale di scarpe",
       "heroSubtitle": "A domicilio, da artigiani qualificati",
       "viewServices": "Vedi i nostri servizi",
       "becomePartner": "Diventa partner",
       
-      // Services
+      // How it works
+      "howItWorks": "Come funziona?",
+      "simpleAndFast": "Semplice e veloce in 4 passaggi",
+      "step1Title": "Scegli",
+      "step1Desc": "Seleziona il tuo servizio",
+      "step2Title": "Paga",
+      "step2Desc": "Pagamento sicuro",
+      "step3Title": "Invia",
+      "step3Desc": "Con il tuo riferimento",
+      "step4Title": "Ricevi",
+      "step4Desc": "Consegna a domicilio",
+      
+      // Why choose us
+      "whyChooseUs": "Perché sceglierci?",
+      "localCraftsmenTitle": "Artigiani Locali",
+      "localCraftsmenDesc": "Calzolai qualificati vicino a te",
+      "fastDeliveryTitle": "Consegna Veloce",
+      "fastDeliveryDesc": "Servizio express in 72h disponibile",
+      "qualityGuaranteeTitle": "Garanzia di Qualità",
+      "qualityGuaranteeDesc": "Soddisfazione garantita o rimborsata",
+      
+      // Before After
+      "beforeAfter": "Prima / Dopo",
+      "seeTransformation": "Vedi la trasformazione",
+      "before": "Prima",
+      "after": "Dopo",
+      
+      // Reviews
+      "customerReviews": "Recensioni Clienti",
+      "whatTheySay": "Cosa dicono di noi",
+      
+      // Services page
       "availableServices": "disponibili",
       "addToCart": "Aggiungi al carrello",
       "days": "giorni",
+      "day": "giorno",
       "woman": "Donna",
       "man": "Uomo",
       "mixed": "Unisex",
+      "allCategories": "Tutte",
       
       // Cart
       "myCart": "Il Mio Carrello",
@@ -345,6 +499,8 @@ const resources = {
       "delivery": "Consegna",
       "toCalculate": "Da calcolare",
       "estimatedTotal": "Totale stimato",
+      "deliveryFeesNote": "+ spese di consegna secondo l'opzione scelta",
+      "summary": "Riepilogo",
       "checkout": "Vai alla cassa",
       
       // Checkout
@@ -358,16 +514,19 @@ const resources = {
       "password": "Password",
       "connectToAccount": "Accedi per accedere alla tua cronologia",
       "signIn": "Accedi",
+      "required": "*",
       
       // Photos
       "shoePhotos": "Foto delle scarpe",
       "photosOptional": "(opzionale)",
       "photosHelper": "Aggiungi fino a 5 foto per aiutare il calzolaio",
       "clickToAddPhotos": "Clicca per aggiungere foto",
+      "photosCount": "foto",
       
       // Delivery
       "deliveryAddress": "Indirizzo di consegna",
       "deliveryAddressHelper": "Il calzolaio più vicino verrà assegnato automaticamente",
+      "deliveryAddressPlaceholder": "Es: Via del Commercio 5, 1003 Losanna",
       "deliveryOptions": "Opzioni di consegna",
       "standard": "Standard",
       "express": "Express",
@@ -377,7 +536,7 @@ const resources = {
       // Order
       "notes": "Note",
       "notesOptional": "(opzionale)",
-      "specialInstructions": "Istruzioni speciali...",
+      "specialInstructions": "Aggiungi istruzioni speciali...",
       "orderSummary": "Riepilogo dell'ordine",
       "total": "Totale",
       "confirmAndPay": "Conferma e paga",
@@ -393,6 +552,7 @@ const resources = {
       "providePassword": "Si prega di fornire una password per creare l'account",
       "cartIsEmpty": "Il tuo carrello è vuoto",
       "provideDeliveryAddress": "Si prega di fornire un indirizzo di consegna",
+      "loginRequired": "Si prega di accedere per ordinare",
     }
   }
 };
