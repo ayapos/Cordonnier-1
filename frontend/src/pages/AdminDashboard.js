@@ -205,6 +205,16 @@ export default function AdminDashboard({ user }) {
     setDeleteConfirmOpen(true);
   };
 
+  const handleAddCategory = () => {
+    if (newCategoryName.trim() && !categories.includes(newCategoryName.trim())) {
+      setCategories([...categories, newCategoryName.trim()]);
+      setNewService({...newService, category: newCategoryName.trim()});
+      setNewCategoryName('');
+      setShowNewCategoryInput(false);
+      toast.success('Nouvelle catégorie ajoutée !');
+    }
+  };
+
   const confirmDelete = async () => {
     if (!serviceToDelete) return;
     
