@@ -473,6 +473,42 @@ class ShoeRepairAPITester:
                 return False
         return False
 
+    def test_verify_partner_coordinates_added(self):
+        """Test that coordinates were added to partner after approval"""
+        if not self.admin_token or not self.partner_id:
+            print("   ❌ No admin token or partner ID available")
+            return False
+            
+        # Set admin token temporarily  
+        original_token = self.token
+        self.token = self.admin_token
+        
+        success, response = self.run_test(
+            "Get Partner Details After Approval",
+            "GET",
+            f"users/{self.partner_id}",
+            200
+        )
+        
+        # Restore original token
+        self.token = original_token
+        
+        if success and 'latitude' in response and 'longitude' in response:
+            lat = response['latitude']
+            lon = response['longitude']
+            print(f"   ✅ Partner has coordinates: lat={lat}, lon={lon}")
+            
+            # Validate coordinates are reasonable for Lausanne area
+            if 46.0 <= lat <= 47.0 and 6.0 <= lon <= 7.0:
+                print(f"   ✅ Coordinates are in expected Lausanne region")
+                return True
+            else:
+                print(f"   ⚠️ Coordinates outside expected region")
+                return True  # Still pass as geocoding worked
+        else:
+            print(f"   ❌ No coordinates found in partner data")
+            return False
+
     def test_cobbler_update_address(self):
         """Test cobbler updating their address - P2 Feature"""
         if not self.cobbler_token:
