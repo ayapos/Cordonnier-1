@@ -936,20 +936,14 @@ async def get_pending_partners(current_user: dict = Depends(get_current_user)):
         raise HTTPException(status_code=403, detail="Admin access required")
     
     try:
-        # Get all pending cobbler applications
+        # Get all pending cobbler applications (without loading heavy document previews)
         pending_partners = await db.users.find({
             "role": "cobbler",
             "status": "pending"
         }, {"_id": 0, "password": 0}).to_list(1000)
         
-        # Load documents as base64 for preview
-        for partner in pending_partners:
-            if partner.get('id_recto'):
-                partner['id_recto_preview'] = load_file_as_base64(partner['id_recto'])
-            if partner.get('id_verso'):
-                partner['id_verso_preview'] = load_file_as_base64(partner['id_verso'])
-            if partner.get('che_kbis'):
-                partner['che_kbis_preview'] = load_file_as_base64(partner['che_kbis'])
+        # Don't load documents automatically for performance
+        # Documents will be loaded on-demand via separate endpoint
         
         return pending_partners
     except Exception as e:
