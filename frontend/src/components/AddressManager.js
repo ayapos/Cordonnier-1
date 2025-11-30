@@ -23,7 +23,17 @@ export default function AddressManager({ user, onAddressUpdated }) {
     setLoading(true);
     try {
       const response = await axios.put(`${API}/cobbler/address`, { address });
-      toast.success('Adresse mise à jour avec succès !');
+      
+      if (response.data.geocoded) {
+        toast.success('Adresse mise à jour et localisée avec succès !', {
+          description: `Position: ${response.data.latitude.toFixed(4)}°N, ${response.data.longitude.toFixed(4)}°E`
+        });
+      } else {
+        toast.warning('Adresse enregistrée sans géolocalisation', {
+          description: response.data.warning || 'Impossible de localiser précisément cette adresse. Vos commandes seront attribuées manuellement.',
+          duration: 6000
+        });
+      }
       
       if (onAddressUpdated) {
         onAddressUpdated({
@@ -34,15 +44,7 @@ export default function AddressManager({ user, onAddressUpdated }) {
       }
     } catch (error) {
       const errorMsg = error.response?.data?.detail || 'Erreur lors de la mise à jour';
-      
-      if (errorMsg.includes('geocode') || errorMsg.includes('verify the address')) {
-        toast.error('Impossible de localiser cette adresse', {
-          description: 'Vérifiez le format: Rue, Numéro, Code Postal, Ville, Pays',
-          duration: 5000
-        });
-      } else {
-        toast.error(errorMsg);
-      }
+      toast.error(errorMsg);
     } finally {
       setLoading(false);
     }
