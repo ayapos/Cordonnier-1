@@ -310,9 +310,20 @@ async def register(user_data: UserCreate):
     # If cobbler, add documents and signature timestamp
     if user_data.role == 'cobbler':
         user_dict['status'] = 'pending'
-        user_dict['id_recto'] = user_data.id_recto
-        user_dict['id_verso'] = user_data.id_verso
-        user_dict['che_kbis'] = user_data.che_kbis
+        
+        # Save documents to files
+        if user_data.id_recto:
+            id_recto_filename = f"{user.id}_id_recto.jpg"
+            user_dict['id_recto'] = save_base64_file(user_data.id_recto, id_recto_filename)
+        
+        if user_data.id_verso:
+            id_verso_filename = f"{user.id}_id_verso.jpg"
+            user_dict['id_verso'] = save_base64_file(user_data.id_verso, id_verso_filename)
+        
+        if user_data.che_kbis:
+            che_kbis_filename = f"{user.id}_che_kbis.pdf"
+            user_dict['che_kbis'] = save_base64_file(user_data.che_kbis, che_kbis_filename)
+        
         user_dict['bank_account'] = user_data.bank_account
         user_dict['terms_signed_at'] = datetime.now(timezone.utc).isoformat()
         # Note: In production, get real IP from request.client.host
