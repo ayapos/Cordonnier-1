@@ -456,6 +456,11 @@ export default function AdminDashboard({ user }) {
             </Card>
           </TabsContent>
 
+          {/* Partners Tab */}
+          <TabsContent value="partners">
+            <PartnerManagement />
+          </TabsContent>
+
           {/* Cobblers Tab */}
           <TabsContent value="cobblers">
             <Card className="border-amber-200">
