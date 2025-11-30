@@ -60,22 +60,30 @@ export default function Checkout({ user }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // VALIDATION 1: Panier non vide
     if (cartItems.length === 0) {
       toast.error('Votre panier est vide');
+      navigate('/cart');
       return;
     }
 
+    // VALIDATION 2: Photos OBLIGATOIRES
     if (images.length === 0) {
-      toast.error('Veuillez ajouter au moins une photo de vos chaussures');
+      toast.error('⚠️ OBLIGATOIRE : Ajoutez au moins une photo de vos chaussures avant de commander', {
+        duration: 5000,
+      });
+      // Scroll to images section
+      document.getElementById('images')?.scrollIntoView({ behavior: 'smooth' });
       return;
     }
 
+    // VALIDATION 3: Adresse de livraison
     if (!deliveryAddress.trim()) {
       toast.error('Veuillez fournir une adresse de livraison');
       return;
     }
 
-    // Validate guest info if guest mode
+    // VALIDATION 4: Informations invité
     if (checkoutMode === 'guest') {
       if (!guestInfo.name || !guestInfo.email || !guestInfo.phone) {
         toast.error('Veuillez remplir toutes les informations');
