@@ -505,26 +505,97 @@ export default function AdminDashboard({ user }) {
                         <DialogTitle>Nouveau Service</DialogTitle>
                       </DialogHeader>
                       <form onSubmit={handleCreateService} className="space-y-4">
-                        <div>
-                          <Label htmlFor="service-name">Nom du service</Label>
-                          <Input
-                            id="service-name"
-                            required
-                            value={newService.name}
-                            onChange={(e) => setNewService({...newService, name: e.target.value})}
-                            data-testid="service-name-input"
-                          />
-                        </div>
-                        <div>
-                          <Label htmlFor="service-description">Description</Label>
-                          <Input
-                            id="service-description"
-                            required
-                            value={newService.description}
-                            onChange={(e) => setNewService({...newService, description: e.target.value})}
-                            data-testid="service-description-input"
-                          />
-                        </div>
+                        {/* Multi-language tabs for name and description */}
+                        <Tabs defaultValue="fr" className="w-full">
+                          <TabsList className="grid w-full grid-cols-4">
+                            <TabsTrigger value="fr">🇫🇷 FR</TabsTrigger>
+                            <TabsTrigger value="en">🇬🇧 EN</TabsTrigger>
+                            <TabsTrigger value="de">🇩🇪 DE</TabsTrigger>
+                            <TabsTrigger value="it">🇮🇹 IT</TabsTrigger>
+                          </TabsList>
+                          <TabsContent value="fr" className="space-y-3">
+                            <div>
+                              <Label htmlFor="service-name-fr">Nom du service (Français) *</Label>
+                              <Input
+                                id="service-name-fr"
+                                required
+                                value={newService.name}
+                                onChange={(e) => setNewService({...newService, name: e.target.value})}
+                                placeholder="Ex: Ressemelage complet"
+                              />
+                            </div>
+                            <div>
+                              <Label htmlFor="service-description-fr">Description (Français) *</Label>
+                              <Input
+                                id="service-description-fr"
+                                required
+                                value={newService.description}
+                                onChange={(e) => setNewService({...newService, description: e.target.value})}
+                                placeholder="Ex: Remplacement complet de la semelle"
+                              />
+                            </div>
+                          </TabsContent>
+                          <TabsContent value="en" className="space-y-3">
+                            <div>
+                              <Label htmlFor="service-name-en">Service Name (English)</Label>
+                              <Input
+                                id="service-name-en"
+                                value={newService.name_en}
+                                onChange={(e) => setNewService({...newService, name_en: e.target.value})}
+                                placeholder="Ex: Complete resole"
+                              />
+                            </div>
+                            <div>
+                              <Label htmlFor="service-description-en">Description (English)</Label>
+                              <Input
+                                id="service-description-en"
+                                value={newService.description_en}
+                                onChange={(e) => setNewService({...newService, description_en: e.target.value})}
+                                placeholder="Ex: Complete sole replacement"
+                              />
+                            </div>
+                          </TabsContent>
+                          <TabsContent value="de" className="space-y-3">
+                            <div>
+                              <Label htmlFor="service-name-de">Servicename (Deutsch)</Label>
+                              <Input
+                                id="service-name-de"
+                                value={newService.name_de}
+                                onChange={(e) => setNewService({...newService, name_de: e.target.value})}
+                                placeholder="Ex: Komplette Neubesohlung"
+                              />
+                            </div>
+                            <div>
+                              <Label htmlFor="service-description-de">Beschreibung (Deutsch)</Label>
+                              <Input
+                                id="service-description-de"
+                                value={newService.description_de}
+                                onChange={(e) => setNewService({...newService, description_de: e.target.value})}
+                                placeholder="Ex: Vollständiger Sohlenaustausch"
+                              />
+                            </div>
+                          </TabsContent>
+                          <TabsContent value="it" className="space-y-3">
+                            <div>
+                              <Label htmlFor="service-name-it">Nome del servizio (Italiano)</Label>
+                              <Input
+                                id="service-name-it"
+                                value={newService.name_it}
+                                onChange={(e) => setNewService({...newService, name_it: e.target.value})}
+                                placeholder="Ex: Risuolatura completa"
+                              />
+                            </div>
+                            <div>
+                              <Label htmlFor="service-description-it">Descrizione (Italiano)</Label>
+                              <Input
+                                id="service-description-it"
+                                value={newService.description_it}
+                                onChange={(e) => setNewService({...newService, description_it: e.target.value})}
+                                placeholder="Ex: Sostituzione completa della suola"
+                              />
+                            </div>
+                          </TabsContent>
+                        </Tabs>
                         <div>
                           <Label htmlFor="service-price">Prix (CHF)</Label>
                           <Input
