@@ -77,6 +77,7 @@ const resources = {
       "bootResole": "Ressemelage bottes",
       "sneakersCleaning": "Nettoyage sneakers",
       "heelsRepair": "Réparation talons",
+      "leatherRenovation": "Rénovation cuir",
       
       // Services page
       "availableServices": "disponibles",
