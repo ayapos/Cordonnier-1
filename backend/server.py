@@ -1118,6 +1118,7 @@ async def upload_media(
 @api_router.get("/admin/media")
 async def list_media(
     category: Optional[str] = None,
+    limit: int = 100,
     current_user: dict = Depends(get_current_user)
 ):
     if current_user['role'] != 'admin':
@@ -1128,7 +1129,8 @@ async def list_media(
         if category:
             query['category'] = category
         
-        media_list = await db.media.find(query, {"_id": 0}).to_list(1000)
+        # Limit results and sort by created_at descending (most recent first)
+        media_list = await db.media.find(query, {"_id": 0}).sort("created_at", -1).to_list(limit)
         return media_list
     except Exception as e:
         logger.error(f"Error listing media: {e}")
