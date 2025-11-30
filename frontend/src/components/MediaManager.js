@@ -292,11 +292,12 @@ export default function MediaManager() {
                           onClick={(e) => {
                             e.preventDefault();
                             e.stopPropagation();
-                            handleDelete(media.id, media.filename);
+                            handleDelete(media.id);
                           }}
                           variant="destructive"
                           size="sm"
                           className="opacity-0 group-hover:opacity-100 transition-opacity z-10"
+                          type="button"
                         >
                           <Trash2 className="w-4 h-4 mr-1" />
                           Supprimer
