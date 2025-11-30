@@ -221,7 +221,7 @@ export default function OrderDetails({ user }) {
                 <div className="border-t border-amber-200 pt-3">
                   <div className="flex justify-between text-lg">
                     <span className="font-bold text-amber-950">Total:</span>
-                    <span className="font-bold text-amber-700" data-testid="total-amount">{order.total_amount.toFixed(2)}CHF</span>
+                    <span className="font-bold text-amber-700" data-testid="total-amount">{order.total_amount ? order.total_amount.toFixed(2) : '0.00'} CHF</span>
                   </div>
                 </div>
               </CardContent>
