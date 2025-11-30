@@ -54,8 +54,8 @@ export default function MediaManager() {
         return;
       }
       
-      if (file.size > 5 * 1024 * 1024) {
-        toast.error('L\'image ne doit pas dépasser 5 MB');
+      if (file.size > 50 * 1024 * 1024) {
+        toast.error('L\'image ne doit pas dépasser 50 MB');
         return;
       }
 
