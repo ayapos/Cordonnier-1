@@ -217,6 +217,16 @@ export default function AdminDashboard({ user }) {
     }
   };
 
+  const handleAddCategoryEdit = () => {
+    if (editCategoryName.trim() && !categories.includes(editCategoryName.trim())) {
+      setCategories([...categories, editCategoryName.trim()]);
+      setEditService({...editService, category: editCategoryName.trim()});
+      setEditCategoryName('');
+      setShowEditCategoryInput(false);
+      toast.success('Nouvelle catégorie ajoutée !');
+    }
+  };
+
   const confirmDelete = async () => {
     if (!serviceToDelete) return;
     
