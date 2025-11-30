@@ -696,6 +696,158 @@ class ShoeRepairAPITester:
             return True
         return False
 
+    def test_complete_address_update_flow(self):
+        """Test complete flow: cobbler address update + admin verification"""
+        print("\n🔄 TESTING COMPLETE ADDRESS UPDATE FLOW")
+        print("=" * 50)
+        
+        # Step 1: Login as cobbler
+        cobbler_login_data = {
+            "email": "cordonnier@test.com",
+            "password": "Test1234"
+        }
+        
+        success, response = self.run_test(
+            "Step 1 - Cobbler Login",
+            "POST",
+            "auth/login",
+            200,
+            data=cobbler_login_data
+        )
+        
+        if not success or 'token' not in response:
+            print("❌ Cannot proceed - cobbler login failed")
+            return False
+            
+        cobbler_token = response['token']
+        cobbler_id = response['user']['id']
+        original_token = self.token
+        self.token = cobbler_token
+        
+        print(f"   ✅ Cobbler logged in: {cobbler_id}")
+        
+        # Step 2: Update address via PUT /api/cobbler/address
+        address_data = {
+            "address": "Avenue du Léman 50, 1005 Lausanne, Suisse"
+        }
+        
+        success, response = self.run_test(
+            "Step 2 - Update Cobbler Address",
+            "PUT",
+            "cobbler/address",
+            200,
+            data=address_data
+        )
+        
+        if not success:
+            self.token = original_token
+            return False
+            
+        print(f"   ✅ Address updated successfully")
+        if 'latitude' in response and 'longitude' in response:
+            print(f"   ✅ Geocoding successful: lat={response['latitude']}, lon={response['longitude']}")
+        else:
+            print(f"   ⚠️ Geocoding failed but address saved")
+        
+        # Step 3: Update profile via PUT /api/auth/me
+        profile_data = {
+            "name": "Jean Cordonnier Updated",
+            "phone": "+41 79 111 22 33"
+        }
+        
+        success, response = self.run_test(
+            "Step 3 - Update Cobbler Profile",
+            "PUT",
+            "auth/me",
+            200,
+            data=profile_data
+        )
+        
+        if not success:
+            self.token = original_token
+            return False
+            
+        print(f"   ✅ Profile updated successfully")
+        
+        # Step 4: Login as admin
+        self.token = original_token
+        if not self.admin_token:
+            admin_login_data = {
+                "email": "admin@shoerepair.com",
+                "password": "Arden2018@"
+            }
+            
+            success, response = self.run_test(
+                "Step 4 - Admin Login",
+                "POST",
+                "auth/login",
+                200,
+                data=admin_login_data
+            )
+            
+            if not success or 'token' not in response:
+                print("❌ Cannot proceed - admin login failed")
+                return False
+                
+            self.admin_token = response['token']
+        
+        self.token = self.admin_token
+        
+        # Step 5: Verify changes in admin dashboard via GET /api/cobbler/cobblers
+        success, response = self.run_test(
+            "Step 5 - Admin Verify Cobbler Changes",
+            "GET",
+            "cobbler/cobblers",
+            200
+        )
+        
+        self.token = original_token
+        
+        if not success or not isinstance(response, list):
+            return False
+            
+        # Find our cobbler in the list
+        cobbler_found = False
+        for cobbler in response:
+            if cobbler.get('id') == cobbler_id:
+                cobbler_found = True
+                print(f"   ✅ Cobbler found in admin list")
+                
+                # Verify address update
+                if cobbler.get('address') == "Avenue du Léman 50, 1005 Lausanne, Suisse":
+                    print(f"   ✅ Address correctly updated in admin view")
+                else:
+                    print(f"   ❌ Address not updated: {cobbler.get('address')}")
+                    return False
+                
+                # Verify profile updates
+                if cobbler.get('name') == "Jean Cordonnier Updated":
+                    print(f"   ✅ Name correctly updated in admin view")
+                else:
+                    print(f"   ❌ Name not updated: {cobbler.get('name')}")
+                    return False
+                    
+                if cobbler.get('phone') == "+41 79 111 22 33":
+                    print(f"   ✅ Phone correctly updated in admin view")
+                else:
+                    print(f"   ❌ Phone not updated: {cobbler.get('phone')}")
+                    return False
+                
+                # Check coordinates if geocoding worked
+                if 'latitude' in cobbler and 'longitude' in cobbler:
+                    print(f"   ✅ Coordinates present: lat={cobbler['latitude']}, lon={cobbler['longitude']}")
+                else:
+                    print(f"   ⚠️ No coordinates (geocoding may have failed)")
+                
+                break
+        
+        if not cobbler_found:
+            print(f"   ❌ Cobbler not found in admin list")
+            return False
+            
+        print(f"   ✅ COMPLETE FLOW SUCCESSFUL - All changes visible in admin dashboard")
+        return True
+
 def main():
     print("🧪 Starting ShoeRepair Partner Registration Tests")
     print("=" * 60)
