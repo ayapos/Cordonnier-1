@@ -474,7 +474,7 @@ class ShoeRepairAPITester:
         return False
 
     def test_cobbler_update_address(self):
-        """Test cobbler updating their address"""
+        """Test cobbler updating their address - P2 Feature"""
         if not self.cobbler_token:
             print("   ❌ No cobbler token available")
             return False
@@ -483,8 +483,9 @@ class ShoeRepairAPITester:
         original_token = self.token
         self.token = self.cobbler_token
         
+        # Use the exact address from the French review request
         address_data = {
-            "address": "Avenue de la Gare 5, 1003 Lausanne, Suisse"
+            "address": "Place de la Gare 10, 1003 Lausanne, Suisse"
         }
         
         success, response = self.run_test(
