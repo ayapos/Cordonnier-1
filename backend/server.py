@@ -552,6 +552,67 @@ async def get_cobblers():
             cobbler['created_at'] = datetime.fromisoformat(cobbler['created_at'])
     return cobblers
 
+# Settings Routes
+@api_router.get("/settings")
+async def get_settings(current_user: dict = Depends(get_current_user)):
+    settings = await db.settings.find_one({"type": "app_settings"}, {"_id": 0})
+    if not settings:
+        # Return default settings
+        return {
+            "delivery_standard_price": 8.0,
+            "delivery_express_price": 20.0,
+            "delivery_standard_days": 10,
+            "delivery_express_hours": 72,
+            "platform_commission": 15,
+            "currency": "CHF",
+            "vat_rate": 7.7,
+            "email_notifications_enabled": True,
+            "support_email": "contact@shoerepair.com"
+        }
+    return settings
+
+@api_router.put("/settings")
+async def update_settings(settings_data: dict, current_user: dict = Depends(get_current_user)):
+    if current_user['role'] != 'admin':
+        raise HTTPException(status_code=403, detail="Admin only")
+    
+    settings_data['updated_at'] = datetime.now(timezone.utc).isoformat()
+    
+    await db.settings.update_one(
+        {"type": "app_settings"},
+        {"$set": settings_data},
+        upsert=True
+    )
+    
+    return {"message": "Settings updated successfully"}
+
+@api_router.put("/services/{service_id}")
+async def update_service(service_id: str, service_data: dict, current_user: dict = Depends(get_current_user)):
+    if current_user['role'] != 'admin':
+        raise HTTPException(status_code=403, detail="Admin only")
+    
+    result = await db.services.update_one(
+        {"id": service_id},
+        {"$set": service_data}
+    )
+    
+    if result.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Service not found")
+    
+    return {"message": "Service updated successfully"}
+
+@api_router.delete("/services/{service_id}")
+async def delete_service(service_id: str, current_user: dict = Depends(get_current_user)):
+    if current_user['role'] != 'admin':
+        raise HTTPException(status_code=403, detail="Admin only")
+    
+    result = await db.services.delete_one({"id": service_id})
+    
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Service not found")
+    
+    return {"message": "Service deleted successfully"}
+
 # Include router
 app.include_router(api_router)
 
