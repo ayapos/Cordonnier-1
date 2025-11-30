@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { MapPin, Clock, Shield, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
+import { MapPin, Clock, Shield, ArrowRight, ChevronLeft, ChevronRight, Star } from 'lucide-react';
 
 const carouselImages = [
   {
