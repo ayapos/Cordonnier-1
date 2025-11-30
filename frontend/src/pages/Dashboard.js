@@ -96,14 +96,15 @@ export default function Dashboard({ user }) {
             <h1 className="text-2xl font-bold text-amber-900" style={{ fontFamily: 'Cormorant Garamond, serif' }}>ShoeRepair</h1>
           </Link>
           <div className="flex items-center gap-3">
+            <LanguageSwitcher />
             <Link to="/services">
               <Button variant="outline" className="bg-amber-700 text-white hover:bg-amber-800">
-                <Plus className="w-4 h-4 mr-2" /> Nouvelle commande
+                <Plus className="w-4 h-4 mr-2" /> {t('newOrder')}
               </Button>
             </Link>
-            <span className="text-amber-800" data-testid="user-name">Bonjour, {user?.name}</span>
+            <span className="text-amber-800" data-testid="user-name">{t('hello')}, {user?.name}</span>
             <Button variant="outline" onClick={handleLogout} data-testid="logout-btn">
-              <LogOut className="w-4 h-4 mr-2" /> Déconnexion
+              <LogOut className="w-4 h-4 mr-2" /> {t('logout')}
             </Button>
           </div>
         </div>
