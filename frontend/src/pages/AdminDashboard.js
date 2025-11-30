@@ -529,6 +529,11 @@ export default function AdminDashboard({ user }) {
               </CardContent>
             </Card>
           </TabsContent>
+
+          {/* Settings Tab */}
+          <TabsContent value=\"settings\">
+            <AdminSettings />
+          </TabsContent>
         </Tabs>
       </div>
     </div>
