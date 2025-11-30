@@ -466,7 +466,7 @@ async def create_guest_order(
     guest_phone: str = Form(...),
     service_items: str = Form(...),  # JSON string of cart items
     notes: Optional[str] = Form(None),
-    images: List[UploadFile] = File(...),
+    images: List[UploadFile] = File(default=[]),
     create_account: bool = Form(False),
     password: Optional[str] = Form(None)
 ):
