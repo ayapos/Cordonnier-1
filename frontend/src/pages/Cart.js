@@ -9,6 +9,7 @@ import LanguageSwitcher from '@/components/LanguageSwitcher';
 
 export default function Cart({ user }) {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const { cartItems, removeFromCart, updateQuantity, getCartTotal, getCartCount } = useCart();
 
   const handleCheckout = () => {
