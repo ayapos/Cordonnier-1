@@ -85,7 +85,7 @@ export default function Services({ user }) {
           </div>
           {user && (
             <Link to="/dashboard">
-              <Button size="sm" className="bg-indigo-600 text-white">Dashboard</Button>
+              <Button size="sm" className="bg-orange-700 text-white">Dashboard</Button>
             </Link>
           )}
         </div>
