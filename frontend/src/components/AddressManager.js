@@ -33,7 +33,16 @@ export default function AddressManager({ user, onAddressUpdated }) {
         });
       }
     } catch (error) {
-      toast.error(error.response?.data?.detail || 'Erreur lors de la mise à jour');
+      const errorMsg = error.response?.data?.detail || 'Erreur lors de la mise à jour';
+      
+      if (errorMsg.includes('geocode') || errorMsg.includes('verify the address')) {
+        toast.error('Impossible de localiser cette adresse', {
+          description: 'Vérifiez le format: Rue, Numéro, Code Postal, Ville, Pays',
+          duration: 5000
+        });
+      } else {
+        toast.error(errorMsg);
+      }
     } finally {
       setLoading(false);
     }
