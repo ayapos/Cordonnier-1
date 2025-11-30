@@ -713,7 +713,7 @@ export default function AdminDashboard({ user }) {
                               variant="outline" 
                               size="sm" 
                               className="flex-1 text-red-600 hover:text-red-700 hover:bg-red-50"
-                              onClick={() => handleDeleteService(service.id, service.name)}
+                              onClick={() => handleDeleteService(service)}
                               data-testid={`delete-service-${service.id}`}
                             >
                               <Trash2 className="w-4 h-4 mr-1" /> Supprimer
