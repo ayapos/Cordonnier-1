@@ -60,61 +60,63 @@ function App() {
   };
 
   return (
-    <div className="App">
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home user={user} />} />
-          <Route path="/auth" element={<Auth setUser={setUser} />} />
-          <Route path="/services" element={<Services user={user} />} />
-          <Route 
-            path="/dashboard" 
-            element={
-              <ProtectedRoute>
-                {user?.role === 'admin' ? <AdminDashboard user={user} /> : <Dashboard user={user} />}
-              </ProtectedRoute>
-            } 
-          />
-          <Route 
-            path="/admin" 
-            element={
-              <ProtectedRoute>
-                <AdminDashboard user={user} />
-              </ProtectedRoute>
-            } 
-          />
-          <Route 
-            path="/order/new" 
-            element={
-              <ProtectedRoute>
-                <CreateOrder user={user} />
-              </ProtectedRoute>
-            } 
-          />
-          <Route 
-            path="/order/:orderId" 
-            element={
-              <ProtectedRoute>
-                <OrderDetails user={user} />
-              </ProtectedRoute>
-            } 
-          />
-          <Route 
-            path="/payment/:orderId" 
-            element={
-              <ProtectedRoute>
-                <Payment user={user} />
-              </ProtectedRoute>
-            } 
-          />
-          <Route path="/become-partner" element={<BecomePartner />} />
-          <Route path="/partner-terms" element={<PartnerTerms />} />
-          <Route path="/terms" element={<Terms />} />
-          <Route path="/privacy" element={<Privacy />} />
-          <Route path="/legal" element={<Legal />} />
-        </Routes>
-      </BrowserRouter>
-      <Toaster position="top-center" richColors />
-    </div>
+    <CartProvider>
+      <div className="App">
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Home user={user} />} />
+            <Route path="/auth" element={<Auth setUser={setUser} />} />
+            <Route path="/services" element={<Services user={user} />} />
+            <Route 
+              path="/dashboard" 
+              element={
+                <ProtectedRoute>
+                  {user?.role === 'admin' ? <AdminDashboard user={user} /> : <Dashboard user={user} />}
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/admin" 
+              element={
+                <ProtectedRoute>
+                  <AdminDashboard user={user} />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/order/new" 
+              element={
+                <ProtectedRoute>
+                  <CreateOrder user={user} />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/order/:orderId" 
+              element={
+                <ProtectedRoute>
+                  <OrderDetails user={user} />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/payment/:orderId" 
+              element={
+                <ProtectedRoute>
+                  <Payment user={user} />
+                </ProtectedRoute>
+              } 
+            />
+            <Route path="/become-partner" element={<BecomePartner />} />
+            <Route path="/partner-terms" element={<PartnerTerms />} />
+            <Route path="/terms" element={<Terms />} />
+            <Route path="/privacy" element={<Privacy />} />
+            <Route path="/legal" element={<Legal />} />
+          </Routes>
+        </BrowserRouter>
+        <Toaster position="top-center" richColors />
+      </div>
+    </CartProvider>
   );
 }
 
