@@ -428,28 +428,6 @@ export default function Home({ user }) {
         </div>
       </section>
 
-      {/* Comment ça marche - Horizontal */}
-      <section className="px-4 py-8 max-w-md mx-auto bg-orange-50">
-        <h3 className="text-2xl font-bold mb-2 text-gray-900 text-center">{t('howItWorks')}</h3>
-        <p className="text-center text-gray-600 text-sm mb-6">{t('simpleAndFast')}</p>
-        <div className="grid grid-cols-2 gap-3">
-          {[
-            { num: '1', title: t('step1Title'), desc: t('step1Desc') },
-            { num: '2', title: t('step2Title'), desc: t('step2Desc') },
-            { num: '3', title: t('step3Title'), desc: t('step3Desc') },
-            { num: '4', title: t('step4Title'), desc: t('step4Desc') }
-          ].map((step) => (
-            <div key={step.num} className="bg-white p-3 rounded-xl shadow-sm text-center" data-testid={`step-${step.num}`}>
-              <div className="w-10 h-10 bg-orange-700 text-white rounded-full flex items-center justify-center font-bold text-lg mx-auto mb-2">
-                {step.num}
-              </div>
-              <h4 className="font-bold text-gray-900 text-sm mb-1">{step.title}</h4>
-              <p className="text-xs text-gray-600">{step.desc}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
       {/* Grid de services visuels */}
       <section className="px-4 py-8 max-w-md mx-auto">
         <h3 className="text-2xl font-bold mb-6 text-gray-900">Nos services</h3>
