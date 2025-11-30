@@ -155,7 +155,7 @@ export default function Cart({ user }) {
                 onClick={handleCheckout}
                 className="w-full bg-amber-700 hover:bg-amber-800 text-lg py-6 mt-4"
               >
-                Passer la commande
+                {t('checkout')}
               </Button>
             </CardContent>
           </Card>
