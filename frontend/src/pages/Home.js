@@ -526,11 +526,11 @@ export default function Home({ user }) {
       {/* Avis Clients - Carousel */}
       <ReviewsCarousel t={t} />
 
-      {/* Stats Section - One Line Design */}
-      <section className="px-4 py-12 bg-white">
-        <div className="max-w-md mx-auto">
-          {/* Stats in one line */}
-          <div className="flex flex-col gap-3">
+      {/* Stats Section - Horizontal Line Design */}
+      <section className="px-4 py-12 bg-white overflow-x-auto">
+        <div className="max-w-6xl mx-auto">
+          {/* Stats in one horizontal line */}
+          <div className="flex gap-3 min-w-max justify-center">
             {/* Stat 1 - Countries */}
             <div className="bg-gradient-to-r from-orange-500 to-orange-600 rounded-xl p-4 shadow-md hover:shadow-lg transition-all duration-300">
               <div className="flex items-center justify-between">
