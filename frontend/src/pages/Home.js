@@ -118,8 +118,18 @@ export default function Home({ user }) {
       {/* Hero Carousel */}
       <section className="pt-16 pb-8">
         <div className="relative h-[65vh] overflow-hidden">
+          {/* Loading state */}
+          {isLoadingImages && (
+            <div className="absolute inset-0 bg-gray-100 flex items-center justify-center">
+              <div className="text-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-700 mx-auto mb-4"></div>
+                <p className="text-gray-600">Chargement...</p>
+              </div>
+            </div>
+          )}
+          
           {/* Images */}
-          {carouselImages.map((image, index) => (
+          {!isLoadingImages && carouselImages.map((image, index) => (
             <div
               key={index}
               className={`absolute inset-0 transition-opacity duration-700 ${
