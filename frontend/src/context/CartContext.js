@@ -55,7 +55,7 @@ export function CartProvider({ children }) {
 
   const removeFromCart = (serviceId) => {
     setCartItems((prev) => prev.filter(item => item.id !== serviceId));
-    toast.success(t('removedFromCart'), { duration: 2000 });
+    toast.success(t('removedFromCart'), { duration: 1000 });
   };
 
   const updateQuantity = (serviceId, quantity) => {
