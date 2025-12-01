@@ -36,8 +36,8 @@ export default function MediaManager() {
   const fetchMedia = async () => {
     try {
       const url = filterCategory === 'all' 
-        ? `${API}/admin/media` 
-        : `${API}/admin/media?category=${filterCategory}`;
+        ? `${API}/media/admin` 
+        : `${API}/media/admin?category=${filterCategory}`;
       const response = await axios.get(url);
       setMediaList(response.data);
     } catch (error) {
