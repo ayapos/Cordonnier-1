@@ -21,9 +21,7 @@ export default function ProfileEditor({ user, onProfileUpdated }) {
 
   // Update form data when user prop changes
   useEffect(() => {
-    console.log('[ProfileEditor] User prop:', user);
     if (user) {
-      console.log('[ProfileEditor] Setting form data - address:', user.address);
       setFormData({
         name: user.name || '',
         phone: user.phone || '',
