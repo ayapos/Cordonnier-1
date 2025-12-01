@@ -1076,29 +1076,34 @@ class ShoeRepairAPITester:
             print(f"   Status: {response.status_code}")
             
             upload_working = response.status_code == 200
+            media_id = None
             if upload_working:
-                response_data = response.json()
-                print(f"   ✅ Media upload working: {response_data.get('message', 'Success')}")
-                
-                # Store media ID for deletion test
-                media_id = response_data.get('media', {}).get('id')
-                if media_id:
-                    # Test deletion
-                    success, response = self.run_test(
-                        f"Admin Media Delete - DELETE /api/media/admin/{media_id}",
-                        "DELETE",
-                        f"media/admin/{media_id}",
-                        200
-                    )
+                try:
+                    response_data = response.json()
+                    print(f"   ✅ Media upload working: {response_data.get('message', 'Success')}")
                     
-                    delete_working = success
-                    if success:
-                        print(f"   ✅ Media deletion working")
+                    # Store media ID for deletion test
+                    media_id = response_data.get('media', {}).get('id')
+                    if media_id:
+                        # Test deletion using the run_test method
+                        delete_success, delete_response = self.run_test(
+                            f"Admin Media Delete - DELETE /api/media/admin/{media_id}",
+                            "DELETE",
+                            f"media/admin/{media_id}",
+                            200
+                        )
+                        
+                        delete_working = delete_success
+                        if delete_success:
+                            print(f"   ✅ Media deletion working")
+                        else:
+                            print(f"   ❌ Media deletion failed")
                     else:
-                        print(f"   ❌ Media deletion failed")
-                else:
+                        delete_working = False
+                        print(f"   ❌ No media ID returned from upload")
+                except Exception as e:
+                    print(f"   ❌ Error parsing upload response: {e}")
                     delete_working = False
-                    print(f"   ❌ No media ID returned from upload")
             else:
                 try:
                     error_data = response.json()
