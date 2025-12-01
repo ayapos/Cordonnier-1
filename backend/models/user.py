@@ -11,9 +11,10 @@ class User(BaseModel):
     role: str  # 'client', 'cobbler', 'admin'
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     phone: Optional[str] = None
-    address: Optional[str] = None
+    address: Optional[str] = None  # Personal address (for profile)
     # Cordonnier specific fields
     status: Optional[str] = None  # 'pending', 'approved', 'rejected' (for cobblers)
+    workshop_address: Optional[str] = None  # Workshop address for cobblers (for geolocation)
     id_recto: Optional[str] = None  # Base64 image
     id_verso: Optional[str] = None  # Base64 image
     che_kbis: Optional[str] = None  # Base64 document
