@@ -11,13 +11,13 @@ const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
 export default function AddressManager({ user, onAddressUpdated }) {
-  const [address, setAddress] = useState(user?.address || '');
+  const [address, setAddress] = useState(user?.workshop_address || '');
   const [loading, setLoading] = useState(false);
 
   // Update address when user prop changes
   useEffect(() => {
-    if (user?.address) {
-      setAddress(user.address);
+    if (user?.workshop_address) {
+      setAddress(user.workshop_address);
     }
   }, [user]);
 
