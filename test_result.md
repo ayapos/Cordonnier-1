@@ -1,6 +1,11 @@
 # Testing Protocol
 
-## user_problem_statement: Système de panier et commande invité avec photos obligatoires et multi-services
+## user_problem_statement: Bug critique P0 résolu - Endpoint /api/stats maintenant fonctionnel pour tous les dashboards
+
+## Incorporate User Feedback
+- Le bug P0 "Erreur de chargement des données" sur tous les dashboards a été résolu en corrigeant le conflit de routes entre media_router et stats_router
+- Les 3 dashboards (Admin, Client, Cordonnier) se chargent maintenant correctement
+- TESTER: Vérifier que les endpoints stats fonctionnent pour tous les rôles (admin, client, cobbler)
 
 ## backend:
 ##   - task: "POST /api/orders/guest - Guest order with multi-services"
