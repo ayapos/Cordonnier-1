@@ -91,21 +91,27 @@ export default function ProfileEditor({ user, onProfileUpdated }) {
               <User className="w-5 h-5 text-amber-600 mt-1" />
               <div>
                 <p className="text-sm text-gray-500">Nom</p>
-                <p className="font-medium text-gray-900">{user?.name || 'Non renseigné'}</p>
+                <p className="font-medium text-gray-900" data-testid="profile-name-display">
+                  {formData.name || user?.name || 'Non renseigné'}
+                </p>
               </div>
             </div>
             <div className="flex items-start gap-3">
               <Phone className="w-5 h-5 text-amber-600 mt-1" />
               <div>
                 <p className="text-sm text-gray-500">Téléphone</p>
-                <p className="font-medium text-gray-900">{user?.phone || 'Non renseigné'}</p>
+                <p className="font-medium text-gray-900" data-testid="profile-phone-display">
+                  {formData.phone || user?.phone || 'Non renseigné'}
+                </p>
               </div>
             </div>
             <div className="flex items-start gap-3">
               <MapPin className="w-5 h-5 text-amber-600 mt-1" />
               <div>
                 <p className="text-sm text-gray-500">Adresse</p>
-                <p className="font-medium text-gray-900">{user?.address || 'Non renseignée'}</p>
+                <p className="font-medium text-gray-900" data-testid="profile-address-display">
+                  {formData.address || user?.address || 'Non renseignée'}
+                </p>
               </div>
             </div>
           </div>
