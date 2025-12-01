@@ -155,7 +155,7 @@
 ##     implemented: true
 ##     working: false
 ##     file: "/app/frontend/src/components/ProfileEditor.js"
-##     stuck_count: 2
+##     stuck_count: 3
 ##     priority: "high"
 ##     needs_retesting: false
 ##     status_history:
@@ -165,6 +165,9 @@
 ##         - working: false
 ##         - agent: "testing"
 ##         - comment: "❌ CRITICAL FRONTEND-BACKEND SYNC ISSUE: Backend API shows user has address 'Avenue de la Gare 25, 1003 Lausanne, Suisse' (confirmed via curl GET /api/auth/me), but frontend displays 'Non renseignée'. Frontend ProfileEditor component not properly displaying user.address from backend response. This is a data binding/display issue, not persistence issue."
+##         - working: false
+##         - agent: "testing"
+##         - comment: "❌ COMPREHENSIVE PERSISTENCE TEST FAILED: Tested complete flow as requested - login → modify profile (name: 'Cordonnier Test Complet', phone: '+41 79 999 00 11') → modify address ('Avenue de Morges 50, 1004 Lausanne, Suisse') → logout → re-login. RESULTS: Name persists ✅, Phone does NOT persist ❌, Address does NOT persist ❌. Backend API confirms ALL data is correctly saved (verified via curl), but frontend ProfileEditor and AddressManager components fail to display phone and address from user object. Critical frontend data binding issue affecting both profile phone display and workshop address display."
 
 ## metadata:
 ##   created_by: "main_agent"
