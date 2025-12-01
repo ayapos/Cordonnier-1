@@ -21,12 +21,16 @@ export default function ProfileEditor({ user, onProfileUpdated }) {
 
   // Sync form data with user prop - use user.id as dependency to track user changes
   useEffect(() => {
+    console.log('[ProfileEditor] useEffect triggered');
+    console.log('[ProfileEditor] user object:', JSON.stringify(user, null, 2));
     if (user) {
-      setFormData({
+      const newFormData = {
         name: user.name || '',
         phone: user.phone || '',
         address: user.address || ''
-      });
+      };
+      console.log('[ProfileEditor] Setting formData:', newFormData);
+      setFormData(newFormData);
     }
   }, [user?.id, user?.name, user?.phone, user?.address]);
 
