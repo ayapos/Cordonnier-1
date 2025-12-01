@@ -186,7 +186,7 @@ async def serve_media(filename: str):
         logger.error(f"Error serving media: {e}")
         raise HTTPException(status_code=500, detail="Error serving media")
 
-@router.delete("/admin/media/{media_id}")
+@router.delete("/admin/{media_id}")
 async def delete_media(
     media_id: str,
     current_user: dict = Depends(get_current_user)
