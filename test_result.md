@@ -171,6 +171,9 @@
 ##         - working: false
 ##         - agent: "testing"
 ##         - comment: "❌ FINAL STRICT PERSISTENCE TEST FAILED: Executed exact test as requested in review - login cordonnier@test.com → modify profile (name: 'Jean Cordonnier FINAL', phone: '+41 79 111 22 33') → modify workshop address ('Rue de Genève 100, 1003 Lausanne, Suisse') → logout → re-login → verify persistence. CRITICAL RESULTS: Name persistence ✅ WORKS, Phone persistence ❌ FAILS (shows 'Non renseigné'), Workshop address persistence ❌ FAILS (field empty). TEST SCORE: 1/3 fields correct. Backend saves data correctly (confirmed via API), but frontend ProfileEditor and AddressManager components fail to display saved phone and address values. Root cause: Frontend data binding issue in both components."
+##         - working: false
+##         - agent: "testing"
+##         - comment: "❌ FINAL ABSOLUTE PERSISTENCE TEST EXECUTED - CRITICAL FAILURE: Executed exact protocol from review request with ZERO tolerance. Modified all data: name → 'TEST FINAL CORDONNIER', phone → '+41 79 888 77 66', profile address → 'Place du Marché 5, 1002 Lausanne, Suisse', workshop address → 'Avenue d'Ouchy 75, 1006 Lausanne, Suisse'. After logout/login cycle: RESULTS: Name ✅ PASS, Phone ✅ PASS, Profile address ❌ FAIL (shows workshop address instead), Workshop address ✅ PASS. SCORE: 3/4 fields correct = TEST FAILED. CRITICAL BUG: Profile address field displays workshop address value instead of profile address. This indicates data binding confusion between user.address (profile) and workshop address in ProfileEditor component."
 
 ## metadata:
 ##   created_by: "main_agent"
