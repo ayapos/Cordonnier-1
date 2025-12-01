@@ -155,7 +155,7 @@
 ##     implemented: true
 ##     working: false
 ##     file: "/app/frontend/src/components/ProfileEditor.js"
-##     stuck_count: 4
+##     stuck_count: 5
 ##     priority: "high"
 ##     needs_retesting: false
 ##     status_history:
