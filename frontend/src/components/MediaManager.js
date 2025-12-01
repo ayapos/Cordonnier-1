@@ -111,7 +111,7 @@ export default function MediaManager() {
     
     try {
       console.log('Deleting media:', deletingId);
-      await axios.delete(`${API}/admin/media/${deletingId}`);
+      await axios.delete(`${API}/media/admin/${deletingId}`);
       toast.success('Image supprimée avec succès !');
       setDeletingId(null);
       fetchMedia();
