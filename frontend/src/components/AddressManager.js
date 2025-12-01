@@ -14,6 +14,13 @@ export default function AddressManager({ user, onAddressUpdated }) {
   const [address, setAddress] = useState(user?.address || '');
   const [loading, setLoading] = useState(false);
 
+  // Update address when user prop changes
+  useEffect(() => {
+    if (user?.address) {
+      setAddress(user.address);
+    }
+  }, [user]);
+
   const handleUpdateAddress = async () => {
     if (!address.trim()) {
       toast.error('Veuillez saisir une adresse');
