@@ -81,6 +81,39 @@
 ##         - working: true
 ##         - agent: "testing"
 ##         - comment: "✅ COMPLETE ADDRESS UPDATE FLOW TESTED: Full flow from cobbler login (cordonnier@test.com) → address update via PUT /api/cobbler/address to 'Avenue du Léman 50, 1005 Lausanne, Suisse' → profile update via PUT /api/auth/me (name: 'Jean Cordonnier Updated', phone: '+41 79 111 22 33') → admin verification via GET /api/cobbler/cobblers. All changes successfully saved and visible in admin dashboard. Geocoding failed due to network connectivity (nominatim.openstreetmap.org connection refused) but address saved correctly without coordinates as expected. Complete flow working 100%."
+  - task: "P0 Critical Bug Fix - Stats endpoint route conflict"
+    implemented: true
+    working: true
+    file: "/app/backend/routes/stats.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+        - agent: "testing"
+        - comment: "✅ P0 CRITICAL BUG FIX VERIFIED: Stats endpoint working for ALL roles after route conflict resolution. Admin stats ✅ (returns all orders data), Client stats ✅ (returns client-specific data), Cobbler stats ✅ (returns cobbler-specific data). All responses have correct structure with total_orders, total_revenue, total_commission, pending_orders, completed_orders. Route conflict between media_router catch-all route and stats_router completely resolved by adding /media prefix to media_router."
+  - task: "Media endpoints after route prefix fix"
+    implemented: true
+    working: true
+    file: "/app/backend/routes/media.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+        - agent: "testing"
+        - comment: "✅ MEDIA ENDPOINTS WORKING AFTER ROUTE PREFIX FIX: All media endpoints functional with new /media prefix. Public carousel ✅ (GET /api/media/carousel returns 3 images), Admin media list ✅ (GET /api/media/admin returns media items), Admin filtered list ✅ (GET /api/media/admin?category=carousel works), Media upload ✅ (POST /api/media/admin/upload successful). Route prefix fix successful - no conflicts with stats endpoints."
+  - task: "Settings endpoints functionality"
+    implemented: true
+    working: true
+    file: "/app/backend/routes/stats.py"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: false
+    status_history:
+        - working: true
+        - agent: "testing"
+        - comment: "✅ SETTINGS ENDPOINTS WORKING: GET /api/stats/settings ✅ (returns app settings), PUT /api/stats/settings ✅ (admin can update settings), Authorization ✅ (non-admin access correctly blocked with 403). Settings endpoints not affected by route conflicts and functioning properly."
 
 ## frontend:
 ##   - task: "Cart Context - localStorage management"
