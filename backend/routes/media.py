@@ -9,7 +9,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-router = APIRouter(tags=["media"])
+router = APIRouter(prefix="/media", tags=["media"])
 
 @router.post("/admin/media/upload")
 async def upload_media(
