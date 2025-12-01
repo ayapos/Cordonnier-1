@@ -23,7 +23,7 @@ async def update_cobbler_address(address_data: dict, current_user: dict = Depend
             raise HTTPException(status_code=400, detail="Address is required")
         
         update_data = {
-            "address": address,
+            "workshop_address": address,
             "address_updated_at": datetime.now(timezone.utc).isoformat()
         }
         
