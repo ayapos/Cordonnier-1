@@ -189,7 +189,6 @@ export default function Dashboard({ user: initialUser, refreshUser }) {
         {user?.role === 'cobbler' && (
           <div className="mb-6">
             <ProfileEditor 
-              key={`profile-${user?.id}-${user?.phone}-${user?.address}`}
               user={user} 
               onProfileUpdated={(updatedUser) => {
                 setUser(updatedUser);
@@ -203,7 +202,6 @@ export default function Dashboard({ user: initialUser, refreshUser }) {
         {user?.role === 'cobbler' && (
           <div className="mb-6">
             <AddressManager 
-              key={`address-${user?.id}-${user?.address}`}
               user={user} 
               onAddressUpdated={(updatedUser) => {
                 // Update with complete user object
