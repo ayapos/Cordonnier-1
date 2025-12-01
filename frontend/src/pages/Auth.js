@@ -55,7 +55,12 @@ export default function Auth({ setUser }) {
     try {
       const response = await axios.post(`${API}/auth/register`, formData);
       localStorage.setItem('token', response.data.token);
-      setUser(response.data.user);
+      
+      // Fetch COMPLETE user profile after registration
+      axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
+      const profileResponse = await axios.get(`${API}/auth/me`);
+      setUser(profileResponse.data);
+      
       toast.success('Inscription réussie !');
       navigate('/dashboard');
     } catch (error) {
