@@ -848,16 +848,513 @@ class ShoeRepairAPITester:
         print(f"   ✅ COMPLETE FLOW SUCCESSFUL - All changes visible in admin dashboard")
         return True
 
+    def test_stats_endpoint_all_roles(self):
+        """Test /api/stats endpoint for all user roles - P0 Critical Bug Fix"""
+        print("\n🔍 TESTING STATS ENDPOINT FOR ALL ROLES - P0 CRITICAL BUG FIX")
+        print("=" * 70)
+        
+        # Test 1: Admin stats
+        admin_login_data = {
+            "email": "admin@shoerepair.com",
+            "password": "Arden2018@"
+        }
+        
+        success, response = self.run_test(
+            "Admin Login for Stats Test",
+            "POST",
+            "auth/login",
+            200,
+            data=admin_login_data
+        )
+        
+        if not success or 'token' not in response:
+            print("❌ Cannot proceed - admin login failed")
+            return False
+            
+        admin_token = response['token']
+        original_token = self.token
+        self.token = admin_token
+        
+        # Test admin stats endpoint
+        success, response = self.run_test(
+            "Admin Stats - GET /api/stats",
+            "GET",
+            "stats",
+            200
+        )
+        
+        admin_stats_working = success
+        if success:
+            # Validate response structure
+            expected_keys = ['total_orders', 'total_revenue', 'total_commission', 'pending_orders', 'completed_orders']
+            if all(key in response for key in expected_keys):
+                print(f"   ✅ Admin stats response structure correct: {response}")
+            else:
+                print(f"   ❌ Admin stats missing required keys: {response}")
+                admin_stats_working = False
+        
+        # Test 2: Client stats
+        client_login_data = {
+            "email": "client-test@test.com",
+            "password": "password123"
+        }
+        
+        success, response = self.run_test(
+            "Client Login for Stats Test",
+            "POST",
+            "auth/login",
+            200,
+            data=client_login_data
+        )
+        
+        client_stats_working = False
+        if success and 'token' in response:
+            client_token = response['token']
+            self.token = client_token
+            
+            success, response = self.run_test(
+                "Client Stats - GET /api/stats",
+                "GET",
+                "stats",
+                200
+            )
+            
+            client_stats_working = success
+            if success:
+                expected_keys = ['total_orders', 'total_revenue', 'total_commission', 'pending_orders', 'completed_orders']
+                if all(key in response for key in expected_keys):
+                    print(f"   ✅ Client stats response structure correct: {response}")
+                else:
+                    print(f"   ❌ Client stats missing required keys: {response}")
+                    client_stats_working = False
+        
+        # Test 3: Cobbler stats
+        cobbler_login_data = {
+            "email": "cordonnier@test.com",
+            "password": "Test1234"
+        }
+        
+        success, response = self.run_test(
+            "Cobbler Login for Stats Test",
+            "POST",
+            "auth/login",
+            200,
+            data=cobbler_login_data
+        )
+        
+        cobbler_stats_working = False
+        if success and 'token' in response:
+            cobbler_token = response['token']
+            self.token = cobbler_token
+            
+            success, response = self.run_test(
+                "Cobbler Stats - GET /api/stats",
+                "GET",
+                "stats",
+                200
+            )
+            
+            cobbler_stats_working = success
+            if success:
+                expected_keys = ['total_orders', 'total_revenue', 'total_commission', 'pending_orders', 'completed_orders']
+                if all(key in response for key in expected_keys):
+                    print(f"   ✅ Cobbler stats response structure correct: {response}")
+                else:
+                    print(f"   ❌ Cobbler stats missing required keys: {response}")
+                    cobbler_stats_working = False
+        
+        # Restore original token
+        self.token = original_token
+        
+        # Overall result
+        all_stats_working = admin_stats_working and client_stats_working and cobbler_stats_working
+        
+        if all_stats_working:
+            print(f"   ✅ ALL ROLES STATS WORKING - P0 BUG FIX SUCCESSFUL")
+            self.log_test("Stats Endpoint All Roles", True, "All roles can access stats endpoint correctly")
+        else:
+            failed_roles = []
+            if not admin_stats_working:
+                failed_roles.append("Admin")
+            if not client_stats_working:
+                failed_roles.append("Client")
+            if not cobbler_stats_working:
+                failed_roles.append("Cobbler")
+            
+            print(f"   ❌ STATS ENDPOINT FAILED FOR: {', '.join(failed_roles)}")
+            self.log_test("Stats Endpoint All Roles", False, f"Failed for roles: {', '.join(failed_roles)}")
+        
+        return all_stats_working
+
+    def test_media_endpoints_still_work(self):
+        """Test that media endpoints still work after route prefix fix"""
+        print("\n🔍 TESTING MEDIA ENDPOINTS AFTER ROUTE PREFIX FIX")
+        print("=" * 60)
+        
+        # Test 1: Public carousel endpoint (no auth required)
+        success, response = self.run_test(
+            "Public Carousel - GET /api/media/carousel",
+            "GET",
+            "media/carousel",
+            200
+        )
+        
+        carousel_working = success
+        if success and isinstance(response, list):
+            print(f"   ✅ Carousel endpoint working, returned {len(response)} images")
+        
+        # Test 2: Admin media endpoints (need admin token)
+        admin_login_data = {
+            "email": "admin@shoerepair.com",
+            "password": "Arden2018@"
+        }
+        
+        success, response = self.run_test(
+            "Admin Login for Media Test",
+            "POST",
+            "auth/login",
+            200,
+            data=admin_login_data
+        )
+        
+        if not success or 'token' not in response:
+            print("❌ Cannot test admin media endpoints - admin login failed")
+            return carousel_working
+            
+        admin_token = response['token']
+        original_token = self.token
+        self.token = admin_token
+        
+        # Test admin media list
+        success, response = self.run_test(
+            "Admin Media List - GET /api/media/admin",
+            "GET",
+            "media/admin",
+            200
+        )
+        
+        admin_list_working = success
+        if success and isinstance(response, list):
+            print(f"   ✅ Admin media list working, returned {len(response)} media items")
+        
+        # Test admin media list with category filter
+        success, response = self.run_test(
+            "Admin Media List Filtered - GET /api/media/admin?category=carousel",
+            "GET",
+            "media/admin?category=carousel",
+            200
+        )
+        
+        admin_filter_working = success
+        if success and isinstance(response, list):
+            print(f"   ✅ Admin media filter working, returned {len(response)} carousel items")
+        
+        # Test file upload (create a simple test image)
+        try:
+            import io
+            from PIL import Image
+            
+            # Create a simple test image
+            img = Image.new('RGB', (100, 100), color='blue')
+            img_bytes = io.BytesIO()
+            img.save(img_bytes, format='JPEG')
+            img_bytes.seek(0)
+            
+            # Remove Content-Type header for multipart upload
+            headers = {}
+            if self.token:
+                headers['Authorization'] = f'Bearer {self.token}'
+            
+            url = f"{self.api_url}/media/admin/upload"
+            files = {'file': ('test_media.jpg', img_bytes, 'image/jpeg')}
+            data = {'category': 'test', 'position': '999'}
+            
+            print(f"\n🔍 Testing Admin Media Upload - POST /api/media/admin/upload...")
+            print(f"   URL: {url}")
+            
+            response = requests.post(url, files=files, data=data, headers=headers)
+            print(f"   Status: {response.status_code}")
+            
+            upload_working = response.status_code == 200
+            if upload_working:
+                response_data = response.json()
+                print(f"   ✅ Media upload working: {response_data.get('message', 'Success')}")
+                
+                # Store media ID for deletion test
+                media_id = response_data.get('media', {}).get('id')
+                if media_id:
+                    # Test deletion
+                    success, response = self.run_test(
+                        f"Admin Media Delete - DELETE /api/media/admin/{media_id}",
+                        "DELETE",
+                        f"media/admin/{media_id}",
+                        200
+                    )
+                    
+                    delete_working = success
+                    if success:
+                        print(f"   ✅ Media deletion working")
+                    else:
+                        print(f"   ❌ Media deletion failed")
+                else:
+                    delete_working = False
+                    print(f"   ❌ No media ID returned from upload")
+            else:
+                try:
+                    error_data = response.json()
+                    print(f"   ❌ Media upload failed: {error_data}")
+                except:
+                    print(f"   ❌ Media upload failed: {response.text[:200]}")
+                delete_working = False
+            
+            self.log_test("Admin Media Upload", upload_working, f"Status: {response.status_code}")
+            if media_id:
+                self.log_test("Admin Media Delete", delete_working, "Media deletion test")
+                
+        except Exception as e:
+            print(f"   ❌ Media upload test crashed: {str(e)}")
+            upload_working = False
+            delete_working = False
+            self.log_test("Admin Media Upload", False, f"Test crashed: {str(e)}")
+        
+        # Restore original token
+        self.token = original_token
+        
+        # Overall result
+        all_media_working = carousel_working and admin_list_working and admin_filter_working and upload_working
+        
+        if all_media_working:
+            print(f"   ✅ ALL MEDIA ENDPOINTS WORKING AFTER ROUTE PREFIX FIX")
+        else:
+            failed_endpoints = []
+            if not carousel_working:
+                failed_endpoints.append("Carousel")
+            if not admin_list_working:
+                failed_endpoints.append("Admin List")
+            if not admin_filter_working:
+                failed_endpoints.append("Admin Filter")
+            if not upload_working:
+                failed_endpoints.append("Upload")
+            
+            print(f"   ❌ MEDIA ENDPOINTS FAILED: {', '.join(failed_endpoints)}")
+        
+        return all_media_working
+
+    def test_no_route_conflicts(self):
+        """Test that /api/stats returns stats data, NOT 'Media not found' error"""
+        print("\n🔍 TESTING NO ROUTE CONFLICTS - STATS VS MEDIA")
+        print("=" * 55)
+        
+        # Login as admin first
+        admin_login_data = {
+            "email": "admin@shoerepair.com",
+            "password": "Arden2018@"
+        }
+        
+        success, response = self.run_test(
+            "Admin Login for Route Conflict Test",
+            "POST",
+            "auth/login",
+            200,
+            data=admin_login_data
+        )
+        
+        if not success or 'token' not in response:
+            print("❌ Cannot proceed - admin login failed")
+            return False
+            
+        admin_token = response['token']
+        original_token = self.token
+        self.token = admin_token
+        
+        # Test that /api/stats returns stats, not media error
+        success, response = self.run_test(
+            "Verify Stats Endpoint Not Intercepted",
+            "GET",
+            "stats",
+            200
+        )
+        
+        stats_not_intercepted = success
+        if success:
+            # Check that response contains stats data, not media error
+            if isinstance(response, dict) and 'total_orders' in response:
+                print(f"   ✅ /api/stats returns stats data (not media error)")
+            else:
+                print(f"   ❌ /api/stats returns unexpected data: {response}")
+                stats_not_intercepted = False
+        else:
+            print(f"   ❌ /api/stats failed - may be intercepted by media router")
+        
+        # Test that /api/stats/settings also works
+        success, response = self.run_test(
+            "Verify Stats Settings Endpoint",
+            "GET",
+            "stats/settings",
+            200
+        )
+        
+        settings_working = success
+        if success:
+            print(f"   ✅ /api/stats/settings working correctly")
+        else:
+            print(f"   ❌ /api/stats/settings failed")
+        
+        # Restore original token
+        self.token = original_token
+        
+        overall_success = stats_not_intercepted and settings_working
+        
+        if overall_success:
+            print(f"   ✅ NO ROUTE CONFLICTS - STATS ENDPOINTS WORKING")
+            self.log_test("No Route Conflicts", True, "Stats endpoints not intercepted by media router")
+        else:
+            print(f"   ❌ ROUTE CONFLICTS DETECTED")
+            self.log_test("No Route Conflicts", False, "Stats endpoints may be intercepted")
+        
+        return overall_success
+
+    def test_settings_endpoints(self):
+        """Test settings endpoints"""
+        print("\n🔍 TESTING SETTINGS ENDPOINTS")
+        print("=" * 40)
+        
+        # Login as admin
+        admin_login_data = {
+            "email": "admin@shoerepair.com",
+            "password": "Arden2018@"
+        }
+        
+        success, response = self.run_test(
+            "Admin Login for Settings Test",
+            "POST",
+            "auth/login",
+            200,
+            data=admin_login_data
+        )
+        
+        if not success or 'token' not in response:
+            print("❌ Cannot proceed - admin login failed")
+            return False
+            
+        admin_token = response['token']
+        original_token = self.token
+        self.token = admin_token
+        
+        # Test GET settings
+        success, response = self.run_test(
+            "Get Settings - GET /api/stats/settings",
+            "GET",
+            "stats/settings",
+            200
+        )
+        
+        get_settings_working = success
+        if success:
+            print(f"   ✅ Settings retrieved successfully")
+            
+            # Test PUT settings (update)
+            test_settings = {
+                "delivery_standard_price": 10.0,
+                "delivery_express_price": 25.0,
+                "platform_commission": 20
+            }
+            
+            success, response = self.run_test(
+                "Update Settings - PUT /api/stats/settings",
+                "PUT",
+                "stats/settings",
+                200,
+                data=test_settings
+            )
+            
+            put_settings_working = success
+            if success:
+                print(f"   ✅ Settings updated successfully")
+            else:
+                print(f"   ❌ Settings update failed")
+        else:
+            put_settings_working = False
+        
+        # Test non-admin access (should fail)
+        client_login_data = {
+            "email": "client-test@test.com",
+            "password": "password123"
+        }
+        
+        success, response = self.run_test(
+            "Client Login for Settings Auth Test",
+            "POST",
+            "auth/login",
+            200,
+            data=client_login_data
+        )
+        
+        if success and 'token' in response:
+            client_token = response['token']
+            self.token = client_token
+            
+            success, response = self.run_test(
+                "Non-Admin Settings Update (Should Fail)",
+                "PUT",
+                "stats/settings",
+                403,  # Expect 403 Forbidden
+                data={"test": "value"}
+            )
+            
+            auth_working = success  # Success means it correctly returned 403
+            if success:
+                print(f"   ✅ Non-admin access correctly blocked (403)")
+            else:
+                print(f"   ❌ Non-admin access not properly blocked")
+        else:
+            auth_working = False
+        
+        # Restore original token
+        self.token = original_token
+        
+        overall_success = get_settings_working and put_settings_working and auth_working
+        
+        if overall_success:
+            print(f"   ✅ ALL SETTINGS ENDPOINTS WORKING")
+            self.log_test("Settings Endpoints", True, "GET/PUT settings and authorization working")
+        else:
+            failed_parts = []
+            if not get_settings_working:
+                failed_parts.append("GET")
+            if not put_settings_working:
+                failed_parts.append("PUT")
+            if not auth_working:
+                failed_parts.append("Authorization")
+            
+            print(f"   ❌ SETTINGS ENDPOINTS FAILED: {', '.join(failed_parts)}")
+            self.log_test("Settings Endpoints", False, f"Failed: {', '.join(failed_parts)}")
+        
+        return overall_success
+
 def main():
-    print("🧪 Starting ShoeRepair Address Update Flow Test")
-    print("=" * 60)
+    print("🧪 Starting ShoeRepair P0 Critical Bug Fix Verification")
+    print("=" * 70)
+    print("🎯 TESTING: /api/stats endpoint route conflict fix")
+    print("🎯 CONTEXT: media_router catch-all route was intercepting stats requests")
+    print("🎯 FIX: Added /media prefix to media_router")
+    print("=" * 70)
     
     tester = ShoeRepairAPITester()
     
-    # Test the specific flow requested
+    # P0 Critical Bug Fix Tests
     tests = [
-        # Main test: Complete address update flow
-        tester.test_complete_address_update_flow,
+        # 1. Test stats endpoint for all roles (main bug fix)
+        tester.test_stats_endpoint_all_roles,
+        
+        # 2. Test media endpoints still work after prefix fix
+        tester.test_media_endpoints_still_work,
+        
+        # 3. Verify no route conflicts
+        tester.test_no_route_conflicts,
+        
+        # 4. Test settings endpoints
+        tester.test_settings_endpoints,
     ]
     
     # Run all tests
@@ -871,9 +1368,9 @@ def main():
         time.sleep(0.5)  # Small delay between tests
 
     # Print summary
-    print("\n" + "=" * 50)
-    print("📊 TEST SUMMARY")
-    print("=" * 50)
+    print("\n" + "=" * 70)
+    print("📊 P0 CRITICAL BUG FIX TEST SUMMARY")
+    print("=" * 70)
     print(f"Tests run: {tester.tests_run}")
     print(f"Tests passed: {tester.tests_passed}")
     print(f"Tests failed: {tester.tests_run - tester.tests_passed}")
@@ -885,6 +1382,12 @@ def main():
         print("\n❌ FAILED TESTS:")
         for test in failed_tests:
             print(f"  - {test['test']}: {test['details']}")
+    else:
+        print("\n✅ ALL TESTS PASSED - P0 BUG FIX SUCCESSFUL!")
+        print("✅ /api/stats endpoint working for all roles")
+        print("✅ Media endpoints working with new /media prefix")
+        print("✅ No route conflicts detected")
+        print("✅ Settings endpoints working correctly")
     
     return 0 if tester.tests_passed == tester.tests_run else 1
 
