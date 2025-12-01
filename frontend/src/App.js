@@ -46,10 +46,11 @@ const ProtectedRoute = ({ children }) => {
 function App() {
   const [user, setUser] = useState(null);
 
-  // Fetch user data on mount and when token changes
+  // Configure axios interceptor to include token in all requests
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       fetchUserData();
     }
   }, []);
