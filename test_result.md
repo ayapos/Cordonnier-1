@@ -155,7 +155,7 @@
 ##     implemented: true
 ##     working: false
 ##     file: "/app/frontend/src/components/ProfileEditor.js"
-##     stuck_count: 3
+##     stuck_count: 4
 ##     priority: "high"
 ##     needs_retesting: false
 ##     status_history:
@@ -168,6 +168,9 @@
 ##         - working: false
 ##         - agent: "testing"
 ##         - comment: "❌ COMPREHENSIVE PERSISTENCE TEST FAILED: Tested complete flow as requested - login → modify profile (name: 'Cordonnier Test Complet', phone: '+41 79 999 00 11') → modify address ('Avenue de Morges 50, 1004 Lausanne, Suisse') → logout → re-login. RESULTS: Name persists ✅, Phone does NOT persist ❌, Address does NOT persist ❌. Backend API confirms ALL data is correctly saved (verified via curl), but frontend ProfileEditor and AddressManager components fail to display phone and address from user object. Critical frontend data binding issue affecting both profile phone display and workshop address display."
+##         - working: false
+##         - agent: "testing"
+##         - comment: "❌ FINAL STRICT PERSISTENCE TEST FAILED: Executed exact test as requested in review - login cordonnier@test.com → modify profile (name: 'Jean Cordonnier FINAL', phone: '+41 79 111 22 33') → modify workshop address ('Rue de Genève 100, 1003 Lausanne, Suisse') → logout → re-login → verify persistence. CRITICAL RESULTS: Name persistence ✅ WORKS, Phone persistence ❌ FAILS (shows 'Non renseigné'), Workshop address persistence ❌ FAILS (field empty). TEST SCORE: 1/3 fields correct. Backend saves data correctly (confirmed via API), but frontend ProfileEditor and AddressManager components fail to display saved phone and address values. Root cause: Frontend data binding issue in both components."
 
 ## metadata:
 ##   created_by: "main_agent"
