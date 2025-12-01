@@ -32,9 +32,10 @@ export default function AdminSettings() {
 
   const fetchSettings = async () => {
     try {
-      const response = await axios.get(`${API}/settings`);
+      const response = await axios.get(`${API}/stats/settings`);
       setSettings(response.data);
     } catch (error) {
+      console.error('Error fetching settings:', error);
       toast.error('Erreur de chargement des paramètres');
     } finally {
       setLoading(false);
@@ -44,9 +45,10 @@ export default function AdminSettings() {
   const handleSave = async () => {
     setSaving(true);
     try {
-      await axios.put(`${API}/settings`, settings);
+      await axios.put(`${API}/stats/settings`, settings);
       toast.success('Paramètres enregistrés avec succès !');
     } catch (error) {
+      console.error('Error saving settings:', error);
       toast.error('Erreur d\'enregistrement');
     } finally {
       setSaving(false);
