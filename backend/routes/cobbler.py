@@ -39,22 +39,27 @@ async def update_cobbler_address(address_data: dict, current_user: dict = Depend
                 # Don't fail - save address without coordinates
         
         # Update user address (with or without coordinates)
-        await db.users.update_one(
+        result = await db.users.update_one(
             {"id": current_user['user_id']},
             {"$set": update_data}
         )
         
+        if result.matched_count == 0:
+            raise HTTPException(status_code=404, detail="User not found")
+        
+        # Fetch and return complete user data
+        updated_user = await db.users.find_one(
+            {"id": current_user['user_id']},
+            {"_id": 0, "password": 0}
+        )
+        
         response = {
             "message": "Address updated successfully",
-            "address": address
+            "user": updated_user,
+            "geocoded": "latitude" in update_data and "longitude" in update_data
         }
         
-        if "latitude" in update_data and "longitude" in update_data:
-            response["latitude"] = update_data["latitude"]
-            response["longitude"] = update_data["longitude"]
-            response["geocoded"] = True
-        else:
-            response["geocoded"] = False
+        if not response["geocoded"]:
             response["warning"] = "Address saved but could not be geocoded. You may receive fewer order assignments."
         
         return response
