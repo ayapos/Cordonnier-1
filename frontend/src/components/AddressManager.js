@@ -25,22 +25,17 @@ export default function AddressManager({ user, onAddressUpdated }) {
       const response = await axios.put(`${API}/cobbler/address`, { address });
       
       if (response.data.geocoded) {
-        toast.success('Adresse mise à jour et localisée avec succès !', {
-          description: `Position: ${response.data.latitude.toFixed(4)}°N, ${response.data.longitude.toFixed(4)}°E`
-        });
+        toast.success('Adresse mise à jour et localisée avec succès !');
       } else {
         toast.warning('Adresse enregistrée sans géolocalisation', {
-          description: response.data.warning || 'Impossible de localiser précisément cette adresse. Vos commandes seront attribuées manuellement.',
+          description: response.data.warning || 'Impossible de localiser précisément cette adresse.',
           duration: 6000
         });
       }
       
-      if (onAddressUpdated) {
-        onAddressUpdated({
-          address,
-          latitude: response.data.latitude,
-          longitude: response.data.longitude
-        });
+      // Pass complete user object to parent
+      if (onAddressUpdated && response.data.user) {
+        onAddressUpdated(response.data.user);
       }
     } catch (error) {
       const errorMsg = error.response?.data?.detail || 'Erreur lors de la mise à jour';
