@@ -101,7 +101,7 @@ async def upload_media(
         logger.error(f"Error uploading media: {e}")
         raise HTTPException(status_code=500, detail="Error uploading media")
 
-@router.get("/admin/media")
+@router.get("/admin")
 async def list_media(
     category: Optional[str] = None,
     limit: int = 100,
