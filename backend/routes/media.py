@@ -122,7 +122,7 @@ async def list_media(
         logger.error(f"Error listing media: {e}")
         raise HTTPException(status_code=500, detail="Error listing media")
 
-@router.put("/admin/media/{media_id}")
+@router.put("/admin/{media_id}")
 async def update_media(
     media_id: str,
     title: Optional[str] = None,
