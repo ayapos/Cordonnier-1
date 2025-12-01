@@ -60,6 +60,8 @@ class ShoeRepairAPITester:
                 response = requests.patch(url, json=data, headers=headers)
             elif method == 'PUT':
                 response = requests.put(url, json=data, headers=headers)
+            elif method == 'DELETE':
+                response = requests.delete(url, headers=headers)
 
             print(f"   Status: {response.status_code}")
             
