@@ -14,12 +14,12 @@ export default function ProfileEditor({ user, onProfileUpdated }) {
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
-    name: user?.name || '',
-    phone: user?.phone || '',
-    address: user?.address || ''
+    name: '',
+    phone: '',
+    address: ''
   });
 
-  // Update form data when user prop changes
+  // Sync form data with user prop - use user.id as dependency to track user changes
   useEffect(() => {
     if (user) {
       setFormData({
@@ -28,7 +28,7 @@ export default function ProfileEditor({ user, onProfileUpdated }) {
         address: user.address || ''
       });
     }
-  }, [user]);
+  }, [user?.id, user?.name, user?.phone, user?.address]);
 
   const handleChange = (e) => {
     setFormData({
