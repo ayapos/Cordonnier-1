@@ -201,9 +201,10 @@ export default function Dashboard({ user: initialUser, refreshUser }) {
         {/* Address Manager for Cobblers */}
         {user?.role === 'cobbler' && (
           <div className="mb-6">
-            <AddressManager user={user} onAddressUpdated={(data) => {
-              // Update user with new address data
-              setUser({ ...user, ...data });
+            <AddressManager user={user} onAddressUpdated={(updatedUser) => {
+              // Update with complete user object
+              setUser(updatedUser);
+              if (refreshUser) refreshUser();
             }} />
           </div>
         )}
