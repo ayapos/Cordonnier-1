@@ -83,7 +83,7 @@ export default function MediaManager() {
       if (title) formData.append('title', title);
       if (position) formData.append('position', position);
 
-      await axios.post(`${API}/admin/media/upload`, formData, {
+      await axios.post(`${API}/media/admin/upload`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
