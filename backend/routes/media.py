@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/media", tags=["media"])
 
-@router.post("/admin/media/upload")
+@router.post("/admin/upload")
 async def upload_media(
     file: UploadFile = File(...),
     category: str = Form(...),
