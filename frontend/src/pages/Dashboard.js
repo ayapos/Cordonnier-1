@@ -165,7 +165,6 @@ export default function Dashboard({ user: initialUser, refreshUser }) {
         {user?.role === 'client' && (
           <div className="mb-6">
             <ProfileEditor 
-              key={`profile-${user?.id}-${user?.phone}-${user?.address}`}
               user={user} 
               onProfileUpdated={(updatedUser) => {
                 setUser(updatedUser);
