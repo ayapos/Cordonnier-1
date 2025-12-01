@@ -189,11 +189,9 @@
 
 ## test_plan:
 ##   current_focus:
-##     - "Profile address persistence fix"
 ##     - "Checkout address options implementation"
 ##     - "Complete cart and checkout flow with photo validation"
 ##   stuck_tasks: 
-##     - "Profile address persistence"
 ##     - "Checkout Page - Guest and user checkout with mandatory photos"
 ##   test_all: false
 ##   test_priority: "high_first"
