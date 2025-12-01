@@ -174,6 +174,9 @@
 ##         - working: false
 ##         - agent: "testing"
 ##         - comment: "❌ FINAL ABSOLUTE PERSISTENCE TEST EXECUTED - CRITICAL FAILURE: Executed exact protocol from review request with ZERO tolerance. Modified all data: name → 'TEST FINAL CORDONNIER', phone → '+41 79 888 77 66', profile address → 'Place du Marché 5, 1002 Lausanne, Suisse', workshop address → 'Avenue d'Ouchy 75, 1006 Lausanne, Suisse'. After logout/login cycle: RESULTS: Name ✅ PASS, Phone ✅ PASS, Profile address ❌ FAIL (shows workshop address instead), Workshop address ✅ PASS. SCORE: 3/4 fields correct = TEST FAILED. CRITICAL BUG: Profile address field displays workshop address value instead of profile address. This indicates data binding confusion between user.address (profile) and workshop address in ProfileEditor component."
+##         - working: false
+##         - agent: "testing"
+##         - comment: "❌ FINAL ULTIMATE TEST PROTOCOL EXECUTED - CRITICAL FRONTEND DATA BINDING FAILURE: Executed exact French test protocol from review request. PHASE 1: Login cordonnier@test.com → modify profile (name: 'CORDONNIER FINAL TEST', phone: '+41 79 555 11 22', address: 'Chemin des Fleurs 10, 1005 Lausanne, Suisse') → modify workshop address ('Rue de l'Industrie 20, 1020 Renens, Suisse') → logout → login. PHASE 3 VERIFICATION RESULTS: Name ❌ FAIL (not displayed), Phone ❌ FAIL (not displayed), Profile address ❌ FAIL (not displayed), Workshop address ✅ PASS. SCORE: 1/4 fields correct = CRITICAL TEST FAILURE. ROOT CAUSE CONFIRMED: Backend API correctly returns all data (verified via /api/auth/me), but ProfileEditor component completely fails to display user.name, user.phone, and user.address after logout/login cycle. This is a severe frontend data binding bug preventing proper data persistence display. Only workshop address persists correctly via AddressManager component."
 
 ## metadata:
 ##   created_by: "main_agent"
