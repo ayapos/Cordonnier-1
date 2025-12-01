@@ -121,6 +121,10 @@ function App() {
                 </ProtectedRoute>
               } 
             />
+            <Route 
+              path="/order-confirmation/:orderId" 
+              element={<OrderConfirmation user={user} />} 
+            />
             <Route path="/become-partner" element={<BecomePartner />} />
             <Route path="/partner-terms" element={<PartnerTerms />} />
             <Route path="/terms" element={<Terms />} />
