@@ -34,7 +34,12 @@ export default function Auth({ setUser }) {
         password: formData.password
       });
       localStorage.setItem('token', response.data.token);
-      setUser(response.data.user);
+      
+      // Fetch COMPLETE user profile after login
+      axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
+      const profileResponse = await axios.get(`${API}/auth/me`);
+      setUser(profileResponse.data);
+      
       toast.success('Connexion réussie !');
       navigate('/dashboard');
     } catch (error) {
