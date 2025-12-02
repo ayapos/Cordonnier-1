@@ -4,6 +4,7 @@ from .order import Order, OrderCreate, OrderItem
 from .review import Review, ReviewCreate
 from .stats import Stats
 from .media import Media
+from .payment import PaymentTransaction
 
 __all__ = [
     "User",
