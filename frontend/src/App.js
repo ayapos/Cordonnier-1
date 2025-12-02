@@ -126,6 +126,14 @@ function App() {
               path="/order-confirmation/:orderId" 
               element={<OrderConfirmation user={user} />} 
             />
+            <Route 
+              path="/stripe-checkout/:orderId" 
+              element={
+                <ProtectedRoute>
+                  <StripeCheckout user={user} />
+                </ProtectedRoute>
+              } 
+            />
             <Route path="/become-partner" element={<BecomePartner />} />
             <Route path="/partner-terms" element={<PartnerTerms />} />
             <Route path="/terms" element={<Terms />} />
