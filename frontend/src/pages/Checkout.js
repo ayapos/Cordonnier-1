@@ -134,12 +134,12 @@ export default function Checkout({ user }) {
       toast.success('Commande créée avec succès !', { duration: 1500 });
       clearCart();
       
-      // Redirect based on checkout mode
-      if (checkoutMode === 'user') {
-        // Authenticated users go to Stripe payment
+      // Redirect based on user authentication status
+      if (user) {
+        // Authenticated users MUST go to Stripe payment
         navigate(`/stripe-checkout/${response.data.order_id}`);
       } else {
-        // Guest users go directly to order confirmation (demo mode)
+        // Guest users go directly to order confirmation (demo mode for now)
         navigate(`/order-confirmation/${response.data.order_id}`);
       }
     } catch (error) {
