@@ -21,15 +21,22 @@ export default function StripeCheckout({ user }) {
   const [pollingPayment, setPollingPayment] = useState(false);
 
   useEffect(() => {
+    console.log('StripeCheckout mounted - orderId:', orderId);
+    console.log('User:', user);
+    console.log('Session ID from URL:', sessionId);
+    
     if (!user) {
+      console.log('No user, redirecting to auth');
       navigate('/auth');
       return;
     }
     
     // If returning from Stripe with session_id, poll for payment status
     if (sessionId) {
+      console.log('Session ID found, polling payment status...');
       pollPaymentStatus(sessionId);
     } else {
+      console.log('No session ID, fetching order...');
       fetchOrder();
     }
   }, [user, orderId, sessionId]);
