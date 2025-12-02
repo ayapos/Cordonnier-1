@@ -187,6 +187,9 @@ export default function Checkout({ user }) {
           
           // Use window.location.replace for immediate redirect without adding to history
           window.location.replace(stripeResponse.data.checkout_url);
+          
+          // Exit immediately - don't execute any more code after redirect
+          return;
         } catch (stripeError) {
           console.error('Stripe session creation error:', stripeError);
           console.error('Error details:', stripeError.response?.data);
