@@ -231,11 +231,11 @@
 ## test_plan:
     - agent: "testing"
     - message: "✅ P0 CRITICAL BUG FIX VERIFICATION COMPLETE - 91.7% SUCCESS RATE: Executed comprehensive testing of route conflict fix between media_router and stats_router. RESULTS: Stats endpoint working for ALL roles ✅ (Admin: returns all orders data, Client: returns client-specific data, Cobbler: returns cobbler-specific data), Media endpoints working with new /media prefix ✅ (carousel, admin list, upload all functional), No route conflicts detected ✅ (/api/stats returns stats data not media errors), Settings endpoints working ✅ (GET/PUT with proper authorization). CRITICAL BUG RESOLVED: /api/stats no longer intercepted by media_router catch-all route. All user dashboards (Admin, Client, Cobbler) can now load stats data correctly. Route prefix fix successful - media_router now uses /media prefix preventing conflicts. Backend ready for production."
-##   current_focus:
-##     - "Checkout address options implementation"
-##     - "Complete cart and checkout flow with photo validation"
-##   stuck_tasks: 
-##     - "Checkout Page - Guest and user checkout with mandatory photos"
+  current_focus:
+    - "Checkout redirection bug fix - user prop loading issue"
+    - "Complete cart and checkout flow with photo validation"
+  stuck_tasks: 
+    - "Checkout Page - Guest and user checkout with mandatory photos"
 ##   test_all: false
 ##   test_priority: "high_first"
 
