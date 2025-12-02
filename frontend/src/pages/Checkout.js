@@ -146,13 +146,14 @@ export default function Checkout({ user }) {
       toast.success('Commande créée avec succès !', { duration: 1500 });
       clearCart();
       
-      // Check authentication
+      // Check authentication by token (more reliable than user prop)
       const token = localStorage.getItem('token');
       console.log('Token check:', !!token);
       console.log('User check:', !!user);
+      console.log('Checkout mode:', checkoutMode);
       
-      // Redirect based on authentication status
-      if (token && user) {
+      // Redirect based on authentication token (not user prop which may not be loaded yet)
+      if (token || checkoutMode === 'user') {
         // Authenticated users MUST go to Stripe payment
         console.log('✅ REDIRECTING TO STRIPE CHECKOUT');
         console.log('Target URL:', `/stripe-checkout/${response.data.order_id}`);
