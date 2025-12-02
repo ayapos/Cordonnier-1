@@ -18,6 +18,7 @@ import CreateOrder from "@/pages/CreateOrder";
 import OrderDetails from "@/pages/OrderDetails";
 import Payment from "@/pages/Payment";
 import OrderConfirmation from "@/pages/OrderConfirmation";
+import StripeCheckout from "@/pages/StripeCheckout";
 import BecomePartner from "@/pages/BecomePartner";
 import Terms from "@/pages/Terms";
 import Privacy from "@/pages/Privacy";
