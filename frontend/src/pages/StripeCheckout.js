@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Wrench, ArrowLeft, CreditCard, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
+import { useCart } from '@/context/CartContext';
 import axios from 'axios';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
@@ -14,6 +15,7 @@ export default function StripeCheckout({ user }) {
   const { orderId } = useParams();
   const [searchParams] = useSearchParams();
   const sessionId = searchParams.get('session_id');
+  const { clearCart } = useCart();
   
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);
