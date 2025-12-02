@@ -146,21 +146,16 @@ export default function Checkout({ user }) {
       toast.success('Commande créée avec succès !', { duration: 1500 });
       clearCart();
       
-      // Check authentication by token (more reliable than user prop)
-      const token = localStorage.getItem('token');
-      console.log('Token check:', !!token);
-      console.log('User check:', !!user);
-      console.log('Checkout mode:', checkoutMode);
-      
-      // Redirect based on authentication token (not user prop which may not be loaded yet)
-      if (token || checkoutMode === 'user') {
-        // Authenticated users MUST go to Stripe payment
-        console.log('✅ REDIRECTING TO STRIPE CHECKOUT');
+      // Simple logic: if used /orders/bulk endpoint, it's an authenticated user → Stripe payment
+      // If used /orders/guest endpoint, it's a guest → order confirmation (demo)
+      if (checkoutMode !== 'guest') {
+        // Authenticated users (used /orders/bulk) MUST go to Stripe payment
+        console.log('✅ AUTHENTICATED USER - REDIRECTING TO STRIPE CHECKOUT');
         console.log('Target URL:', `/stripe-checkout/${response.data.order_id}`);
         navigate(`/stripe-checkout/${response.data.order_id}`);
       } else {
-        // Guest users go directly to order confirmation (demo mode for now)
-        console.log('✅ REDIRECTING TO ORDER CONFIRMATION (GUEST)');
+        // Guest users (used /orders/guest) go directly to order confirmation (demo mode)
+        console.log('✅ GUEST USER - REDIRECTING TO ORDER CONFIRMATION');
         console.log('Target URL:', `/order-confirmation/${response.data.order_id}`);
         navigate(`/order-confirmation/${response.data.order_id}`);
       }
