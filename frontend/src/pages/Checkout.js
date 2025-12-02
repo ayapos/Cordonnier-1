@@ -22,7 +22,10 @@ export default function Checkout({ user }) {
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
   const { cartItems, getCartTotal, clearCart, getCartCount } = useCart();
-  const [checkoutMode, setCheckoutMode] = useState(user ? 'user' : 'guest');
+  
+  // Initialize checkoutMode based on token (more reliable than user prop which may not be loaded yet)
+  const token = localStorage.getItem('token');
+  const [checkoutMode, setCheckoutMode] = useState(token ? 'user' : 'guest');
   const [loading, setLoading] = useState(false);
   
   // Helper function to get translated service field
