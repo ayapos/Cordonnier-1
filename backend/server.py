@@ -36,6 +36,7 @@ api_router.include_router(admin_router)
 api_router.include_router(cobbler_router)
 api_router.include_router(media_router)
 api_router.include_router(stats_router)
+api_router.include_router(payment_router)
 
 # Include main API router
 app.include_router(api_router)
