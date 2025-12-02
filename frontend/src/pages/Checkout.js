@@ -163,19 +163,31 @@ export default function Checkout({ user }) {
         try {
           // Create Stripe checkout session
           const originUrl = window.location.origin;
+          console.log('Creating Stripe session for order:', orderId);
+          console.log('Origin URL:', originUrl);
+          
           const stripeResponse = await axios.post(`${API}/payments/create-checkout-session`, {
             order_id: orderId,
             origin_url: originUrl
           });
           
+          console.log('Stripe response:', stripeResponse.data);
+          console.log('Checkout URL:', stripeResponse.data.checkout_url);
+          
+          // Verify checkout_url exists
+          if (!stripeResponse.data.checkout_url) {
+            throw new Error('No checkout URL returned from backend');
+          }
+          
           // Clear cart before leaving
           clearCart();
           
           // Redirect DIRECTLY to Stripe.com
-          console.log('🚀 REDIRECTING DIRECTLY TO STRIPE.COM');
+          console.log('🚀 REDIRECTING TO:', stripeResponse.data.checkout_url);
           window.location.href = stripeResponse.data.checkout_url;
         } catch (stripeError) {
           console.error('Stripe session creation error:', stripeError);
+          console.error('Error details:', stripeError.response?.data);
           toast.error('Erreur lors de la création de la session de paiement');
           // Fallback: go to order confirmation
           navigate(`/order-confirmation/${orderId}`, { replace: true });
