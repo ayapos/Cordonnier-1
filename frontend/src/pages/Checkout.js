@@ -147,34 +147,25 @@ export default function Checkout({ user }) {
       console.log('Order ID:', response.data.order_id);
       console.log('Checkout mode:', checkoutMode);
       
-      // Save order ID before clearing cart (in case we need it)
       const orderId = response.data.order_id;
       
       // Show success message
-      toast.success('Commande créée avec succès !', { duration: 1500 });
+      toast.success('Commande créée avec succès !', { duration: 1000 });
       
-      // NAVIGATE FIRST, then clear cart
+      // DON'T clear cart here - it causes a re-render that redirects to /cart
+      // Cart will be cleared on the payment/confirmation page instead
+      
       // Simple logic: if used /orders/bulk endpoint, it's an authenticated user → Stripe payment
       if (checkoutMode !== 'guest') {
         // Authenticated users (used /orders/bulk) MUST go to Stripe payment
         console.log('✅ AUTHENTICATED USER - REDIRECTING TO STRIPE CHECKOUT');
         console.log('Target URL:', `/stripe-checkout/${orderId}`);
-        
-        // Navigate immediately
-        navigate(`/stripe-checkout/${orderId}`);
-        
-        // Clear cart AFTER navigation
-        setTimeout(() => clearCart(), 100);
+        navigate(`/stripe-checkout/${orderId}`, { replace: true });
       } else {
         // Guest users (used /orders/guest) go directly to order confirmation (demo mode)
         console.log('✅ GUEST USER - REDIRECTING TO ORDER CONFIRMATION');
         console.log('Target URL:', `/order-confirmation/${orderId}`);
-        
-        // Navigate immediately
-        navigate(`/order-confirmation/${orderId}`);
-        
-        // Clear cart AFTER navigation
-        setTimeout(() => clearCart(), 100);
+        navigate(`/order-confirmation/${orderId}`, { replace: true });
       }
     } catch (error) {
       console.error('Checkout error:', error);
