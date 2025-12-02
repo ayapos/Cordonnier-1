@@ -211,6 +211,16 @@ export default function Checkout({ user }) {
     }
   };
 
+  // Wait for cart to load from localStorage before checking if empty
+  if (!cartLoaded) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50 flex items-center justify-center">
+        <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-amber-700 border-t-transparent"></div>
+      </div>
+    );
+  }
+
+  // NOW we can safely check if cart is empty (after it's loaded)
   if (cartItems.length === 0) {
     navigate('/cart');
     return null;
