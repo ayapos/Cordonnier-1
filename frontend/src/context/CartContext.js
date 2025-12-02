@@ -15,6 +15,7 @@ export function useCart() {
 export function CartProvider({ children }) {
   const { t } = useTranslation();
   const [cartItems, setCartItems] = useState([]);
+  const [cartLoaded, setCartLoaded] = useState(false);
 
   // Load cart from localStorage on mount
   useEffect(() => {
@@ -26,6 +27,8 @@ export function CartProvider({ children }) {
         console.error('Error loading cart:', error);
       }
     }
+    // Mark cart as loaded
+    setCartLoaded(true);
   }, []);
 
   // Save cart to localStorage whenever it changes
