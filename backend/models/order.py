@@ -29,6 +29,7 @@ class Order(BaseModel):
     commission: float  # 15% of service price
     total_amount: float
     status: str  # 'pending', 'accepted', 'in_progress', 'shipped', 'delivered', 'cancelled'
+    payment_status: str = 'pending'  # 'pending', 'paid', 'failed', 'refunded'
     shoe_images: List[str] = []
     notes: Optional[str] = None
     payment_intent_id: Optional[str] = None
