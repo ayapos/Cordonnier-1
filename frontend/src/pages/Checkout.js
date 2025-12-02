@@ -179,12 +179,14 @@ export default function Checkout({ user }) {
             throw new Error('No checkout URL returned from backend');
           }
           
-          // Clear cart before leaving
-          clearCart();
+          // DON'T clear cart here - it causes a re-render that might block redirection
+          // Cart will be cleared when user returns from Stripe
           
           // Redirect DIRECTLY to Stripe.com
           console.log('🚀 REDIRECTING TO:', stripeResponse.data.checkout_url);
-          window.location.href = stripeResponse.data.checkout_url;
+          
+          // Use window.location.replace for immediate redirect without adding to history
+          window.location.replace(stripeResponse.data.checkout_url);
         } catch (stripeError) {
           console.error('Stripe session creation error:', stripeError);
           console.error('Error details:', stripeError.response?.data);
