@@ -19,4 +19,5 @@ __all__ = [
     "ReviewCreate",
     "Stats",
     "Media",
+    "PaymentTransaction",
 ]
