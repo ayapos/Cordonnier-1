@@ -134,12 +134,19 @@ export default function Checkout({ user }) {
       toast.success('Commande créée avec succès !', { duration: 1500 });
       clearCart();
       
+      // Debug logs
+      console.log('User object:', user);
+      console.log('User exists:', !!user);
+      console.log('Order ID:', response.data.order_id);
+      
       // Redirect based on user authentication status
       if (user) {
         // Authenticated users MUST go to Stripe payment
+        console.log('Redirecting to Stripe checkout...');
         navigate(`/stripe-checkout/${response.data.order_id}`);
       } else {
         // Guest users go directly to order confirmation (demo mode for now)
+        console.log('Redirecting to order confirmation (guest)...');
         navigate(`/order-confirmation/${response.data.order_id}`);
       }
     } catch (error) {
