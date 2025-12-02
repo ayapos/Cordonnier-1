@@ -43,15 +43,22 @@ export default function StripeCheckout({ user }) {
 
   const fetchOrder = async () => {
     try {
+      console.log('Fetching order:', orderId);
       const response = await axios.get(`${API}/orders/${orderId}`);
+      console.log('Order fetched:', response.data);
+      console.log('Payment status:', response.data.payment_status);
       setOrder(response.data);
       
       // Check if already paid
       if (response.data.payment_status === 'paid') {
+        console.log('Order already paid, redirecting to confirmation');
         toast.success('Cette commande est déjà payée!');
         navigate(`/order-confirmation/${orderId}`);
+      } else {
+        console.log('Order not paid yet, showing payment page');
       }
     } catch (error) {
+      console.error('Error fetching order:', error);
       toast.error('Commande introuvable');
       navigate('/dashboard');
     } finally {
