@@ -19,14 +19,21 @@ router = APIRouter(prefix="/payments", tags=["payments"])
 STRIPE_API_KEY = os.environ.get('STRIPE_SECRET_KEY', 'sk_test_emergent')
 
 
+from pydantic import BaseModel
+
+class CreateCheckoutRequest(BaseModel):
+    order_id: str
+    origin_url: str
+
 @router.post("/create-checkout-session")
 async def create_checkout_session(
     request: Request,
-    order_id: str,
-    origin_url: str,
+    checkout_request: CreateCheckoutRequest,
     current_user: dict = Depends(get_current_user)
 ):
     """Create a Stripe checkout session for an order"""
+    order_id = checkout_request.order_id
+    origin_url = checkout_request.origin_url
     try:
         # Fetch order from database
         order = await db.orders.find_one({"id": order_id}, {"_id": 0})
