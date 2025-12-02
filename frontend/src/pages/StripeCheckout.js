@@ -27,6 +27,9 @@ export default function StripeCheckout({ user }) {
     console.log('User:', user);
     console.log('Session ID from URL:', sessionId);
     
+    // Clear cart now that we're on the payment page
+    clearCart();
+    
     // Check token instead of user object (user might not be loaded yet)
     const token = localStorage.getItem('token');
     if (!token) {
