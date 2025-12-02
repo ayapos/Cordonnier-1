@@ -144,23 +144,26 @@
 ##         - working: true
 ##         - agent: "testing"
 ##         - comment: "✅ TESTED: Cart page working correctly. Shows cart items, allows quantity modification, displays totals, and checkout button navigates properly."
-##   - task: "Checkout Page - Guest and user checkout with mandatory photos"
-##     implemented: true
-##     working: false
-##     file: "/app/frontend/src/pages/Checkout.js"
-##     stuck_count: 2
-##     priority: "high"
-##     needs_retesting: false
-##     status_history:
-##         - working: "unknown"
-##         - agent: "main"
-##         - comment: "Page checkout avec validation OBLIGATOIRE des photos (désactive bouton si pas de photos), mode invité/connecté, création compte optionnelle"
-##         - working: false
-##         - agent: "testing"
-##         - comment: "❌ CRITICAL ISSUE: Checkout page missing required address options. Expected radio buttons for 'Mon adresse de profil' and 'Autre adresse' not found. Only shows simple input field instead of proper address selection interface when user has profile address."
-##         - working: false
-##         - agent: "testing"
-##         - comment: "❌ CANNOT TEST CHECKOUT ADDRESS OPTIONS: Due to frontend not displaying user address in profile (see Profile address persistence issue), checkout page cannot show address options. Root cause is ProfileEditor not displaying user.address from backend. Need to fix profile display first, then retest checkout."
+  - task: "Checkout Page - Guest and user checkout with mandatory photos"
+    implemented: true
+    working: false
+    file: "/app/frontend/src/pages/Checkout.js"
+    stuck_count: 3
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: "unknown"
+        - agent: "main"
+        - comment: "Page checkout avec validation OBLIGATOIRE des photos (désactive bouton si pas de photos), mode invité/connecté, création compte optionnelle"
+        - working: false
+        - agent: "testing"
+        - comment: "❌ CRITICAL ISSUE: Checkout page missing required address options. Expected radio buttons for 'Mon adresse de profil' and 'Autre adresse' not found. Only shows simple input field instead of proper address selection interface when user has profile address."
+        - working: false
+        - agent: "testing"
+        - comment: "❌ CANNOT TEST CHECKOUT ADDRESS OPTIONS: Due to frontend not displaying user address in profile (see Profile address persistence issue), checkout page cannot show address options. Root cause is ProfileEditor not displaying user.address from backend. Need to fix profile display first, then retest checkout."
+        - working: false
+        - agent: "testing"
+        - comment: "❌ CRITICAL BUG CONFIRMED: Checkout redirection logic broken for authenticated users. ROOT CAUSE: Redirection condition (token && user) fails because 'user' prop is null/undefined while token exists. Authenticated users incorrectly redirected to order-confirmation instead of stripe-checkout. ANALYSIS: Token exists in localStorage ✅, User object missing ❌, Condition fails ❌. FIX NEEDED: Ensure user state is properly loaded in App.js before rendering Checkout component, or modify redirection logic to use token-only check. Both Stripe checkout and order confirmation pages work when accessed directly - issue is only in checkout form redirection logic."
 ##   - task: "Add to cart buttons on Services page"
 ##     implemented: true
 ##     working: true
