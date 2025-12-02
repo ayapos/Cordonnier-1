@@ -21,7 +21,7 @@ const API = `${BACKEND_URL}/api`;
 export default function Checkout({ user }) {
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
-  const { cartItems, getCartTotal, clearCart, getCartCount } = useCart();
+  const { cartItems, cartLoaded, getCartTotal, clearCart, getCartCount } = useCart();
   
   // Initialize checkoutMode based on token (more reliable than user prop which may not be loaded yet)
   const token = localStorage.getItem('token');
