@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Wrench, ArrowLeft, CheckCircle } from 'lucide-react';
 import { toast } from 'sonner';
+import { useCart } from '@/context/CartContext';
 import axios from 'axios';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
@@ -12,10 +13,13 @@ const API = `${BACKEND_URL}/api`;
 export default function OrderConfirmation({ user }) {
   const navigate = useNavigate();
   const { orderId } = useParams();
+  const { clearCart } = useCart();
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Clear cart when arriving on confirmation page
+    clearCart();
     fetchOrder();
   }, [orderId]);
 
