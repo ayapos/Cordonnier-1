@@ -39,7 +39,10 @@ export function CartProvider({ children }) {
       const existing = prev.find(item => item.id === service.id);
       if (existing) {
         // Increase quantity
-        toast.success(t('quantityUpdated'), { duration: 500 });
+        toast.success(t('quantityUpdated'), { 
+          duration: 500,
+          id: `cart-update-${service.id}` // Prevent duplicates
+        });
         return prev.map(item =>
           item.id === service.id
             ? { ...item, quantity: item.quantity + 1 }
@@ -47,7 +50,10 @@ export function CartProvider({ children }) {
         );
       } else {
         // Add new item
-        toast.success(t('addedToCart'), { duration: 500 });
+        toast.success(t('addedToCart'), { 
+          duration: 500,
+          id: `cart-add-${service.id}` // Prevent duplicates
+        });
         return [...prev, { ...service, quantity: 1 }];
       }
     });
