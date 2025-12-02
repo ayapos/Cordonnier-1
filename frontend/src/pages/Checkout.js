@@ -192,10 +192,14 @@ export default function Checkout({ user }) {
           // Redirect DIRECTLY to Stripe.com
           console.log('🚀 REDIRECTING TO:', stripeResponse.data.checkout_url);
           
-          // Use window.location.replace for immediate redirect without adding to history
-          window.location.replace(stripeResponse.data.checkout_url);
+          // Use setTimeout to ensure redirect happens after React state updates complete
+          // This prevents browser security policies from blocking the redirect
+          setTimeout(() => {
+            console.log('Executing redirect now...');
+            window.location.href = stripeResponse.data.checkout_url;
+          }, 100);
           
-          // Exit immediately - don't execute any more code after redirect
+          // Exit immediately
           return;
         } catch (stripeError) {
           console.error('Stripe session creation error:', stripeError);
