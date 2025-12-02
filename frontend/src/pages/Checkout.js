@@ -157,10 +157,29 @@ export default function Checkout({ user }) {
       
       // Simple logic: if used /orders/bulk endpoint, it's an authenticated user → Stripe payment
       if (checkoutMode !== 'guest') {
-        // Authenticated users (used /orders/bulk) MUST go to Stripe payment
-        console.log('✅ AUTHENTICATED USER - REDIRECTING TO STRIPE CHECKOUT');
-        console.log('Target URL:', `/stripe-checkout/${orderId}`);
-        navigate(`/stripe-checkout/${orderId}`, { replace: true });
+        // Authenticated users: Create Stripe session and redirect DIRECTLY to Stripe.com
+        console.log('✅ AUTHENTICATED USER - CREATING STRIPE SESSION');
+        
+        try {
+          // Create Stripe checkout session
+          const originUrl = window.location.origin;
+          const stripeResponse = await axios.post(`${API}/payments/create-checkout-session`, {
+            order_id: orderId,
+            origin_url: originUrl
+          });
+          
+          // Clear cart before leaving
+          clearCart();
+          
+          // Redirect DIRECTLY to Stripe.com
+          console.log('🚀 REDIRECTING DIRECTLY TO STRIPE.COM');
+          window.location.href = stripeResponse.data.checkout_url;
+        } catch (stripeError) {
+          console.error('Stripe session creation error:', stripeError);
+          toast.error('Erreur lors de la création de la session de paiement');
+          // Fallback: go to order confirmation
+          navigate(`/order-confirmation/${orderId}`, { replace: true });
+        }
       } else {
         // Guest users (used /orders/guest) go directly to order confirmation (demo mode)
         console.log('✅ GUEST USER - REDIRECTING TO ORDER CONFIRMATION');
