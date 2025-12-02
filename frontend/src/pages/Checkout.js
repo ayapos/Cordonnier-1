@@ -126,27 +126,41 @@ export default function Checkout({ user }) {
         }
       }
 
+      console.log('=== BEFORE ORDER CREATION ===');
+      console.log('User prop:', user);
+      console.log('User exists:', !!user);
+      console.log('Checkout mode:', checkoutMode);
+      console.log('Token in localStorage:', localStorage.getItem('token'));
+      
       const endpoint = checkoutMode === 'guest' ? `${API}/orders/guest` : `${API}/orders/bulk`;
+      console.log('Endpoint:', endpoint);
+      
       const response = await axios.post(endpoint, formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
 
+      console.log('=== AFTER ORDER CREATION ===');
+      console.log('Response:', response.data);
+      console.log('Order ID:', response.data.order_id);
+      
       toast.success('Commande créée avec succès !', { duration: 1500 });
       clearCart();
       
-      // Debug logs
-      console.log('User object:', user);
-      console.log('User exists:', !!user);
-      console.log('Order ID:', response.data.order_id);
+      // Check authentication
+      const token = localStorage.getItem('token');
+      console.log('Token check:', !!token);
+      console.log('User check:', !!user);
       
-      // Redirect based on user authentication status
-      if (user) {
+      // Redirect based on authentication status
+      if (token && user) {
         // Authenticated users MUST go to Stripe payment
-        console.log('Redirecting to Stripe checkout...');
+        console.log('✅ REDIRECTING TO STRIPE CHECKOUT');
+        console.log('Target URL:', `/stripe-checkout/${response.data.order_id}`);
         navigate(`/stripe-checkout/${response.data.order_id}`);
       } else {
         // Guest users go directly to order confirmation (demo mode for now)
-        console.log('Redirecting to order confirmation (guest)...');
+        console.log('✅ REDIRECTING TO ORDER CONFIRMATION (GUEST)');
+        console.log('Target URL:', `/order-confirmation/${response.data.order_id}`);
         navigate(`/order-confirmation/${response.data.order_id}`);
       }
     } catch (error) {
