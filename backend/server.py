@@ -17,7 +17,8 @@ from routes import (
     admin_router,
     cobbler_router,
     media_router,
-    stats_router
+    stats_router,
+    payment_router
 )
 
 # Create the main app
