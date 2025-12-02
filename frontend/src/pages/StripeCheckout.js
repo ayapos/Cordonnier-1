@@ -25,8 +25,10 @@ export default function StripeCheckout({ user }) {
     console.log('User:', user);
     console.log('Session ID from URL:', sessionId);
     
-    if (!user) {
-      console.log('No user, redirecting to auth');
+    // Check token instead of user object (user might not be loaded yet)
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.log('No token, redirecting to auth');
       navigate('/auth');
       return;
     }
@@ -39,7 +41,7 @@ export default function StripeCheckout({ user }) {
       console.log('No session ID, fetching order...');
       fetchOrder();
     }
-  }, [user, orderId, sessionId]);
+  }, [orderId, sessionId]);
 
   const fetchOrder = async () => {
     try {
