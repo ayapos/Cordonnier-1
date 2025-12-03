@@ -7,6 +7,7 @@ from .cobbler import router as cobbler_router
 from .media import router as media_router
 from .stats import router as stats_router
 from .payment import router as payment_router
+from .reports import router as reports_router
 
 __all__ = [
     "auth_router",
@@ -18,4 +19,5 @@ __all__ = [
     "media_router",
     "stats_router",
     "payment_router",
+    "reports_router",
 ]
