@@ -1076,6 +1076,11 @@ export default function AdminDashboard({ user }) {
             </Card>
           </TabsContent>
 
+          {/* Reports Tab */}
+          <TabsContent value="reports">
+            <ReportGenerator userRole="admin" />
+          </TabsContent>
+
           {/* Media Tab */}
           <TabsContent value="media">
             <MediaManager />
