@@ -14,22 +14,22 @@ export function useCart() {
 
 export function CartProvider({ children }) {
   const { t } = useTranslation();
-  const [cartItems, setCartItems] = useState([]);
-  const [cartLoaded, setCartLoaded] = useState(false);
-
-  // Load cart from localStorage on mount
-  useEffect(() => {
+  
+  // Load cart from localStorage immediately (not in useEffect)
+  const loadInitialCart = () => {
     const savedCart = localStorage.getItem('shoerepair_cart');
     if (savedCart) {
       try {
-        setCartItems(JSON.parse(savedCart));
+        return JSON.parse(savedCart);
       } catch (error) {
         console.error('Error loading cart:', error);
+        return [];
       }
     }
-    // Mark cart as loaded
-    setCartLoaded(true);
-  }, []);
+    return [];
+  };
+  
+  const [cartItems, setCartItems] = useState(loadInitialCart);
 
   // Save cart to localStorage whenever it changes
   useEffect(() => {
