@@ -162,11 +162,19 @@ export default function Checkout({ user }) {
     }
   };
 
-  // Wait for cart to load from localStorage before showing form
-  if (!cartLoaded) {
+  // Simple check - if cart is empty, show message
+  if (cartItems.length === 0) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50 flex items-center justify-center">
-        <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-amber-700 border-t-transparent"></div>
+        <Card className="w-full max-w-md">
+          <CardHeader>
+            <CardTitle>Panier vide</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="mb-4">Votre panier est vide.</p>
+            <Button onClick={() => navigate('/services')}>Voir les services</Button>
+          </CardContent>
+        </Card>
       </div>
     );
   }
