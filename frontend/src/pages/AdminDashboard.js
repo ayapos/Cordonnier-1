@@ -461,7 +461,11 @@ export default function AdminDashboard({ user }) {
 
           {/* Partners Tab */}
           <TabsContent value="partners">
-            <PartnerManagement />
+            <div className="space-y-6">
+              <PartnerManagement />
+              <div className="border-t border-amber-200 my-6"></div>
+              <PartnerEditor />
+            </div>
           </TabsContent>
 
           {/* Cobblers Tab */}
