@@ -171,47 +171,34 @@ export default function Checkout({ user }) {
           // Create Stripe checkout session
           const originUrl = window.location.origin;
           console.log('Creating Stripe session for order:', orderId);
-          console.log('Origin URL:', originUrl);
           
           const stripeResponse = await axios.post(`${API}/payments/create-checkout-session`, {
             order_id: orderId,
             origin_url: originUrl
           });
           
-          console.log('Stripe response:', stripeResponse.data);
-          console.log('Checkout URL:', stripeResponse.data.checkout_url);
+          console.log('Stripe response received');
+          const checkoutUrl = stripeResponse.data.checkout_url;
+          console.log('Checkout URL:', checkoutUrl);
           
-          // Verify checkout_url exists
-          if (!stripeResponse.data.checkout_url) {
-            throw new Error('No checkout URL returned from backend');
+          if (!checkoutUrl) {
+            throw new Error('No checkout URL in response');
           }
           
-          // DON'T clear cart here - it causes a re-render that might block redirection
-          // Cart will be cleared when user returns from Stripe
+          // IMMEDIATE redirect - no setTimeout, no delays, just redirect NOW
+          console.log('🚀 IMMEDIATE REDIRECT TO STRIPE');
+          window.location.href = checkoutUrl;
           
-          // Redirect DIRECTLY to Stripe.com
-          console.log('🚀 REDIRECTING TO:', stripeResponse.data.checkout_url);
+          // The page will now redirect, so code below won't execute
           
-          // Use setTimeout to ensure redirect happens after React state updates complete
-          // This prevents browser security policies from blocking the redirect
-          setTimeout(() => {
-            console.log('Executing redirect now...');
-            window.location.href = stripeResponse.data.checkout_url;
-          }, 100);
-          
-          // Exit immediately
-          return;
         } catch (stripeError) {
-          console.error('Stripe session creation error:', stripeError);
-          console.error('Error details:', stripeError.response?.data);
-          toast.error('Erreur lors de la création de la session de paiement');
-          // Fallback: go to order confirmation
-          navigate(`/order-confirmation/${orderId}`, { replace: true });
+          console.error('Stripe error:', stripeError);
+          toast.error('Erreur paiement: ' + (stripeError.response?.data?.detail || stripeError.message));
+          setLoading(false);
         }
       } else {
-        // Guest users (used /orders/guest) go directly to order confirmation (demo mode)
-        console.log('✅ GUEST USER - REDIRECTING TO ORDER CONFIRMATION');
-        console.log('Target URL:', `/order-confirmation/${orderId}`);
+        // Guest users go to order confirmation
+        console.log('✅ GUEST - ORDER CONFIRMATION');
         navigate(`/order-confirmation/${orderId}`, { replace: true });
       }
     } catch (error) {
