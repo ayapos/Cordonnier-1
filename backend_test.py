@@ -1511,27 +1511,30 @@ class ShoeRepairAPITester:
             return False
 
 def main():
-    print("🧪 Starting ShoeRepair P0 Critical Bug Fix Verification")
+    print("🧪 Starting ShoeRepair URGENT Stripe Backend Verification")
     print("=" * 70)
-    print("🎯 TESTING: /api/stats endpoint route conflict fix")
-    print("🎯 CONTEXT: media_router catch-all route was intercepting stats requests")
-    print("🎯 FIX: Added /media prefix to media_router")
+    print("🎯 TESTING: Stripe backend functionality")
+    print("🎯 OBJECTIVE: Verify backend Stripe works by creating real order and session")
+    print("🎯 CONTEXT: Frontend reports checkout issues - need to isolate backend vs frontend")
     print("=" * 70)
     
     tester = ShoeRepairAPITester()
     
-    # P0 Critical Bug Fix Tests
+    # URGENT: Stripe Backend Verification Test
     tests = [
-        # 1. Test stats endpoint for all roles (main bug fix)
+        # 1. Test Stripe backend functionality (main test)
+        tester.test_stripe_backend_functionality,
+        
+        # 2. Test stats endpoint for all roles (previous bug fix verification)
         tester.test_stats_endpoint_all_roles,
         
-        # 2. Test media endpoints still work after prefix fix
+        # 3. Test media endpoints still work after prefix fix
         tester.test_media_endpoints_still_work,
         
-        # 3. Verify no route conflicts
+        # 4. Verify no route conflicts
         tester.test_no_route_conflicts,
         
-        # 4. Test settings endpoints
+        # 5. Test settings endpoints
         tester.test_settings_endpoints,
     ]
     
