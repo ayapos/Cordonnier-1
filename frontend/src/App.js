@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import axios from "axios";
 import { CartProvider } from "@/context/CartContext";
 import { CurrencyProvider } from "@/context/CurrencyContext";
+import ErrorBoundary from "@/components/ErrorBoundary";
 import "./i18n"; // Initialize i18n
 
 // Pages
