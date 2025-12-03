@@ -14,22 +14,22 @@ export function useCart() {
 
 export function CartProvider({ children }) {
   const { t } = useTranslation();
-  
-  // Load cart from localStorage immediately (not in useEffect)
-  const loadInitialCart = () => {
+  const [cartItems, setCartItems] = useState([]);
+  const [cartLoaded, setCartLoaded] = useState(false);
+
+  // Load cart from localStorage on mount
+  useEffect(() => {
     const savedCart = localStorage.getItem('shoerepair_cart');
     if (savedCart) {
       try {
-        return JSON.parse(savedCart);
+        setCartItems(JSON.parse(savedCart));
       } catch (error) {
         console.error('Error loading cart:', error);
-        return [];
       }
     }
-    return [];
-  };
-  
-  const [cartItems, setCartItems] = useState(loadInitialCart);
+    // Mark cart as loaded
+    setCartLoaded(true);
+  }, []);
 
   // Save cart to localStorage whenever it changes
   useEffect(() => {
@@ -96,6 +96,7 @@ export function CartProvider({ children }) {
     <CartContext.Provider
       value={{
         cartItems,
+        cartLoaded,
         addToCart,
         removeFromCart,
         updateQuantity,

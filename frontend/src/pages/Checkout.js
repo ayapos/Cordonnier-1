@@ -21,13 +21,20 @@ const API = `${BACKEND_URL}/api`;
 export default function Checkout({ user }) {
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
-  const { cartItems, getCartTotal, clearCart, getCartCount } = useCart();
+  const { cartItems, cartLoaded, getCartTotal, clearCart, getCartCount } = useCart();
   
   // Initialize checkoutMode based on token (more reliable than user prop which may not be loaded yet)
   const token = localStorage.getItem('token');
   const [checkoutMode, setCheckoutMode] = useState(token ? 'user' : 'guest');
   const [loading, setLoading] = useState(false);
   
+  // Check if cart is empty and redirect (must be in useEffect, not during render)
+  useEffect(() => {
+    if (cartLoaded && cartItems.length === 0) {
+      navigate('/cart');
+    }
+  }, [cartLoaded, cartItems.length, navigate]);
+
   // Helper function to get translated service field
   const getServiceField = (item, field) => {
     const lang = i18n.language;
@@ -142,17 +149,70 @@ export default function Checkout({ user }) {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
 
-      toast.success('Commande créée avec succès !', { duration: 1500 });
+      console.log('=== AFTER ORDER CREATION ===');
+      console.log('Response:', response.data);
+      console.log('Order ID:', response.data.order_id);
+      console.log('Checkout mode:', checkoutMode);
       
       const orderId = response.data.order_id;
       
-      // Redirect based on checkout mode
-      if (checkoutMode === 'guest') {
-        // Guest users go to order confirmation (demo mode)
-        navigate(`/order-confirmation/${orderId}`);
+      // Show success message
+      toast.success('Commande créée avec succès !', { duration: 1000 });
+      
+      // DON'T clear cart here - it causes a re-render that redirects to /cart
+      // Cart will be cleared on the payment/confirmation page instead
+      
+      // Simple logic: if used /orders/bulk endpoint, it's an authenticated user → Stripe payment
+      if (checkoutMode !== 'guest') {
+        // Authenticated users: Create Stripe session and redirect DIRECTLY to Stripe.com
+        console.log('✅ AUTHENTICATED USER - CREATING STRIPE SESSION');
+        
+        try {
+          // Create Stripe checkout session
+          const originUrl = window.location.origin;
+          console.log('Creating Stripe session for order:', orderId);
+          console.log('Origin URL:', originUrl);
+          
+          const stripeResponse = await axios.post(`${API}/payments/create-checkout-session`, {
+            order_id: orderId,
+            origin_url: originUrl
+          });
+          
+          console.log('Stripe response:', stripeResponse.data);
+          console.log('Checkout URL:', stripeResponse.data.checkout_url);
+          
+          // Verify checkout_url exists
+          if (!stripeResponse.data.checkout_url) {
+            throw new Error('No checkout URL returned from backend');
+          }
+          
+          // DON'T clear cart here - it causes a re-render that might block redirection
+          // Cart will be cleared when user returns from Stripe
+          
+          // Redirect DIRECTLY to Stripe.com
+          console.log('🚀 REDIRECTING TO:', stripeResponse.data.checkout_url);
+          
+          // Use setTimeout to ensure redirect happens after React state updates complete
+          // This prevents browser security policies from blocking the redirect
+          setTimeout(() => {
+            console.log('Executing redirect now...');
+            window.location.href = stripeResponse.data.checkout_url;
+          }, 100);
+          
+          // Exit immediately
+          return;
+        } catch (stripeError) {
+          console.error('Stripe session creation error:', stripeError);
+          console.error('Error details:', stripeError.response?.data);
+          toast.error('Erreur lors de la création de la session de paiement');
+          // Fallback: go to order confirmation
+          navigate(`/order-confirmation/${orderId}`, { replace: true });
+        }
       } else {
-        // Authenticated users go to Stripe payment page
-        navigate(`/stripe-checkout/${orderId}`);
+        // Guest users (used /orders/guest) go directly to order confirmation (demo mode)
+        console.log('✅ GUEST USER - REDIRECTING TO ORDER CONFIRMATION');
+        console.log('Target URL:', `/order-confirmation/${orderId}`);
+        navigate(`/order-confirmation/${orderId}`, { replace: true });
       }
     } catch (error) {
       console.error('Checkout error:', error);
@@ -162,19 +222,11 @@ export default function Checkout({ user }) {
     }
   };
 
-  // Simple check - if cart is empty, show message
-  if (cartItems.length === 0) {
+  // Wait for cart to load from localStorage before showing form
+  if (!cartLoaded) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50 flex items-center justify-center">
-        <Card className="w-full max-w-md">
-          <CardHeader>
-            <CardTitle>Panier vide</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="mb-4">Votre panier est vide.</p>
-            <Button onClick={() => navigate('/services')}>Voir les services</Button>
-          </CardContent>
-        </Card>
+        <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-amber-700 border-t-transparent"></div>
       </div>
     );
   }
