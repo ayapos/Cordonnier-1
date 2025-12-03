@@ -6,7 +6,7 @@ import base64
 from datetime import datetime
 
 class ShoeRepairAPITester:
-    def __init__(self, base_url="https://shoefix-pro.preview.emergentagent.com"):
+    def __init__(self, base_url="https://shoedoctor.preview.emergentagent.com"):
         self.base_url = base_url
         self.api_url = f"{base_url}/api"
         self.token = None

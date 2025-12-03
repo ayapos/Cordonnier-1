@@ -5,94 +5,97 @@ The user wants to create a marketplace application to connect shoemakers (cordon
 - **User Roles:** Customer, Shoemaker (Partner), Admin.
 - **Authentication:** Email/password for all roles. Guest checkout is supported.
 - **Dashboards:**
-    - **Customer:** View order history, order status, and edit their own profile information (name, phone, address).
-    - **Shoemaker:** View assigned orders and manage their business address () and personal profile.
-    - **Admin:** A comprehensive dashboard to manage users, orders, services, partner approvals, and site-wide media.
+    - **Customer:** View order history, order status, and edit their own profile information.
+    - **Shoemaker:** View assigned orders and manage their business address and profile.
+    - **Admin:** A comprehensive dashboard to manage users, orders, services, partner approvals, site media, and generate reports.
 - **Services:** Admins have full CRUD for services, with multi-language support (FR, EN, DE, IT).
-- **Ordering:** Customers can add multiple services to a cart, checkout, and receive an order confirmation with a reference number. They should be able to reuse their profile address for delivery.
-- **Shoemaker Onboarding:** A separate form for partners to apply and submit documents. Admins must approve/reject them.
-- **Payments:** Currently in a demo mode. Multi-currency (CHF/EUR) is required.
-- **Design & UI:** Mobile-first, Terracotta/brick theme, dynamic carousels on the homepage, and multi-language/currency support.
+- **Ordering & Payments:** Customers can add services to a cart and checkout using Stripe. The payment flow should be simple and reliable. Orders should be assigned to the nearest available shoemaker.
+- **Shoemaker Onboarding:** A separate form for partners to apply. Admins must approve/reject them and be able to edit their profiles later.
+- **Design & UI:** Mobile-first, Terracotta/brick theme, dynamic carousels, and responsive design.
 
 **User's preferred language**: French
 
 **what currently exists?**
-The application is a full-stack React/FastAPI project. In this session, two major refactorings were completed: the monolithic  was split into a clean  architecture, and the frontend  was refactored to extract carousel components.
+The application is a full-stack React/FastAPI project. The backend has a modular architecture, and key features like user roles, dashboards, and service management are in place.
 
-Key features and fixes implemented include:
-- A  component was created, allowing both Customers and Shoemakers to edit their profile (name, phone, personal address).
-- A critical and recurring data persistence bug has been **resolved**. User profile data is now correctly saved in the backend and consistently displayed in the frontend after login and edits. This was achieved by adding a separate  field to the User model and ensuring the full user profile is fetched upon login.
-- The checkout flow was enhanced to allow logged-in users to reuse their profile address.
-- Multiple critical bugs were fixed: a crash on the order details page, geocoding failures for shoemaker addresses (now optional), and loading errors for the Media and Settings tabs in the Admin dashboard.
+In this session, the agent resolved a critical bug (404 on ) that was breaking all user dashboards. The agent then started implementing user-requested features and bug fixes, including a major and problematic integration of Stripe for payments. After numerous failures and user complaints about instability (blank pages, runtime errors), the Stripe implementation was reverted to a previous, more stable (but not ideal) 3-step checkout process.
+
+The agent also implemented several smaller but important features: an admin tool to edit shoemaker profiles, improved the order confirmation page, and fixed UI bugs on the shoemaker dashboard. The last task initiated was adding a Reports tab for accounting.
 
 **Last working item**:
-- **Last item agent was working:** The agent was debugging a critical Erreur de chargement des données (Data loading error) that appears on all dashboards (Admin, Client, Shoemaker) immediately after login. The  identified the root cause as a 404 error on the  endpoint.
-- **Status**: IN PROGRESS
+- **Last item agent was working:** Starting to implement a new feature: a Reports tab in the admin and partner dashboards to generate monthly/yearly accounting reports.
+- **Status**: NOT STARTED
 - **Agent Testing Done**: N
-- **Which testing method agent to use?** backend testing agent
+- **Which testing method agent to use?** both
 - **User Testing Done**: N
 
 **All Pending/In progress Issue list**:
-- **Issue 1: Erreur de chargement des données on all dashboards (P0)**
-  - **Description:** Upon login, all user dashboards fail to load data because the  endpoint returns a 404 Not Found error. This is a critical blocker.
-  - **Attempted fixes:** The agent confirmed the  is imported in the main  but has not yet inspected the router file itself. The issue likely stems from an incorrect router prefix or path definition in  following the major backend refactoring.
+- **Issue 1: Stripe Payment flow is unstable and has a poor UX (P0)**
+  - **Description:** The user has repeatedly reported issues with the Stripe payment flow, including blank pages, runtime errors, and orders being validated without payment. The user wants a simple 2-step checkout (Checkout Page -> Stripe), but the agent had to revert to a more stable 3-step flow (Checkout Page -> Confirmation Page -> Stripe) after many failed attempts to implement the direct redirect. This is a major source of user frustration.
+  - **Attempted fixes:**
+    - Direct redirect using  which caused a blank page, likely due to browser security policies or React lifecycle conflicts.
+    - Implemented a  state to fix a race condition, which introduced new React runtime errors ().
+    - The agent finally reverted the  and  files to a much older, simpler version to restore stability.
   - **Next debug checklist:**
-    1.  Inspect . Verify the  path.
-    2.  Check the prefix used when including  in .
-    3.  Test the endpoint directly with  to confirm the fix.
-    4.  Verify all three dashboards (Admin, Client, Shoemaker) load correctly after the fix.
-  - **Why fix this issue and what will be achieved with the fix?** This is a critical bug that prevents all users from accessing their dashboards, making the application unusable after login.
+    1.  **Stabilize First:** Confirm with the user that the current 3-step flow is 100% reliable.
+    2.  **Re-implement 2-Step Flow:** In , modify the  function.
+    3.  On order creation success, the backend returns a Stripe session. Get the  from that session.
+    4.  Use  to redirect the user.
+    5.  Crucially, ensure no state updates (like ) are called after the redirection is triggered to avoid React lifecycle errors.
+  - **Why fix this issue and what will be achieved with the fix?** The payment flow is a critical business function. Fixing it will resolve the user's biggest pain point and provide the desired simple checkout experience.
+  - **Status:** IN PROGRESS
+  - **Is recurring issue?** Y
+  - **Should Test frontend/backend/both after fix?** Both
+  - **Blocked on other issue:** None.
+- **Issue 2: Geo-attribution fails for shoemakers without GPS coordinates (P1)**
+  - **Description:** An order was assigned to a shoemaker in Lausanne instead of a closer one in Neuchâtel. The root cause is that the Neuchâtel shoemaker's record in the database is missing latitude/longitude coordinates, causing the distance calculation algorithm to ignore them.
+  - **Attempted fixes:** The agent correctly identified the root cause. A  component and a backend endpoint () were created to allow the admin to edit partner details. However, the data for the specific shoemaker was never actually fixed.
+  - **Next debug checklist:**
+    1.  Log in as admin ().
+    2.  Navigate to the Partners tab on the Admin Dashboard.
+    3.  Find the shoemaker in Neuchâtel (user ).
+    4.  Use the new Edit functionality to add their correct address and ensure the  and  coordinates are generated and saved.
+    5.  Place a new test order from a location near Neuchâtel (e.g., Biel/Bienne) and verify it gets assigned to the correct shoemaker.
+  - **Why fix this issue and what will be achieved with the fix?** This is a core business logic failure. The fix will ensure orders are routed efficiently and correctly.
   - **Status:** IN PROGRESS
   - **Is recurring issue?** N
   - **Should Test frontend/backend/both after fix?** Both
-  - **Blocked on other issue:** None. This is the primary blocker.
-- **Issue 2: Media Replacement Logic is Faulty (P1)**
-  - **Description:** When an admin uploads a new image with a category and position that already exists (e.g., carousel, position 1), the new image should replace the old one, but it currently does not. This can lead to duplicate content.
-  - **Attempted fixes:** (From previous session) Logic was added to  endpoint, but it failed during debugging and was not revisited.
-  - **Next debug checklist:**
-    1.  In , add logging inside the  endpoint to verify  and  values.
-    2.  Check the  logic to ensure the query correctly identifies the existing document.
-    3.  Manually test the endpoint with  to confirm replacement behavior.
-  - **Why fix this issue and what will be achieved with the fix?** It will make the Media Manager more intuitive for admins and prevent content duplication.
-  - **Status:** NOT STARTED
-  - **Is recurring issue?** Y
-  - **Should Test frontend/backend/both after fix?** Backend
-  - **Blocked on other issue:** None
+  - **Blocked on other issue:** None.
 
 **In progress Task List**:
-- **Task 1: Complete Multi-Currency Implementation (P1)**
-  - **Description:** A currency context and switcher (CHF/EUR) exist on the frontend, but the functionality needs to be extended to the cart, checkout, and backend systems.
+- **Task 1: Add Reports tab for Admin and Partner dashboards (P0)**
+  - **Description:** User requested a new tab to generate monthly and yearly financial reports for accounting purposes.
   - **Where to resume:**
-    1.  **Frontend:** Integrate the  hook and  function into , , and the customer/admin dashboards.
-    2.  **Backend:** Modify the  and  models to store a preferred/transaction currency. Update order creation endpoints accordingly.
-  - **What will be achieved with this?** The application will fully support both CHF and EUR, a core requirement.
-  - **Status:** IN PROGRESS
+    1.  Create a backend endpoint (e.g., ) that accepts a date range and user role.
+    2.  The endpoint should query the  collection, filtering by date and, for partners, by .
+    3.  It should aggregate data (total revenue, commission, number of orders).
+    4.  Integrate the existing  into the  and  (for cobblers).
+    5.  Build the UI with date pickers and a button to fetch and display the report data.
+  - **What will be achieved with this?** A key accounting feature for both the platform owner and the partners.
+  - **Status:** NOT STARTED
   - **Should Test frontend/backend/both after fix?** Both
   - **Blocked on something:** No
 
 **Upcoming and Future Tasks**
 - **Upcoming Tasks:**
-  - **P1 - Full Application Translation:** Hardcoded text remains in pages like , , and legal pages.
-- **User Verification Pending:**
-  - **P2 - Shoemaker Document Upload & Admin Validation:** The end-to-end flow needs user testing.
-  - **P2 - Shoemaker Geo-location Flow:** The fixed flow (allowing address saving without coordinates) needs user testing.
+  - **P1 - Complete Multi-Currency Implementation:** The UI context exists but it's not integrated into the checkout flow or backend order models.
+  - **P1 - Full Application Translation:** Hardcoded text remains in many pages.
 - **Future Tasks:**
-  - **P3 - Implement Real Payments with Stripe Connect:** Replace the current demo payment system.
-  - **P4 - Backend Code Refactoring:** While  is refactored, the agent should continue to follow the new modular structure.
+  - **P2 - Shoemaker Document Upload & Admin Validation:** End-to-end flow needs user testing.
+  - **P3 - Move to Stripe Live Keys:** The app currently uses the user's provided test key. A process to switch to live keys is needed.
 
 **Completed work in this session**
-- **Major Backend Refactoring:** The monolithic  file was successfully refactored into a modular architecture with , , , and  directories.
-- **Major Frontend Refactoring:** Extracted  and  components from  into their own files.
-- **Feature: Unified Profile Editing:** Created a  component and implemented backend logic to allow both Customers and Shoemakers to edit their profile (name, phone, personal address).
-- **CRITICAL FIX: Data Persistence Resolved:** Fixed a complex and recurring bug where user data (address, phone) would not persist in the frontend after being saved. This involved separating personal () and business () addresses in the backend and ensuring the full, updated user object is fetched on login and passed correctly to all components.
-- **Feature: Checkout Address Selection:** Implemented an option for logged-in users to reuse their saved profile address for delivery.
-- **Bug Fix: Geocoding Failure:** Improved the Shoemaker's Address Manager to handle geocoding failures gracefully by saving the address without coordinates and displaying a warning.
-- **Bug Fix: Dashboard Loading Errors:** Fixed 404 errors that prevented the Admin Media and Settings tabs from loading.
-- **Bug Fix: Order Details Crash:** Fixed a crash on the  page.
-- **UX Improvement:** Reduced the display duration of add to cart toast notifications.
+- **CRITICAL FIX:** Resolved the  404 error, unblocking all user dashboards by fixing a route conflict.
+- **FIX:** Corrected the faulty media replacement logic in the admin media manager.
+- **STABILITY FIX:** Resolved critical React runtime errors on the checkout page by refactoring state updates into  hooks and adding a global .
+- **FEATURE:** Added an Admin feature () to edit shoemaker profiles, a prerequisite for fixing the geo-attribution issue.
+- **FEATURE:** Implemented the initial Stripe payment integration, although it proved unstable and was reverted to an earlier, more stable version.
+- **UX Improvement:** Enhanced the  page to display the assigned shoemaker's address and a clearer email confirmation notice.
+- **UX Improvement:** Removed the New Order button from the shoemaker's dashboard as it was not applicable to their role.
+- **UX Improvement:** Reduced the display duration of add to cart toast notifications and prevented them from appearing in duplicate.
 
 **Earlier issues found/mentioned but not fixed**
-- The replace image by position logic in the Media Manager. (Now listed in ).
+- None.
 
 **Known issue recurrence from previous fork**
 - None.
@@ -101,71 +104,77 @@ Key features and fixes implemented include:
 
 
 **Key Technical Concepts**
-- **Backend:** FastAPI, Pydantic, MongoDB (motor). The architecture is now a **modular structure** with separated concerns (routes, models, services).
-- **Frontend:** React, Tailwind CSS, shadcn/ui, axios, React Context API.
-- **Key Pattern:** Resolved data persistence issues by fetching the full user object via  immediately after login in  and passing it down, rather than relying on partial data from the  response.
+- **Stripe Integration:** Using  library for Checkout Sessions and webhooks.
+- **React Instability:** Encountered and partially fixed multiple React issues:
+    - Race conditions with  loading.
+    - Cannot update a component while rendering another errors, fixed by moving navigation calls into .
+    - State management issues across components during navigation and re-renders.
+- **FastAPI Routing:** Resolved a route-ordering conflict where a generic route was hijacking a more specific one.
+- **Error Handling:** Implemented a React  component as a fail-safe against UI crashes.
 
 **key DB schema**
-- **users:**  (Modified)
-- **media:** 
-- **services:** 
-- **orders:** 
+- **orders:**
+  -  (Default: ). Added to track payment state.
+- **users:**
+  - , . Existence of these fields is critical for geo-attribution.
 
-**All files**
-- **Created:**
-  - : Dozens of new files created as part of the major backend refactoring.
-  - : Reusable component for user profile editing.
-  - : Extracted from Home page.
-  - : Extracted from Home page.
-- **Updated:**
-  - : Rewritten to be a simple FastAPI entry point that includes the new routers.
-  - : Significantly modified to fetch the full user profile after login, which was the key to solving the data persistence bug.
-  - : Modified to include  and pass state update callbacks.
-  - : Modified to add address selection logic for logged-in users.
-  - : Modified to manage and pass down the  state and update functions.
-  - : Updated to use the new  field and handle geocoding errors.
+**changes in tech stack**
+- **Backend:** Added  python library.
+
+**All files of reference**
+- : The source of most bugs in this session. Needs careful handling.
+- : Contains the logic for creating Stripe sessions.
+- : Contains the  logic.
+- : The new tool for admins to manage shoemakers.
+- : The improved post-purchase confirmation page.
 
 **Areas that need refactoring**:
-- None. The major refactoring tasks for both backend and frontend were completed in this session.
+- : This component is extremely fragile. It was edited and reverted multiple times and was the source of numerous bugs and user frustration. It needs to be rewritten cleanly and robustly.
 
 **key api endpoints**
-- : Updates the user's personal profile (name, phone, ).
-- : Updates the shoemaker's business address ().
-- : **(CURRENTLY BROKEN)** Endpoint to fetch dashboard statistics.
-- , : Paths were fixed.
+- : Creates a Stripe payment session and returns a URL.
+- : Listens for payment confirmation events from Stripe.
+- : Allows an admin to update a shoemaker's profile data.
 
 **Critical Info for New Agent**
-- **Backend Architecture:** The backend has been completely refactored. All new logic must follow the existing modular structure in the , , and  directories. Do not add logic back into the root  file.
-- **Data Persistence Pattern:** The critical data persistence bug was solved by fetching the full user profile with a  call immediately after login in . This ensures all components receive the complete, up-to-date user object. This pattern must be maintained.
-- **User Addresses:** Be aware that there are two distinct address fields for shoemakers:  (personal, from ) and  (business, from ).
-- **Environment Limitation:** The container has no outbound internet access, so external API calls like the one to  for geocoding will fail. The workaround was to make geocoding optional. Acknowledge this limitation for any future integrations.
+- **The Stripe checkout flow is the highest priority.** The user is very frustrated with its instability. The current 3-step flow is a temporary rollback for stability. The main goal is to implement a reliable 2-step flow (Checkout -> Direct to Stripe) without causing blank pages or React errors.
+- **The geo-attribution bug's root cause is missing data.** The tool to fix it is built (), but the data itself still needs to be corrected by the admin (or the agent acting as the admin) to solve the user's reported issue.
+- The user is now actively testing and providing feedback. Prioritize their bug reports.
 
 **documents created in this job**
-- : A summary of the refactoring work.
-- : A temporary HTML file to test the address selection UI.
+- 
 
-**Last 5 User Messages and any pending user messages**
-1.  **User:** Asks for a final resolution to the data persistence issues. **Status: RESOLVED.**
-2.  **User:** Agrees to the 100% fix plan for the persistence issue. **Status: RESOLVED.**
-3.  **User:** Reports a data loading error when logging in as admin, user, or client. **Status: IN PROGRESS (Last Working Item).**
-4.  **User:** Reports the media tab is fixed but the settings tab still has a loading error. **Status: RESOLVED.**
-5.  **User:** Reports a widespread data loading error and persistence issue for partners, asking for a full app check. **Status: Mostly resolved, but led to the current data loading error issue.**
+**Last 10 User Messages and any pending user messages**
+1.  **User reports Stripe redirect is not working.** -> Status: IN PROGRESS (root cause of instability).
+2.  **User reports they can't even get to the checkout page (un-captured runtime errors).** -> Status: RESOLVED (fixed with  refactor).
+3.  **User reports all red error when trying to log in.** -> Status: RESOLVED (was a transient error, app was working).
+4.  **User is frustrated, asks to revert to the previous stable 3-step payment flow.** -> Status: COMPLETED (agent reverted the code).
+5.  **User provides their own Stripe test key.** -> Status: COMPLETED (agent updated ).
+6.  **User reports responsive UI issues on half-screen.** -> Status: RESOLVED (agent added  and fixed React errors).
+7.  **User reports an order was assigned to the wrong shoemaker.** -> Status: IN PROGRESS (root cause identified as missing GPS data).
+8.  **User requests the ability for admins to edit shoemaker profiles.** -> Status: COMPLETED.
+9.  **User requests the order confirmation page be improved to show shoemaker address.** -> Status: COMPLETED.
+10. **User requests removal of New Order button for shoemakers.** -> Status: COMPLETED.
+11. **PENDING: User requests a Reports tab for accounting.** -> Status: NOT STARTED.
 
 **Project Health Check:**
-- **Broken:** All user dashboards are currently broken due to the  endpoint returning a 404 error. This is a critical application failure.
-- **Mocked:** The payment system remains a placeholder.
+- **Broken:** The desired 2-step payment flow is not implemented; the app was reverted to a less ideal but more stable 3-step flow. The core geo-attribution logic is flawed if shoemaker profiles are incomplete.
+- **Mocked:** Payments are still in Stripe's test mode.
+
+**3rd Party Integrations**:
+- Stripe (Payments) — requires User API Key. Currently using the user-provided  key.
 
 **Testing status**
-- **Testing agent used after significant changes:** YES. Used multiple times to diagnose and confirm fixes for the data persistence issues.
-- **Troubleshoot agent used after agent stuck in loop:** YES. Used to diagnose the current  issue and the previous data persistence problems.
-- **Test files created:**  was updated.
-- **Known regressions:** The backend refactoring introduced a routing issue with the  endpoint.
+- **Testing agent used after significant changes:** YES
+- **Troubleshoot agent used after agent stuck in loop:** YES
+- **Test files created:** None.
+- **Known regressions:** The simplified 2-step checkout flow was a regression that broke the checkout process, forcing a rollback to the older 3-step version.
 
 **Credentials to test flow:**
 - **Admin:**  / 
 - **Client:**  / 
-- **Shoemaker:**  / 
+- **Shoemaker:**  /  or  / 
 
 **What agent forgot to execute**
-- The agent has not addressed the Media Replacement Logic issue carried over from the previous session.
-- The agent has not continued work on the Multi-Currency Implementation task.</analysis>
+- The agent built the tool to fix the geo-attribution issue () but never used it to fix the actual data for the Neuchâtel shoemaker, leaving the user's reported bug unresolved.
+- Due to firefighting the payment flow, the agent did not make progress on previously planned tasks like multi-currency support or full application translation.</analysis>
