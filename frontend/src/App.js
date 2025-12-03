@@ -142,11 +142,12 @@ function App() {
             <Route path="/privacy" element={<Privacy />} />
             <Route path="/legal" element={<Legal />} />
           </Routes>
-        </BrowserRouter>
-        <Toaster position="top-center" richColors />
-      </div>
-    </CartProvider>
-    </CurrencyProvider>
+          </BrowserRouter>
+          <Toaster position="top-center" richColors />
+        </div>
+      </CartProvider>
+      </CurrencyProvider>
+    </ErrorBoundary>
   );
 }
 
