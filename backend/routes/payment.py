@@ -31,7 +31,10 @@ async def create_checkout_session(
     checkout_request: CreateCheckoutRequest,
     current_user: dict = Depends(get_current_user)
 ):
-    """Create a Stripe checkout session for an order"""
+    """Create a Stripe checkout session for an order with automatic split payment"""
+    import stripe
+    stripe.api_key = STRIPE_API_KEY
+    
     order_id = checkout_request.order_id
     origin_url = checkout_request.origin_url
     try:
@@ -57,35 +60,72 @@ async def create_checkout_session(
         amount = float(order['total_amount'])
         currency = order.get('currency', 'chf').lower()
         
+        # Convert amount to cents (Stripe requires cents)
+        amount_cents = int(amount * 100)
+        
+        # Calculate commission (15% for platform)
+        commission_cents = int(amount_cents * 0.15)
+        
         # Build success and cancel URLs
         success_url = f"{origin_url}/order-confirmation/{order_id}?session_id={{CHECKOUT_SESSION_ID}}"
         cancel_url = f"{origin_url}/checkout"
         
-        # Initialize Stripe Checkout
-        host_url = str(request.base_url)
-        webhook_url = f"{host_url}api/webhook/stripe"
-        stripe_checkout = StripeCheckout(api_key=STRIPE_API_KEY, webhook_url=webhook_url)
+        # Get cobbler's Stripe account ID
+        cobbler_id = order.get('assigned_cobbler_id') or order.get('cobbler_id')
+        if not cobbler_id:
+            raise HTTPException(
+                status_code=400, 
+                detail="Order not assigned to a cobbler yet"
+            )
         
-        # Create checkout session request
-        checkout_request = CheckoutSessionRequest(
-            amount=amount,
-            currency=currency,
+        cobbler = await db.users.find_one({"id": cobbler_id}, {"_id": 0})
+        if not cobbler:
+            raise HTTPException(status_code=404, detail="Cobbler not found")
+        
+        stripe_account_id = cobbler.get('stripe_account_id')
+        if not stripe_account_id:
+            raise HTTPException(
+                status_code=400, 
+                detail="Cobbler has not completed Stripe Connect onboarding yet"
+            )
+        
+        # Create Stripe Checkout Session with automatic split payment
+        session = stripe.checkout.Session.create(
+            payment_method_types=['card'],
+            line_items=[{
+                'price_data': {
+                    'currency': currency,
+                    'unit_amount': amount_cents,
+                    'product_data': {
+                        'name': f"Repair Service - {order.get('reference_number')}",
+                        'description': order.get('service_name', 'Shoe Repair Service'),
+                    },
+                },
+                'quantity': 1,
+            }],
+            mode='payment',
             success_url=success_url,
             cancel_url=cancel_url,
+            payment_intent_data={
+                'application_fee_amount': commission_cents,  # 15% commission to platform
+                'transfer_data': {
+                    'destination': stripe_account_id,  # 85% goes to cobbler
+                },
+            },
             metadata={
                 "order_id": order_id,
                 "user_id": current_user.get('user_id'),
-                "source": "shoerepair_marketplace"
+                "cobbler_id": cobbler_id,
+                "source": "shoerepair_marketplace",
+                "commission_amount": str(commission_cents / 100),
+                "cobbler_amount": str((amount_cents - commission_cents) / 100)
             }
         )
-        
-        # Create Stripe checkout session
-        session: CheckoutSessionResponse = await stripe_checkout.create_checkout_session(checkout_request)
         
         # Create payment transaction record
         payment = PaymentTransaction(
             order_id=order_id,
-            session_id=session.session_id,
+            session_id=session.id,
             amount=amount,
             currency=currency,
             payment_status="pending",
@@ -93,7 +133,11 @@ async def create_checkout_session(
             user_id=current_user.get('user_id'),
             metadata={
                 "order_reference": order.get('reference_number'),
-                "stripe_session_id": session.session_id
+                "stripe_session_id": session.id,
+                "cobbler_id": cobbler_id,
+                "stripe_account_id": stripe_account_id,
+                "commission_amount": commission_cents / 100,
+                "cobbler_amount": (amount_cents - commission_cents) / 100
             }
         )
         
@@ -103,15 +147,18 @@ async def create_checkout_session(
         
         await db.payment_transactions.insert_one(payment_dict)
         
-        logger.info(f"Checkout session created: {session.session_id} for order {order_id}")
+        logger.info(f"Checkout session created with split payment: {session.id} for order {order_id}, cobbler {cobbler_id}, commission {commission_cents/100} CHF")
         
         return {
             "checkout_url": session.url,
-            "session_id": session.session_id
+            "session_id": session.id
         }
         
     except HTTPException:
         raise
+    except stripe.error.StripeError as e:
+        logger.error(f"Stripe error: {e}")
+        raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
         logger.error(f"Error creating checkout session: {e}")
         raise HTTPException(status_code=500, detail=f"Error creating checkout session: {str(e)}")
