@@ -18,7 +18,8 @@ from routes import (
     cobbler_router,
     media_router,
     stats_router,
-    payment_router
+    payment_router,
+    reports_router
 )
 
 # Create the main app
