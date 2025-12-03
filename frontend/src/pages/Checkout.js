@@ -204,9 +204,15 @@ export default function Checkout({ user }) {
         } catch (stripeError) {
           console.error('Stripe session creation error:', stripeError);
           console.error('Error details:', stripeError.response?.data);
-          toast.error('Erreur lors de la création de la session de paiement');
-          // Fallback: go to order confirmation
-          navigate(`/order-confirmation/${orderId}`, { replace: true });
+          
+          // Show detailed error message
+          const errorDetail = stripeError.response?.data?.detail || 'Erreur inconnue';
+          toast.error(`Erreur de paiement: ${errorDetail}`, { duration: 5000 });
+          
+          setLoading(false);
+          
+          // Don't navigate away - let user see the error and retry
+          return;
         }
       } else {
         // Guest users (used /orders/guest) go directly to order confirmation (demo mode)
