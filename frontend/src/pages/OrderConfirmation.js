@@ -271,14 +271,39 @@ export default function OrderConfirmation({ user }) {
         )}
 
         {/* Email Notice */}
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
-          <p className="text-sm text-blue-800 text-center">
-            📧 Un email de confirmation a été envoyé à {order.guest_email || user?.email || 'votre adresse email'}
-          </p>
-          <p className="text-xs text-blue-600 text-center mt-1">
-            (Fonctionnalité email en cours de développement)
-          </p>
-        </div>
+        <Card className="border-blue-200 bg-blue-50 mb-6">
+          <CardHeader>
+            <CardTitle className="text-blue-900 flex items-center gap-2 text-lg">
+              📧 Confirmation par Email
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <div className="bg-white rounded-lg p-4 border border-blue-200">
+              <p className="text-sm text-blue-800 font-medium mb-2">
+                Un email de confirmation a été envoyé à:
+              </p>
+              <p className="text-base font-bold text-blue-900">
+                {order.guest_email || user?.email || 'votre adresse email'}
+              </p>
+            </div>
+            
+            <div className="space-y-2 text-sm text-blue-700">
+              <p className="font-semibold">📋 Cet email contient:</p>
+              <ul className="space-y-1 ml-4">
+                <li>✓ Numéro de référence de votre commande</li>
+                <li>✓ Récapitulatif complet des services</li>
+                <li>✓ Adresse de livraison</li>
+                <li>✓ Informations du partenaire attribué</li>
+                <li>✓ Montant total et détails du paiement</li>
+                <li>✓ Instructions pour l'envoi</li>
+              </ul>
+            </div>
+            
+            <p className="text-xs text-blue-600 italic text-center pt-2 border-t border-blue-200">
+              💡 Conservez cet email pour vos dossiers et le suivi de votre commande
+            </p>
+          </CardContent>
+        </Card>
 
         {/* Action Buttons */}
         <div className="flex gap-3">
