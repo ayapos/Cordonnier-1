@@ -217,6 +217,13 @@ export default function Dashboard({ user: initialUser, refreshUser }) {
           </div>
         )}
 
+        {/* Stripe Connect Setup for Cobblers */}
+        {user?.role === 'cobbler' && (
+          <div className="mb-6">
+            <StripeConnectSetup />
+          </div>
+        )}
+
         {/* Orders List and Reports for Cobblers */}
         {user?.role === 'cobbler' ? (
           <Tabs defaultValue="orders" className="space-y-6">
