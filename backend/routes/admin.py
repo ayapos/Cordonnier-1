@@ -1,4 +1,6 @@
 from fastapi import APIRouter, HTTPException, Depends
+from pydantic import BaseModel
+from typing import Optional
 from config import db, get_current_user, ROOT_DIR
 from services import load_file_as_base64, get_coordinates_from_address
 from datetime import datetime, timezone
@@ -7,6 +9,13 @@ import logging
 logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/admin", tags=["admin"])
+
+class UpdatePartnerRequest(BaseModel):
+    name: Optional[str] = None
+    phone: Optional[str] = None
+    address: Optional[str] = None
+    workshop_address: Optional[str] = None
+    bank_account: Optional[str] = None
 
 @router.get("/partners/pending")
 async def get_pending_partners(current_user: dict = Depends(get_current_user)):
