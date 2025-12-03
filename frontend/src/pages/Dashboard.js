@@ -100,11 +100,14 @@ export default function Dashboard({ user: initialUser, refreshUser }) {
           </Link>
           <div className="flex items-center gap-3">
             <LanguageSwitcher />
-            <Link to="/services">
-              <Button variant="outline" className="bg-amber-700 text-white hover:bg-amber-800">
-                <Plus className="w-4 h-4 mr-2" /> {t('newOrder')}
-              </Button>
-            </Link>
+            {/* Only show "New Order" button for clients, not for cobblers */}
+            {user?.role === 'client' && (
+              <Link to="/services">
+                <Button variant="outline" className="bg-amber-700 text-white hover:bg-amber-800">
+                  <Plus className="w-4 h-4 mr-2" /> {t('newOrder')}
+                </Button>
+              </Link>
+            )}
             <span className="text-amber-800" data-testid="user-name">{t('hello')}, {user?.name}</span>
             <Button variant="outline" onClick={handleLogout} data-testid="logout-btn">
               <LogOut className="w-4 h-4 mr-2" /> {t('logout')}
