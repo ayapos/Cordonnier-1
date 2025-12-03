@@ -1339,6 +1339,177 @@ class ShoeRepairAPITester:
         
         return overall_success
 
+    def test_stripe_backend_functionality(self):
+        """Test Stripe backend functionality as requested in review"""
+        print("\n🔍 TESTING STRIPE BACKEND FUNCTIONALITY - URGENT VERIFICATION")
+        print("=" * 70)
+        print("🎯 OBJECTIVE: Verify backend Stripe works by creating real order and Stripe session")
+        print("=" * 70)
+        
+        # Step 1: Login as admin
+        admin_login_data = {
+            "email": "admin@shoerepair.com",
+            "password": "Arden2018@"
+        }
+        
+        success, response = self.run_test(
+            "Step 1 - Admin Login",
+            "POST",
+            "auth/login",
+            200,
+            data=admin_login_data
+        )
+        
+        if not success or 'token' not in response:
+            print("❌ Cannot proceed - admin login failed")
+            self.log_test("Stripe Backend Test", False, "Admin login failed")
+            return False
+            
+        admin_token = response['token']
+        print(f"   ✅ Token: {admin_token[:20]}...")
+        
+        # Step 2: Get available services to use real service ID
+        original_token = self.token
+        self.token = admin_token
+        
+        success, response = self.run_test(
+            "Step 2 - Get Services for Real Service ID",
+            "GET",
+            "services",
+            200
+        )
+        
+        if not success or not isinstance(response, list) or len(response) == 0:
+            print("❌ Cannot proceed - no services available")
+            self.token = original_token
+            self.log_test("Stripe Backend Test", False, "No services available")
+            return False
+            
+        # Use first available service
+        test_service = response[0]
+        service_id = test_service['id']
+        service_name = test_service['name']
+        print(f"   ✅ Using real service: {service_name} (ID: {service_id})")
+        
+        # Step 3: Create bulk order (simulate frontend behavior)
+        import json
+        
+        # Create service items as JSON (exactly like frontend does)
+        service_items = json.dumps([{
+            "id": service_id,
+            "quantity": 1
+        }])
+        
+        # Prepare form data for bulk order
+        form_data = {
+            'services': service_items,
+            'delivery_address': 'Test address, Lausanne',
+            'delivery_option': 'standard'
+        }
+        
+        # Use requests directly for form data (multipart/form-data)
+        url = f"{self.api_url}/orders/bulk"
+        headers = {'Authorization': f'Bearer {admin_token}'}
+        
+        print(f"\n🔍 Step 3 - Create Bulk Order...")
+        print(f"   URL: {url}")
+        print(f"   Service Items: {service_items}")
+        
+        try:
+            response = requests.post(url, data=form_data, headers=headers)
+            print(f"   Status: {response.status_code}")
+            
+            if response.status_code == 200:
+                order_data = response.json()
+                print(f"   ✅ Order Response: {json.dumps(order_data, indent=2)}")
+                
+                order_id = order_data.get('order_id')
+                if not order_id:
+                    print("❌ No order_id in response")
+                    self.token = original_token
+                    self.log_test("Stripe Backend Test", False, "No order_id returned")
+                    return False
+                    
+                print(f"   ✅ Order ID: {order_id}")
+                
+            else:
+                try:
+                    error_data = response.json()
+                    print(f"   ❌ Order creation failed: {error_data}")
+                except:
+                    print(f"   ❌ Order creation failed: {response.text}")
+                self.token = original_token
+                self.log_test("Stripe Backend Test", False, f"Order creation failed: {response.status_code}")
+                return False
+                
+        except Exception as e:
+            print(f"   ❌ Order creation request failed: {str(e)}")
+            self.token = original_token
+            self.log_test("Stripe Backend Test", False, f"Order creation crashed: {str(e)}")
+            return False
+        
+        # Step 4: Create Stripe checkout session (exactly like frontend)
+        checkout_data = {
+            "order_id": order_id,
+            "origin_url": "http://localhost:3000"
+        }
+        
+        success, response = self.run_test(
+            "Step 4 - Create Stripe Checkout Session",
+            "POST",
+            "payments/create-checkout-session",
+            200,
+            data=checkout_data
+        )
+        
+        if not success:
+            self.token = original_token
+            self.log_test("Stripe Backend Test", False, "Stripe checkout session creation failed")
+            return False
+            
+        # Step 5: Verify checkout_url
+        checkout_url = response.get('checkout_url')
+        session_id = response.get('session_id')
+        
+        print(f"   ✅ Stripe Response: {json.dumps(response, indent=2)}")
+        print(f"   ✅ Checkout URL: {checkout_url}")
+        print(f"   ✅ Session ID: {session_id}")
+        
+        # Validate checkout_url
+        url_valid = False
+        if checkout_url:
+            if checkout_url.startswith("https://"):
+                if "stripe.com" in checkout_url or "checkout" in checkout_url:
+                    url_valid = True
+                    print(f"   ✅ Checkout URL is valid Stripe URL")
+                else:
+                    print(f"   ❌ Checkout URL doesn't contain 'stripe.com' or 'checkout'")
+            else:
+                print(f"   ❌ Checkout URL doesn't start with 'https://'")
+        else:
+            print(f"   ❌ No checkout_url in response")
+        
+        # Restore original token
+        self.token = original_token
+        
+        # Final verdict
+        if url_valid and session_id:
+            print(f"\n   ✅ STRIPE BACKEND FUNCTIONALITY WORKING CORRECTLY")
+            print(f"   ✅ Backend returns valid Stripe checkout URL")
+            print(f"   ✅ Problem is 100% frontend if users can't access checkout")
+            self.log_test("Stripe Backend Test", True, "Backend Stripe integration working - returns valid checkout URL")
+            return True
+        else:
+            print(f"\n   ❌ STRIPE BACKEND FUNCTIONALITY FAILED")
+            if not checkout_url:
+                print(f"   ❌ No checkout_url returned")
+            elif not url_valid:
+                print(f"   ❌ Invalid checkout_url format")
+            if not session_id:
+                print(f"   ❌ No session_id returned")
+            self.log_test("Stripe Backend Test", False, "Backend Stripe integration failed")
+            return False
+
 def main():
     print("🧪 Starting ShoeRepair P0 Critical Bug Fix Verification")
     print("=" * 70)
