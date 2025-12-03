@@ -14,26 +14,28 @@ export function useCart() {
 
 export function CartProvider({ children }) {
   const { t } = useTranslation();
-  const [cartItems, setCartItems] = useState([]);
-  const [cartLoaded, setCartLoaded] = useState(false);
-
-  // Load cart from localStorage on mount
-  useEffect(() => {
-    const savedCart = localStorage.getItem('shoerepair_cart');
-    if (savedCart) {
-      try {
-        setCartItems(JSON.parse(savedCart));
-      } catch (error) {
-        console.error('Error loading cart:', error);
-      }
+  
+  // Initialize cart from localStorage
+  const getInitialCart = () => {
+    try {
+      const savedCart = localStorage.getItem('shoerepair_cart');
+      return savedCart ? JSON.parse(savedCart) : [];
+    } catch (error) {
+      console.error('Error loading cart:', error);
+      return [];
     }
-    // Mark cart as loaded
-    setCartLoaded(true);
-  }, []);
+  };
+  
+  const [cartItems, setCartItems] = useState(getInitialCart);
+  const [cartLoaded, setCartLoaded] = useState(true); // Always loaded since we initialize synchronously
 
   // Save cart to localStorage whenever it changes
   useEffect(() => {
-    localStorage.setItem('shoerepair_cart', JSON.stringify(cartItems));
+    try {
+      localStorage.setItem('shoerepair_cart', JSON.stringify(cartItems));
+    } catch (error) {
+      console.error('Error saving cart:', error);
+    }
   }, [cartItems]);
 
   const addToCart = (service) => {
