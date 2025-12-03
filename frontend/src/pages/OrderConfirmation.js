@@ -175,15 +175,44 @@ export default function OrderConfirmation({ user }) {
 
         {/* Cobbler Assignment Info */}
         {order.cobbler_id && (
-          <Card className="border-amber-200 mb-6">
+          <Card className="border-green-200 bg-green-50 mb-6">
             <CardHeader>
-              <CardTitle className="text-amber-950 flex items-center gap-2">
-                👨‍🔧 Cordonnier Assigné
+              <CardTitle className="text-green-900 flex items-center gap-2">
+                👨‍🔧 Partenaire Attribué
               </CardTitle>
             </CardHeader>
-            <CardContent>
-              <p className="text-sm text-amber-700">
-                Un cordonnier qualifié a été automatiquement assigné à votre commande en fonction de votre localisation.
+            <CardContent className="space-y-3">
+              <p className="text-sm text-green-700">
+                Un cordonnier qualifié a été automatiquement attribué à votre commande en fonction de votre localisation.
+              </p>
+              
+              {cobbler && (
+                <div className="bg-white rounded-lg p-4 border border-green-200">
+                  <div className="space-y-2">
+                    <div>
+                      <span className="text-xs text-green-600 font-semibold uppercase">Nom du partenaire</span>
+                      <p className="text-sm font-medium text-green-900">{cobbler.name}</p>
+                    </div>
+                    
+                    {cobbler.workshop_address && (
+                      <div>
+                        <span className="text-xs text-green-600 font-semibold uppercase">Adresse de l'atelier</span>
+                        <p className="text-sm text-green-800">{cobbler.workshop_address}</p>
+                      </div>
+                    )}
+                    
+                    {cobbler.phone && (
+                      <div>
+                        <span className="text-xs text-green-600 font-semibold uppercase">Téléphone</span>
+                        <p className="text-sm text-green-800">{cobbler.phone}</p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+              
+              <p className="text-xs text-green-600 italic">
+                ℹ️ Ces informations vous sont également envoyées par email
               </p>
             </CardContent>
           </Card>
