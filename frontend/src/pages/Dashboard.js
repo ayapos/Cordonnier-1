@@ -12,6 +12,7 @@ import LanguageSwitcher from '@/components/LanguageSwitcher';
 import AddressManager from '@/components/AddressManager';
 import ProfileEditor from '@/components/ProfileEditor';
 import ReportGenerator from '@/components/ReportGenerator';
+import StripeConnectSetup from '@/components/StripeConnectSetup';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
