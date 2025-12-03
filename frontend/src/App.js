@@ -73,10 +73,11 @@ function App() {
   };
 
   return (
-    <CurrencyProvider>
-      <CartProvider>
-        <div className="App">
-          <BrowserRouter>
+    <ErrorBoundary>
+      <CurrencyProvider>
+        <CartProvider>
+          <div className="App">
+            <BrowserRouter>
             <Routes>
             <Route path="/" element={<Home user={user} />} />
             <Route path="/auth" element={<Auth setUser={setUser} />} />
