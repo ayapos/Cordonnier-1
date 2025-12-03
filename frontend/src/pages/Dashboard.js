@@ -216,73 +216,130 @@ export default function Dashboard({ user: initialUser, refreshUser }) {
           </div>
         )}
 
-        {/* Orders List */}
-        <Card className="border-amber-200">
-          <CardHeader>
-            <CardTitle>{t('myOrders')}</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {orders.length === 0 ? (
-              <div className="text-center py-12" data-testid="no-orders">
-                <Package className="w-16 h-16 text-amber-300 mx-auto mb-4" />
-                <p className="text-amber-800">{t('noOrdersYet')}</p>
-              </div>
-            ) : (
-              <div className="space-y-4">
-                {orders.map((order) => (
-                  <div 
-                    key={order.id} 
-                    className="border border-amber-200 rounded-lg p-4 hover:shadow-md transition-all cursor-pointer"
-                    onClick={() => navigate(`/order/${order.id}`)}
-                    data-testid={`order-item-${order.id}`}
-                  >
-                    <div className="flex justify-between items-start mb-2">
-                      <div>
-                        <h4 className="font-bold text-amber-950" data-testid={`order-ref-${order.id}`}>{order.reference_number}</h4>
-                        <p className="text-sm text-amber-700" data-testid={`order-service-${order.id}`}>{order.service_name}</p>
+        {/* Orders List and Reports for Cobblers */}
+        {user?.role === 'cobbler' ? (
+          <Tabs defaultValue="orders" className="space-y-6">
+            <TabsList className="grid w-full grid-cols-2 max-w-md">
+              <TabsTrigger value="orders" data-testid="orders-tab">{t('myOrders')}</TabsTrigger>
+              <TabsTrigger value="reports" data-testid="reports-tab">Rapports</TabsTrigger>
+            </TabsList>
+            
+            <TabsContent value="orders">
+              <Card className="border-amber-200">
+                <CardHeader>
+                  <CardTitle>{t('myOrders')}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  {orders.length === 0 ? (
+                    <div className="text-center py-12" data-testid="no-orders">
+                      <Package className="w-16 h-16 text-amber-300 mx-auto mb-4" />
+                      <p className="text-amber-800">{t('noOrdersYet')}</p>
+                    </div>
+                  ) : (
+                    <div className="space-y-4">
+                      {orders.map((order) => (
+                        <div 
+                          key={order.id} 
+                          className="border border-amber-200 rounded-lg p-4 hover:shadow-md transition-all cursor-pointer"
+                          onClick={() => navigate(`/order/${order.id}`)}
+                          data-testid={`order-item-${order.id}`}
+                        >
+                          <div className="flex justify-between items-start mb-2">
+                            <div>
+                              <h4 className="font-bold text-amber-950" data-testid={`order-ref-${order.id}`}>{order.reference_number}</h4>
+                              <p className="text-sm text-amber-700" data-testid={`order-service-${order.id}`}>{order.service_name}</p>
+                            </div>
+                            <Badge className={statusColors[order.status]} data-testid={`order-status-${order.id}`}>
+                              {t(order.status)}
+                            </Badge>
+                          </div>
+                          <div className="flex justify-between items-center mt-3 text-sm">
+                            <span className="text-amber-700" data-testid={`order-amount-${order.id}`}>{order.total_amount.toFixed(2)}CHF</span>
+                            <span className="text-amber-600" data-testid={`order-date-${order.id}`}>
+                              {new Date(order.created_at).toLocaleDateString('fr-FR')}
+                            </span>
+                          </div>
+                          {order.status === 'accepted' && !order.cobbler_id && (
+                            <Button 
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleAcceptOrder(order.id);
+                              }}
+                              size="sm"
+                              className="mt-3 bg-amber-700 hover:bg-amber-800"
+                              data-testid={`accept-order-btn-${order.id}`}
+                            >
+                              {t('acceptOrder')}
+                            </Button>
+                          )}
+                          {order.cobbler_id === user.id && order.status === 'in_progress' && (
+                            <Button 
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleUpdateStatus(order.id, 'shipped');
+                              }}
+                              size="sm"
+                              className="mt-3 bg-amber-700 hover:bg-amber-800"
+                              data-testid={`ship-order-btn-${order.id}`}
+                            >
+                              {t('markAsShipped')}
+                            </Button>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            </TabsContent>
+            
+            <TabsContent value="reports">
+              <ReportGenerator userRole="cobbler" />
+            </TabsContent>
+          </Tabs>
+        ) : (
+          /* Orders List for Clients */
+          <Card className="border-amber-200">
+            <CardHeader>
+              <CardTitle>{t('myOrders')}</CardTitle>
+            </CardHeader>
+            <CardContent>
+              {orders.length === 0 ? (
+                <div className="text-center py-12" data-testid="no-orders">
+                  <Package className="w-16 h-16 text-amber-300 mx-auto mb-4" />
+                  <p className="text-amber-800">{t('noOrdersYet')}</p>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {orders.map((order) => (
+                    <div 
+                      key={order.id} 
+                      className="border border-amber-200 rounded-lg p-4 hover:shadow-md transition-all cursor-pointer"
+                      onClick={() => navigate(`/order/${order.id}`)}
+                      data-testid={`order-item-${order.id}`}
+                    >
+                      <div className="flex justify-between items-start mb-2">
+                        <div>
+                          <h4 className="font-bold text-amber-950" data-testid={`order-ref-${order.id}`}>{order.reference_number}</h4>
+                          <p className="text-sm text-amber-700" data-testid={`order-service-${order.id}`}>{order.service_name}</p>
+                        </div>
+                        <Badge className={statusColors[order.status]} data-testid={`order-status-${order.id}`}>
+                          {t(order.status)}
+                        </Badge>
                       </div>
-                      <Badge className={statusColors[order.status]} data-testid={`order-status-${order.id}`}>
-                        {t(order.status)}
-                      </Badge>
+                      <div className="flex justify-between items-center mt-3 text-sm">
+                        <span className="text-amber-700" data-testid={`order-amount-${order.id}`}>{order.total_amount.toFixed(2)}CHF</span>
+                        <span className="text-amber-600" data-testid={`order-date-${order.id}`}>
+                          {new Date(order.created_at).toLocaleDateString('fr-FR')}
+                        </span>
+                      </div>
                     </div>
-                    <div className="flex justify-between items-center mt-3 text-sm">
-                      <span className="text-amber-700" data-testid={`order-amount-${order.id}`}>{order.total_amount.toFixed(2)}CHF</span>
-                      <span className="text-amber-600" data-testid={`order-date-${order.id}`}>
-                        {new Date(order.created_at).toLocaleDateString('fr-FR')}
-                      </span>
-                    </div>
-                    {user?.role === 'cobbler' && order.status === 'accepted' && !order.cobbler_id && (
-                      <Button 
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleAcceptOrder(order.id);
-                        }}
-                        size="sm"
-                        className="mt-3 bg-amber-700 hover:bg-amber-800"
-                        data-testid={`accept-order-btn-${order.id}`}
-                      >
-                        {t('acceptOrder')}
-                      </Button>
-                    )}
-                    {user?.role === 'cobbler' && order.cobbler_id === user.id && order.status === 'in_progress' && (
-                      <Button 
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleUpdateStatus(order.id, 'shipped');
-                        }}
-                        size="sm"
-                        className="mt-3 bg-amber-700 hover:bg-amber-800"
-                        data-testid={`ship-order-btn-${order.id}`}
-                      >
-                        {t('markAsShipped')}
-                      </Button>
-                    )}
-                  </div>
-                ))}
-              </div>
-            )}
-          </CardContent>
-        </Card>
+                  ))}
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        )}
       </div>
     </div>
   );
