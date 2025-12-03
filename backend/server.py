@@ -40,6 +40,7 @@ api_router.include_router(media_router)
 api_router.include_router(stats_router)
 api_router.include_router(payment_router)
 api_router.include_router(reports_router)
+api_router.include_router(stripe_connect_router)
 
 # Include main API router
 app.include_router(api_router)
