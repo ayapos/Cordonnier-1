@@ -1402,7 +1402,7 @@ class ShoeRepairAPITester:
         
         # Prepare form data for bulk order
         form_data = {
-            'services': service_items,
+            'service_items': service_items,
             'delivery_address': 'Test address, Lausanne',
             'delivery_option': 'standard'
         }
