@@ -194,7 +194,7 @@ export default function Checkout({ user }) {
         } catch (stripeError) {
           console.error('Stripe error:', stripeError);
           toast.error('Erreur paiement: ' + (stripeError.response?.data?.detail || stripeError.message));
-          setLoading(false);
+          // Don't setLoading here - finally block will handle it
         }
       } else {
         // Guest users go to order confirmation
