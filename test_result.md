@@ -114,6 +114,17 @@
         - working: true
         - agent: "testing"
         - comment: "✅ SETTINGS ENDPOINTS WORKING: GET /api/stats/settings ✅ (returns app settings), PUT /api/stats/settings ✅ (admin can update settings), Authorization ✅ (non-admin access correctly blocked with 403). Settings endpoints not affected by route conflicts and functioning properly."
+  - task: "Stripe backend integration - order creation and checkout session"
+    implemented: true
+    working: true
+    file: "/app/backend/routes/payment.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: true
+        - agent: "testing"
+        - comment: "✅ STRIPE BACKEND INTEGRATION FULLY FUNCTIONAL: Comprehensive testing executed as per urgent review request. COMPLETE FLOW VERIFIED: 1) Admin authentication ✅, 2) Real service retrieval ✅ (Test Service FR), 3) Bulk order creation ✅ (POST /api/orders/bulk with service_items JSON), 4) Stripe checkout session creation ✅ (POST /api/payments/create-checkout-session), 5) Valid Stripe URL generation ✅ (https://checkout.stripe.com/c/pay/cs_test_...). CRITICAL VERIFICATION: Backend returns valid checkout_url starting with 'https://' and containing 'stripe.com'. Order creation works with real service IDs, proper total calculation (55.0 CHF), and session ID generation. CONCLUSION: Backend Stripe integration is 100% working - any checkout issues are frontend-related (CartContext race condition as identified)."
 
 ## frontend:
 ##   - task: "Cart Context - localStorage management"
