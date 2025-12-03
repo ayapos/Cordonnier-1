@@ -28,13 +28,6 @@ export default function Checkout({ user }) {
   const [checkoutMode, setCheckoutMode] = useState(token ? 'user' : 'guest');
   const [loading, setLoading] = useState(false);
   
-  // Check if cart is empty and redirect (must be in useEffect, not during render)
-  useEffect(() => {
-    if (cartLoaded && cartItems.length === 0) {
-      navigate('/cart');
-    }
-  }, [cartLoaded, cartItems.length, navigate]);
-
   // Helper function to get translated service field
   const getServiceField = (item, field) => {
     const lang = i18n.language;
