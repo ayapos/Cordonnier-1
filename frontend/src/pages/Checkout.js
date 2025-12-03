@@ -149,57 +149,17 @@ export default function Checkout({ user }) {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
 
-      console.log('=== AFTER ORDER CREATION ===');
-      console.log('Response:', response.data);
-      console.log('Order ID:', response.data.order_id);
-      console.log('Checkout mode:', checkoutMode);
+      toast.success('Commande créée avec succès !', { duration: 1500 });
       
       const orderId = response.data.order_id;
       
-      // Show success message
-      toast.success('Commande créée avec succès !', { duration: 1000 });
-      
-      // DON'T clear cart here - it causes a re-render that redirects to /cart
-      // Cart will be cleared on the payment/confirmation page instead
-      
-      // Simple logic: if used /orders/bulk endpoint, it's an authenticated user → Stripe payment
-      if (checkoutMode !== 'guest') {
-        // Authenticated users: Create Stripe session and redirect DIRECTLY to Stripe.com
-        console.log('✅ AUTHENTICATED USER - CREATING STRIPE SESSION');
-        
-        try {
-          // Create Stripe checkout session
-          const originUrl = window.location.origin;
-          console.log('Creating Stripe session for order:', orderId);
-          
-          const stripeResponse = await axios.post(`${API}/payments/create-checkout-session`, {
-            order_id: orderId,
-            origin_url: originUrl
-          });
-          
-          console.log('Stripe response received');
-          const checkoutUrl = stripeResponse.data.checkout_url;
-          console.log('Checkout URL:', checkoutUrl);
-          
-          if (!checkoutUrl) {
-            throw new Error('No checkout URL in response');
-          }
-          
-          // IMMEDIATE redirect - no setTimeout, no delays, just redirect NOW
-          console.log('🚀 IMMEDIATE REDIRECT TO STRIPE');
-          window.location.href = checkoutUrl;
-          
-          // The page will now redirect, so code below won't execute
-          
-        } catch (stripeError) {
-          console.error('Stripe error:', stripeError);
-          toast.error('Erreur paiement: ' + (stripeError.response?.data?.detail || stripeError.message));
-          // Don't setLoading here - finally block will handle it
-        }
+      // Redirect based on checkout mode
+      if (checkoutMode === 'guest') {
+        // Guest users go to order confirmation (demo mode)
+        navigate(`/order-confirmation/${orderId}`);
       } else {
-        // Guest users go to order confirmation
-        console.log('✅ GUEST - ORDER CONFIRMATION');
-        navigate(`/order-confirmation/${orderId}`, { replace: true });
+        // Authenticated users go to Stripe payment page
+        navigate(`/stripe-checkout/${orderId}`);
       }
     } catch (error) {
       console.error('Checkout error:', error);
