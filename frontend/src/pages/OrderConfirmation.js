@@ -15,6 +15,7 @@ export default function OrderConfirmation({ user }) {
   const { orderId } = useParams();
   const { clearCart } = useCart();
   const [order, setOrder] = useState(null);
+  const [cobbler, setCobbler] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -27,6 +28,19 @@ export default function OrderConfirmation({ user }) {
     try {
       const response = await axios.get(`${API}/orders/${orderId}`);
       setOrder(response.data);
+      
+      // Fetch cobbler info if assigned
+      if (response.data.cobbler_id) {
+        try {
+          const cobblerResponse = await axios.get(`${API}/cobbler/cobblers`);
+          const assignedCobbler = cobblerResponse.data.find(c => c.id === response.data.cobbler_id);
+          if (assignedCobbler) {
+            setCobbler(assignedCobbler);
+          }
+        } catch (error) {
+          console.error('Error fetching cobbler info:', error);
+        }
+      }
     } catch (error) {
       toast.error('Commande introuvable');
       if (user) {
