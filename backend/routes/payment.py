@@ -86,7 +86,7 @@ async def create_checkout_session(
         if not stripe_account_id:
             raise HTTPException(
                 status_code=400, 
-                detail="Cobbler has not completed Stripe Connect onboarding yet"
+                detail=f"Le cordonnier assigné ({cobbler.get('name')}) n'a pas encore configuré son compte Stripe. Veuillez contacter le support."
             )
         
         # Create Stripe Checkout Session with automatic split payment
