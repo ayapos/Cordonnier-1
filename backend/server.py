@@ -19,7 +19,8 @@ from routes import (
     media_router,
     stats_router,
     payment_router,
-    reports_router
+    reports_router,
+    stripe_connect_router
 )
 
 # Create the main app
