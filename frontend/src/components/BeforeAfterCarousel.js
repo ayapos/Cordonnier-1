@@ -1,32 +1,69 @@
 import { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import axios from 'axios';
+
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
 export default function BeforeAfterCarousel({ t }) {
   const [currentSlide, setCurrentSlide] = useState(0);
-  
-  const beforeAfterImages = [
+  const [galleryImages, setGalleryImages] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchGalleryImages();
+  }, []);
+
+  const fetchGalleryImages = async () => {
+    try {
+      const response = await axios.get(`${BACKEND_URL}/api/media/admin?category=gallery`);
+      const images = response.data;
+      
+      // Group images into before/after pairs based on position
+      const pairs = [];
+      const sortedImages = images.sort((a, b) => (a.position || 999) - (b.position || 999));
+      
+      // Group every 2 consecutive images as before/after
+      for (let i = 0; i < sortedImages.length; i += 2) {
+        if (sortedImages[i] && sortedImages[i + 1]) {
+          pairs.push({
+            before: `${BACKEND_URL}${sortedImages[i].url}`,
+            after: `${BACKEND_URL}${sortedImages[i + 1].url}`,
+            title: sortedImages[i].title || sortedImages[i + 1].title || t('renovation')
+          });
+        }
+      }
+      
+      setGalleryImages(pairs);
+    } catch (error) {
+      console.error('Error fetching gallery images:', error);
+      // Fallback to placeholder images
+      setGalleryImages([
+        {
+          before: 'https://images.unsplash.com/photo-1608667508764-33cf0726b13a?w=500&q=80',
+          after: 'https://images.unsplash.com/photo-1529953717281-81a40b131119?w=500&q=80',
+          title: t('bootResole')
+        }
+      ]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const beforeAfterImages = galleryImages.length > 0 ? galleryImages : [
     {
       before: 'https://images.unsplash.com/photo-1608667508764-33cf0726b13a?w=500&q=80',
       after: 'https://images.unsplash.com/photo-1529953717281-81a40b131119?w=500&q=80',
       title: t('bootResole')
-    },
-    {
-      before: 'https://images.unsplash.com/photo-1552346154-21d32810aba3?w=500&q=80',
-      after: 'https://images.unsplash.com/photo-1614252235316-8c857d38b5f4?w=500&q=80',
-      title: t('sneakersCleaning')
-    },
-    {
-      before: 'https://images.unsplash.com/photo-1519226719127-9e805abb99b1?w=500&q=80',
-      after: 'https://images.unsplash.com/photo-1638609348722-aa2a3a67db26?w=500&q=80',
-      title: t('leatherRenovation')
     }
   ];
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % beforeAfterImages.length);
-    }, 5000);
-    return () => clearInterval(timer);
+    if (beforeAfterImages.length > 0) {
+      const timer = setInterval(() => {
+        setCurrentSlide((prev) => (prev + 1) % beforeAfterImages.length);
+      }, 5000);
+      return () => clearInterval(timer);
+    }
   }, [beforeAfterImages.length]);
 
   const nextSlide = () => {
