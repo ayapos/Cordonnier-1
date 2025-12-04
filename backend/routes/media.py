@@ -172,6 +172,20 @@ async def get_carousel_images():
         logger.error(f"Error getting carousel images: {e}")
         return []
 
+@router.get("/gallery")
+async def get_gallery_images():
+    """Public endpoint to get gallery (before/after) images"""
+    try:
+        # Get gallery images sorted by position
+        images = await db.media.find(
+            {"category": "gallery"},
+            {"_id": 0}
+        ).sort("position", 1).to_list(20)
+        return images
+    except Exception as e:
+        logger.error(f"Error getting gallery images: {e}")
+        return []
+
 @router.get("/{filename}")
 async def serve_media(filename: str):
     """Serve media files via API endpoint"""
