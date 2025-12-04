@@ -173,12 +173,14 @@ export default function Auth({ setUser }) {
                     />
                   </div>
                   <div>
-                    <Label htmlFor="register-address">Adresse (optionnel)</Label>
+                    <Label htmlFor="register-address">Adresse *</Label>
                     <Input
                       id="register-address"
                       data-testid="register-address"
                       value={formData.address}
                       onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+                      required
+                      placeholder="Rue, Numéro, Code postal, Ville"
                     />
                   </div>
                   <Button 
