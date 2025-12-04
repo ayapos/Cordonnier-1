@@ -74,6 +74,30 @@ export default function BeforeAfterCarousel({ t }) {
     setCurrentSlide((prev) => (prev - 1 + beforeAfterImages.length) % beforeAfterImages.length);
   };
 
+  if (loading) {
+    return (
+      <section className="px-4 py-12 max-w-md mx-auto">
+        <h3 className="text-3xl font-bold mb-3 text-gray-900 text-center">{t('beforeAfterGallery')}</h3>
+        <p className="text-center text-gray-600 mb-8">{t('repairResults')}</p>
+        <div className="text-center py-12">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-600 mx-auto"></div>
+        </div>
+      </section>
+    );
+  }
+
+  if (beforeAfterImages.length === 0) {
+    return (
+      <section className="px-4 py-12 max-w-md mx-auto">
+        <h3 className="text-3xl font-bold mb-3 text-gray-900 text-center">{t('beforeAfterGallery')}</h3>
+        <p className="text-center text-gray-600 mb-8">{t('repairResults')}</p>
+        <div className="text-center py-12 text-gray-500">
+          Aucune image disponible pour le moment
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section className="px-4 py-12 max-w-md mx-auto">
       <h3 className="text-3xl font-bold mb-3 text-gray-900 text-center">{t('beforeAfterGallery')}</h3>
