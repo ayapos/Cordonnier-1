@@ -13,6 +13,10 @@ async def register(user_data: UserCreate):
     if existing_user:
         raise HTTPException(status_code=400, detail="Email already registered")
     
+    # Validate address is required for clients
+    if user_data.role == 'client' and not user_data.address:
+        raise HTTPException(status_code=400, detail="L'adresse est obligatoire pour les clients")
+    
     # Create user
     user = User(
         email=user_data.email,
