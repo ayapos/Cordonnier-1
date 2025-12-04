@@ -15,7 +15,7 @@ export default function BeforeAfterCarousel({ t }) {
 
   const fetchGalleryImages = async () => {
     try {
-      const response = await axios.get(`${BACKEND_URL}/api/media/admin?category=gallery`);
+      const response = await axios.get(`${BACKEND_URL}/api/media/gallery`);
       const images = response.data;
       
       // Group images into before/after pairs based on position
